@@ -5,9 +5,9 @@ import { createClient } from "next-sanity";
  * bez CDN (ruch buildów jest mały, a CDN nie jest potrzebny).
  */
 export const client = createClient({
-  projectId: process.env.SANITY_PROJECT_ID ?? "rkr99tu3",
-  dataset: process.env.SANITY_DATASET ?? "production",
-  apiVersion: process.env.SANITY_API_VERSION ?? "2025-02-19",
+  projectId: process.env.SANITY_PROJECT_ID || "rkr99tu3",
+  dataset: process.env.SANITY_DATASET || "production",
+  apiVersion: process.env.SANITY_API_VERSION || "2025-02-19",
   useCdn: false,
   perspective: "published",
 });

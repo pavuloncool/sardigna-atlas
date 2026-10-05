@@ -1,8 +1,8 @@
 import { createImageUrlBuilder } from "@sanity/image-url";
 
 const builder = createImageUrlBuilder({
-  projectId: process.env.SANITY_PROJECT_ID ?? "rkr99tu3",
-  dataset: process.env.SANITY_DATASET ?? "production",
+  projectId: process.env.SANITY_PROJECT_ID || "rkr99tu3",
+  dataset: process.env.SANITY_DATASET || "production",
 });
 
 /** Zdjęcie z projekcji GROQ (`imageProjection` w queries.ts) — pola zdjęcia Sanity plus dane pomocnicze. */
