@@ -15,7 +15,7 @@ test('pole w headerze rozwija się na cały ekran i szuka po Enter', async ({pag
   await expect.poll(async () => (await dialog.boundingBox())?.height).toBe(700)
   await expect(page.getByRole('searchbox', {name: 'Szukaj'})).toBeFocused()
 
-  await page.getByRole('searchbox', {name: 'Szukaj'}).fill('Pane carasau')
+  await page.getByRole('searchbox', {name: 'Szukaj'}).fill('ceramika')
   await page.keyboard.press('Enter')
   await expect(dialog.locator('.so-results a').first()).toBeVisible()
   expect(await dialog.locator('.so-results a[href^="/en/"]').count()).toBe(0) // tylko język strony
@@ -26,7 +26,7 @@ test('lupa po prawej uruchamia wyszukiwanie, Esc zamyka i oddaje fokus', async (
   await page.goto('/pl/atlas/')
   await page.getByRole('button', {name: 'Otwórz wyszukiwarkę'}).click()
   const dialog = page.getByRole('dialog', {name: 'Wyszukiwarka'})
-  await page.getByRole('searchbox', {name: 'Szukaj'}).fill('tkactwo')
+  await page.getByRole('searchbox', {name: 'Szukaj'}).fill('tkanina')
   await dialog.getByRole('button', {name: 'Szukaj'}).click()
   await expect(dialog.locator('.so-results a').first()).toBeVisible()
 
@@ -49,7 +49,7 @@ test('przycisk × zamyka, a brak wyników daje komunikat', async ({page}) => {
 test('wersja EN ma angielskie etykiety i filtruje wyniki do EN', async ({page}) => {
   await page.goto('/en/atlas/')
   await page.getByRole('button', {name: 'Open search'}).click()
-  await page.getByRole('searchbox', {name: 'Search'}).fill('weaving')
+  await page.getByRole('searchbox', {name: 'Search'}).fill('textile')
   await page.keyboard.press('Enter')
   const links = page.getByRole('dialog', {name: 'Search'}).locator('.so-results a')
   await expect(links.first()).toBeVisible()
@@ -59,7 +59,7 @@ test('wersja EN ma angielskie etykiety i filtruje wyniki do EN', async ({page}) 
 test('fragmenty wyników nie zawierają tekstu z bloków „Powiązane" ani z kart', async ({page}) => {
   await page.goto('/pl/atlas/')
   await page.getByRole('button', {name: 'Otwórz wyszukiwarkę'}).click()
-  await page.getByRole('searchbox', {name: 'Szukaj'}).fill('Pane carasau')
+  await page.getByRole('searchbox', {name: 'Szukaj'}).fill('ceramika')
   await page.keyboard.press('Enter')
   const results = page.locator('.so-results li')
   await expect(results.first()).toBeVisible()

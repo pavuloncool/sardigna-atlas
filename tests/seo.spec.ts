@@ -10,8 +10,16 @@ const ldTypes = async (page: import('@playwright/test').Page) => {
   return nodes.map((n) => n['@type'] as string)
 }
 
+/** Adresy z sitemap.xml: testy nie zakładają konkretnych slugów (treści w Sanity są edytowane). */
+async function urls(page: import('@playwright/test').Page, pattern: RegExp) {
+  const xml = await (await page.request.get('/sitemap.xml')).text()
+  return [...xml.matchAll(/<loc>[^<]*?(\/pl\/[^<]*)<\/loc>/g)].map((m) => m[1]).filter((u) => pattern.test(u))
+}
+
 test('artykuł: Article + BreadcrumbList, OG 1200×630, hreflang', async ({page}) => {
-  await page.goto('/pl/kulinaria/pane-carasau-chleb-z-potrzeby/')
+  const [article] = await urls(page, /^\/pl\/(kulinaria|rekodzielo|hotele|doswiadczenia|historia|ludzie)\/[^/]+\/$/)
+  expect(article).toBeTruthy()
+  await page.goto(article)
   expect(await ldTypes(page)).toEqual(expect.arrayContaining(['Article', 'BreadcrumbList']))
   const og = await page.locator('meta[property="og:image"]').getAttribute('content')
   expect(og).toMatch(/w=1200&h=630/)
@@ -21,11 +29,14 @@ test('artykuł: Article + BreadcrumbList, OG 1200×630, hreflang', async ({page}
 })
 
 test('encje: Person, Place, LodgingBusiness', async ({page}) => {
-  await page.goto('/pl/atlas/ludzie/osoba-a/')
+  const [person] = await urls(page, /^\/pl\/atlas\/ludzie\/[^/]+\/$/)
+  const [place] = await urls(page, /^\/pl\/atlas\/miejsca\/[^/]+\/$/)
+  const [stay] = await urls(page, /^\/pl\/atlas\/noclegi\/[^/]+\/$/)
+  await page.goto(person)
   expect(await ldTypes(page)).toContain('Person')
-  await page.goto('/pl/atlas/miejsca/orgosolo/')
+  await page.goto(place)
   expect(await ldTypes(page)).toContain('Place')
-  await page.goto('/pl/atlas/noclegi/hotel-a/')
+  await page.goto(stay)
   expect(await ldTypes(page)).toContain('LodgingBusiness')
 })
 
