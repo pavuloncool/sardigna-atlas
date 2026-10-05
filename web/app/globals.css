@@ -198,37 +198,34 @@ main.page {
   font-weight: 500;
   color: var(--fg);
 }
+/* Pole wyszukiwania w headerze: cienka linia u dołu, lupa po prawej (klik → pełny ekran). */
 .search {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.6rem;
   border-bottom: 1px solid var(--rule);
   padding-bottom: 0.35rem;
   width: clamp(120px, 14vw, 172px);
+  color: var(--nav);
 }
-.search input {
-  all: unset;
-  flex: 1;
+.search-label {
   min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font: 300 17px var(--serif);
+}
+.search:hover {
+  border-bottom-color: var(--fg);
   color: var(--fg);
 }
-.search input:focus-visible {
+.search:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 4px;
-}
-.search input::placeholder {
-  color: var(--nav);
-}
-.search button {
-  all: unset;
-  cursor: pointer;
-  display: flex;
-  color: var(--nav);
-}
-.search button:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
 }
 .theme-toggle {
   all: unset;
@@ -249,8 +246,16 @@ main.page {
   display: none;
 }
 @media (max-width: 899px) {
-  .site-nav,
+  .site-nav {
+    display: none;
+  }
+  /* mobile: samo ikona lupy (bez pola), żeby wyszukiwarka była dostępna także na telefonie */
   .search {
+    width: auto;
+    border-bottom: 0;
+    padding: 0;
+  }
+  .search-label {
     display: none;
   }
   .site-header {
@@ -785,44 +790,96 @@ figure.fig figcaption {
   color: var(--mute);
 }
 
-/* ── Wyniki wyszukiwania (Pagefind) ────────────────────────────────────── */
+/* ── Wyszukiwarka na cały ekran (Pagefind) ───────────────────────────────── */
 .header-right {
   position: relative;
 }
-.search-results {
-  position: absolute;
-  top: calc(100% + 1.2rem);
-  right: 0;
-  z-index: 30;
-  width: min(32rem, 92vw);
-  max-height: 70vh;
-  overflow: auto;
-  padding: 1rem 1.2rem;
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--bg);
-  border: 1px solid var(--rule);
   color: var(--fg);
 }
-.search-results ul {
+.so-close {
+  all: unset;
+  cursor: pointer;
+  position: fixed;
+  top: calc(34px + env(safe-area-inset-top, 0px));
+  right: var(--gutter);
+  display: flex;
+  color: var(--nav);
+}
+.so-close:hover {
+  color: var(--fg);
+}
+.so-close:focus-visible,
+.so-go:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+.so-inner {
+  padding: 22vh 8.3vw 10vh;
+  max-width: calc(64rem + 16.6vw);
+}
+.so-form {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.7rem;
+}
+.so-form:focus-within {
+  border-bottom-color: var(--fg);
+}
+.so-form input {
+  all: unset;
+  flex: 1;
+  min-width: 0;
+  font: 300 clamp(28px, 4.2vw, 64px) / 1.15 var(--serif);
+  color: var(--fg);
+}
+.so-form input::placeholder {
+  color: var(--mute);
+}
+.so-form input::-webkit-search-cancel-button {
+  display: none;
+}
+.so-go {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  color: var(--nav);
+}
+.so-go:hover {
+  color: var(--fg);
+}
+.so-results {
+  margin-top: 6vh;
+}
+.so-results ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 1.1rem;
+  gap: 2rem;
 }
-.search-results a {
+.so-results a {
   font: 400 var(--fs-card-title) / 1.3 var(--sans);
   border-bottom: 1px solid var(--rule);
 }
-.search-results a:hover {
+.so-results a:hover {
   border-bottom-color: var(--fg);
 }
-.search-results p {
-  margin: 0.3rem 0 0;
-  font-size: 14px;
-  line-height: 1.45;
+.so-results p {
+  margin: 0.4rem 0 0;
+  max-width: 44rem;
+  font: 300 var(--fs-lede) / 1.45 var(--serif);
   color: var(--mute);
 }
-.search-results mark {
+.so-results mark {
   background: none;
   color: var(--fg);
   font-weight: 500;
@@ -831,9 +888,6 @@ figure.fig figcaption {
   margin: 0;
   font-size: var(--fs-nav);
   color: var(--mute);
-}
-.search input::-webkit-search-cancel-button {
-  display: none;
 }
 
 /* ── Formularz kontaktowy (pola jak wyszukiwarka z headera: cienka linia pod spodem, serif 300) ── */

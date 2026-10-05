@@ -17,7 +17,11 @@
     "searching": "Searching…",
     "noResults": "No results",
     "unavailable": "Search is available once the site is built.",
-    "results": "Search results"
+    "results": "Search results",
+    "open": "Open search",
+    "close": "Close search",
+    "go": "Search",
+    "dialog": "Search"
   },
   "theme": {
     "toggle": "Switch light/dark theme"

@@ -17,7 +17,11 @@
     "searching": "Szukam…",
     "noResults": "Brak wyników",
     "unavailable": "Wyszukiwarka jest dostępna po zbudowaniu strony.",
-    "results": "Wyniki wyszukiwania"
+    "results": "Wyniki wyszukiwania",
+    "open": "Otwórz wyszukiwarkę",
+    "close": "Zamknij wyszukiwarkę",
+    "go": "Szukaj",
+    "dialog": "Wyszukiwarka"
   },
   "theme": {
     "toggle": "Przełącz motyw jasny/ciemny"

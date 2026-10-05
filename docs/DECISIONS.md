@@ -102,3 +102,13 @@ Format: decyzja, powód, alternatywa.
 - **Autor zdjęcia:** Christopher Politano / Unsplash, widoczny w stopce strony głównej (`footer-note`). Do potwierdzenia, że to właściwa informacja o licencji (Unsplash License).
 - **Zdjęcie na pełny ekran, header przezroczysty nad zdjęciem (2026-10-05).** Tło hero sięga do góry okna (obszar `.hero-bg` = wymiary viewportu). Tło headera przeniesione do pseudo-elementów: pełne tło (`::before`, opacity `--hbg`, domyślnie 1 jak w prototypie) oraz scrim (`::after`, gradient koloru tła motywu, opacity `1 − --hbg`). `--hbg` ustawia `Hero.tsx` na elemencie headera (nie na `<html>`, żeby nie unieważniać stylów całej strony) jako dopełnienie opacity zdjęcia; po animacji header jest w pełni pełny.
 - **Nawigacja headera: 16 px / waga 500 / kolor `--fg`** zamiast 15 px / 400 / `--nav` z prototypu (cały header, także poza home, dla spójności). Hover: cienkie podkreślenie zamiast zmiany koloru; placeholder wyszukiwarki i ikona lupy w `--nav`. Zmiana na życzenie właściciela, dla czytelności nad zdjęciem.
+
+## 2026-10-05 — Wyszukiwarka na cały ekran
+
+- **Pole w headerze to przycisk** (`button.search-trigger`, nie `<input>`): cienka linia u dołu, tekst „Szukaj na wyspie” (serif 300) i lupa po prawej, jak w prototypie. Kliknięcie rozwija warstwę `role="dialog"` na cały ekran.
+- **Animacja:** Web Animations API na `clip-path`, od prostokąta pola w headerze (`getBoundingClientRect`) do `inset(0)`, 480 ms, krzywa `cubic-bezier(.22,.7,.2,1)`; zawartość wjeżdża z opóźnieniem (opacity + 12 px). Zamykanie to ta sama animacja w drugą stronę. Przy `prefers-reduced-motion` bez animacji.
+- **Pełny ekran:** duże pole (serif 300, `clamp(28px, 4.2vw, 64px)`) z cienką linią u dołu i lupą po prawej (uruchamia wyszukiwanie, tak jak Enter), × w prawym górnym rogu, wyniki pod polem w stylu kart z prototypu (tytuł z podkreśleniem, serif 300 mute).
+- **Dostępność:** fokus trafia do pola przy otwarciu i wraca do pola w headerze po zamknięciu, Esc zamyka, Tab krąży w oknie (focus trap), `aria-modal`, przewijanie strony pod spodem zablokowane (`overflow: hidden` na `<html>`).
+- **Mobile:** poniżej 900 px w headerze jest sama ikona lupy (prototyp w ogóle ukrywał tam wyszukiwarkę); otwiera ten sam pełny ekran.
+- **Pagefind:** indeks jest rozgrzewany przy otwarciu. Pagefind dopasowuje przybliżenie (ciąg `zzzz…` trafia w 14 stron), więc test „brak wyników” używa zapytania `xqxqxq`. Wyniki są w języku strony.
+- **Znane:** fragmenty (excerpts) Pagefind zawierają też teksty z bloków „Powiązane”/kart, bo cały `main` jest indeksowany; do poprawy przez `data-pagefind-ignore` na tych blokach (nie zrobione).
