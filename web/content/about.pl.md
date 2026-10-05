@@ -12,7 +12,7 @@
 
 ## Linki afiliacyjne i współpraca
 
-Część linków w serwisie to linki afiliacyjne: jeśli z nich skorzystasz, możemy otrzymać prowizję, bez dodatkowych kosztów dla Ciebie. Takie linki są zawsze oznaczone widoczną etykietą, a artykuł, który je zawiera, informuje o tym na początku. Nie wpływa to na nasze rekomendacje.
+Część linków w serwisie to linki afiliacyjne: jeśli z nich skorzystasz, możemy otrzymać prowizję, bez dodatkowych kosztów dla Ciebie. Takie linki są zawsze oznaczone widoczną etykietą, a artykuł, który je zawiera, informuje o tym na początku. Tak samo oznaczamy materiały sponsorowane, współprace reklamowe i produkty przekazane przez producentów. Nie wpływa to na nasze rekomendacje. Zasady współpracy z twórcami i markami opisuje strona [Współpraca](/pl/wspolpraca/).
 
 Źródła afiliacyjne według typu treści:
 

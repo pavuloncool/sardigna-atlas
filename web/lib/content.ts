@@ -3,7 +3,7 @@ import path from "node:path";
 import { marked } from "marked";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locales";
 
-export type PageName = "about" | "contact" | "privacy-policy" | "cookie-policy";
+export type PageName = "about" | "collaborate" | "contact" | "privacy-policy" | "cookie-policy";
 
 /**
  * Treść stron statycznych z `web/content/{nazwa}.{język}.md`, renderowana w buildzie.

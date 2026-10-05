@@ -17,6 +17,7 @@ const SEGMENTS = {
   privacy: { pl: "polityka-prywatnosci", en: "privacy-policy" },
   cookies: { pl: "polityka-cookies", en: "cookie-policy" },
   authors: { pl: "autorzy", en: "authors" },
+  collaborate: { pl: "wspolpraca", en: "collaborate" },
   brands: { pl: "marki", en: "brands" },
   pagination: { pl: "strona", en: "page" },
 } as const satisfies Record<string, Partial<Record<Locale, string>>>;

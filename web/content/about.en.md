@@ -12,7 +12,7 @@
 
 ## Affiliate links and partnerships
 
-Some links on this site are affiliate links: if you use them we may earn a commission, at no extra cost to you. Such links always carry a visible label, and an article that contains them says so at the top. This does not influence our recommendations.
+Some links on this site are affiliate links: if you use them we may earn a commission, at no extra cost to you. Such links always carry a visible label, and an article that contains them says so at the top. We label sponsored content, paid collaborations and products provided by makers in the same way. This does not influence our recommendations. The rules for working with creators and brands are described on the [Collaborate](/en/collaborate/) page.
 
 Affiliate sources by type of content:
 

@@ -33,6 +33,7 @@ export const generateStaticParams = sectionParams;
 
 const PAGE_FILE: Record<Exclude<StaticSection, "atlas" | "authors">, PageName> = {
   about: "about",
+  collaborate: "collaborate",
   contact: "contact",
   privacy: "privacy-policy",
   cookies: "cookie-policy",
