@@ -28,7 +28,7 @@
   },
   "language": {
     "aria": "Language",
-    "switchTo": "Switch to: {language}"
+    "switchTo": "{code}: switch to {language}"
   },
   "footer": {
     "aria": "Footer",

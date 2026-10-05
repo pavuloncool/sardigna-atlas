@@ -28,7 +28,7 @@
   },
   "language": {
     "aria": "Język",
-    "switchTo": "Przełącz na: {language}"
+    "switchTo": "{code}: przełącz na język {language}"
   },
   "footer": {
     "aria": "Stopka",

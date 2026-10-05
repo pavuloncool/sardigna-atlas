@@ -25,7 +25,7 @@ export function LanguageSwitcher({
           href={alternates[l.id] ?? homePath(l.id)}
           hrefLang={l.id}
           lang={l.id}
-          aria-label={format(dict.language.switchTo, { language: l.title })}
+          aria-label={format(dict.language.switchTo, { code: l.id.toUpperCase(), language: l.title })}
         >
           {l.id.toUpperCase()}
         </Link>
