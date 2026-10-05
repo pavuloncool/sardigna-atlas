@@ -1,18 +1,8 @@
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/locales";
 import { articlePath } from "@/lib/i18n/segments";
-import type { SanityImage } from "@/lib/sanity/image";
+import type { ArticleCardData } from "@/lib/sanity/types";
 import { Figure } from "./Figure";
-
-/** Kształt zwracany przez `articleCard` w queries.ts. */
-export interface ArticleCardData {
-  _id: string;
-  title: string;
-  slug: string;
-  excerpt?: string | null;
-  heroImage?: SanityImage | null;
-  category?: { key?: string; name?: string | null; slug?: string | null } | null;
-}
 
 export function ArticleCard({
   article,
@@ -25,7 +15,7 @@ export function ArticleCard({
   ratio?: number;
   fallback?: [string, string];
 }) {
-  const href = articlePath(locale, article.category?.slug ?? "", article.slug);
+  const href = articlePath(locale, article.category?.slug ?? article.category?.key ?? "", article.slug);
   return (
     <article className="card">
       <Figure image={article.heroImage} ratio={ratio} fallback={fallback} caption={false} />

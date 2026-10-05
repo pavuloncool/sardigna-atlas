@@ -188,6 +188,8 @@ export const entityHubQuery = groq`*[_type == $type && slug.current == $slug][0]
   "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl),
   "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),
   "image": coalesce(portrait, image)${imageProjection},
+  kind, protectedStatus, websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,
+  "place": coalesce(place, origin[0], location[0])->${placeMini},
   "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) ${articleCard}
 }`
 
@@ -302,3 +304,36 @@ export const relatedQuery = groq`*[_id == $id][0]{
     ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] ${relatedCard}
   )[0...$limit]
 }.items`
+
+// ─── Strona (faza 3): nawigacja, trasy, Atlas, działy ────────────────────────
+
+/** Działy ze wszystkimi wersjami językowymi nazw i slugów (fallback liczy front). */
+export const categoriesQuery = groq`*[_type == "category"] | order(order asc){
+  _id, key, name, slugs, intro, order, "cover": cover${imageProjection}
+}`
+
+/** Trasy artykułów (generateStaticParams): język + klucz działu + slug. */
+export const articleRoutesQuery = groq`*[_type == "article" && defined(slug.current) && defined(language) && defined(category)]{
+  "slug": slug.current, language, "categoryKey": category->key
+}`
+
+/** Trasy encji Atlasu (slug wspólny dla języków). */
+export const entityRoutesQuery = groq`*[_type in ["place", "person", "product", "hotel", "experience"] && defined(slug.current)]{
+  _type, "slug": slug.current
+}`
+
+/** Artykuły działu po kluczu działu (paginacja: $start, $end). */
+export const categoryArticlesQuery = groq`{
+  "articles": *[_type == "article" && language == $lang && category->key == $key]
+    | order(publishedAt desc)[$start...$end] ${articleCard},
+  "total": count(*[_type == "article" && language == $lang && category->key == $key])
+}`
+
+/** Strona Atlasu: wszystkie encje do list (nazwy z fallbackiem $lang → en → pl). */
+export const atlasIndexQuery = groq`{
+  "places": *[_type == "place"] | order(name.pl asc){ _id, "name": ${t('name')}, "slug": slug.current, kind, "parent": parent->{ "name": ${t('name')} } },
+  "people": *[_type == "person"] | order(name asc){ _id, name, "slug": slug.current, "role": ${t('role')} },
+  "products": *[_type == "product"] | order(name.pl asc){ _id, "name": ${t('name')}, "slug": slug.current, kind },
+  "hotels": *[_type == "hotel"] | order(name asc){ _id, name, "slug": slug.current, type },
+  "experiences": *[_type == "experience"] | order(title.pl asc){ _id, "title": ${t('title')}, "slug": slug.current, kind }
+}`

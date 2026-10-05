@@ -11,9 +11,21 @@
     "menu": "Menu",
     "new": "New"
   },
-  "search": { "label": "Search", "placeholder": "Search the island" },
-  "theme": { "toggle": "Switch light/dark theme" },
-  "language": { "aria": "Language", "switchTo": "Switch to: {language}" },
+  "search": {
+    "label": "Search",
+    "placeholder": "Search the island",
+    "searching": "Searching…",
+    "noResults": "No results",
+    "unavailable": "Search is available once the site is built.",
+    "results": "Search results"
+  },
+  "theme": {
+    "toggle": "Switch light/dark theme"
+  },
+  "language": {
+    "aria": "Language",
+    "switchTo": "Switch to: {language}"
+  },
   "footer": {
     "aria": "Footer",
     "contact": "Contact",
@@ -27,5 +39,49 @@
     "affiliateNotice": "This piece contains affiliate links. If you use them we may earn a commission, at no extra cost to you.",
     "affiliateLabel": "affiliate link",
     "sponsoredLabel": "sponsored"
+  },
+  "sections": {
+    "places": "Places",
+    "people": "People",
+    "products": "Products",
+    "stays": "Stays",
+    "experiences": "Experiences",
+    "articles": "Articles",
+    "children": "Nearby",
+    "hotels": "Stays"
+  },
+  "entity": {
+    "visit": "Website",
+    "offer": "See the offer",
+    "affiliate": "affiliate link",
+    "sponsored": "sponsored"
+  },
+  "pager": {
+    "aria": "Pages",
+    "prev": "← Newer",
+    "next": "Older →"
+  },
+  "atlas": {
+    "title": "Atlas",
+    "intro": "The island read region by region, down to the village. [PLACEHOLDER] Atlas introduction.",
+    "mapLabel": "Map of Sardinia's regions",
+    "noArticles": "No articles",
+    "all": "All"
+  },
+  "count": {
+    "article": {
+      "one": "{n} article",
+      "other": "{n} articles"
+    }
+  },
+  "category": {
+    "empty": "There are no articles in this section yet."
+  },
+  "home": {
+    "all": "All",
+    "readMore": "See all"
+  },
+  "page": {
+    "updated": "Updated"
   }
 }

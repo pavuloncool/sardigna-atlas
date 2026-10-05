@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ThemeScript } from "@/components/ThemeScript";
 import { sans, serif } from "@/lib/fonts";
 import { isLocale, locales } from "@/lib/i18n/locales";
+import { siteUrl } from "@/lib/config";
 import "../globals.css";
 
 export const dynamicParams = false;
@@ -12,6 +13,7 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl()),
   title: { default: "Sardigna Atlas", template: "%s · Sardigna Atlas" },
   description: "Magazyn i atlas kulturowy o Sardynii.",
 };

@@ -1,14 +1,12 @@
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/locales";
 import { getDictionary } from "@/lib/i18n/dictionary";
-import { categoryPath } from "@/lib/i18n/categorySlugs";
-import { homePath, pagePath } from "@/lib/i18n/segments";
+import { homePath } from "@/lib/i18n/segments";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { SearchBox } from "./SearchBox";
 import { ThemeToggle } from "./ThemeToggle";
 import { Wordmark } from "./Wordmark";
-
-export type NavItem = { label: string; href: string; title?: string; ariaLabel?: string };
+import type { NavItem } from "@/lib/nav";
 
 export function Header({
   locale,
@@ -17,17 +15,11 @@ export function Header({
 }: {
   locale: Locale;
   alternates?: Partial<Record<Locale, string>>;
-  /** Domyślnie: Journal, Atlas, Ludzie, O projekcie + ikona „Nowość” (jak w prototypie). */
-  nav?: NavItem[];
+  /** Budowane przez PageShell (lib/nav.ts): Journal, Atlas, Ludzie, O projekcie + ikona „Nowość”. */
+  nav: NavItem[];
 }) {
   const dict = getDictionary(locale);
-  const items: NavItem[] = nav ?? [
-    { label: dict.nav.journal, href: `${homePath(locale)}#opowiesci` },
-    { label: dict.nav.atlas, href: pagePath(locale, "atlas") },
-    { label: dict.nav.people, href: categoryPath("people", locale) },
-    { label: dict.nav.about, href: pagePath(locale, "about") },
-    { label: "🫒", href: `${homePath(locale)}#opowiesci`, title: dict.nav.new, ariaLabel: dict.nav.new },
-  ];
+  const items = nav;
 
   return (
     <header className="site-header">

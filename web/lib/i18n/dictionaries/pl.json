@@ -11,9 +11,21 @@
     "menu": "Menu",
     "new": "Nowość"
   },
-  "search": { "label": "Szukaj", "placeholder": "Szukaj na wyspie" },
-  "theme": { "toggle": "Przełącz motyw jasny/ciemny" },
-  "language": { "aria": "Język", "switchTo": "Przełącz na: {language}" },
+  "search": {
+    "label": "Szukaj",
+    "placeholder": "Szukaj na wyspie",
+    "searching": "Szukam…",
+    "noResults": "Brak wyników",
+    "unavailable": "Wyszukiwarka jest dostępna po zbudowaniu strony.",
+    "results": "Wyniki wyszukiwania"
+  },
+  "theme": {
+    "toggle": "Przełącz motyw jasny/ciemny"
+  },
+  "language": {
+    "aria": "Język",
+    "switchTo": "Przełącz na: {language}"
+  },
   "footer": {
     "aria": "Stopka",
     "contact": "Kontakt",
@@ -27,5 +39,51 @@
     "affiliateNotice": "Ten materiał zawiera linki afiliacyjne. Jeśli z nich skorzystasz, możemy otrzymać prowizję, bez dodatkowych kosztów dla Ciebie.",
     "affiliateLabel": "link afiliacyjny",
     "sponsoredLabel": "treść sponsorowana"
+  },
+  "sections": {
+    "places": "Miejsca",
+    "people": "Ludzie",
+    "products": "Produkty",
+    "stays": "Noclegi",
+    "experiences": "Doświadczenia",
+    "articles": "Artykuły",
+    "children": "W okolicy",
+    "hotels": "Noclegi"
+  },
+  "entity": {
+    "visit": "Strona obiektu",
+    "offer": "Sprawdź ofertę",
+    "affiliate": "link afiliacyjny",
+    "sponsored": "treść sponsorowana"
+  },
+  "pager": {
+    "aria": "Strony",
+    "prev": "← Nowsze",
+    "next": "Starsze →"
+  },
+  "atlas": {
+    "title": "Atlas",
+    "intro": "Wyspa czytana region po regionie, aż po wieś. [PLACEHOLDER] Wstęp do Atlasu.",
+    "mapLabel": "Mapa regionów Sardynii",
+    "noArticles": "Brak artykułów",
+    "all": "Wszystkie"
+  },
+  "count": {
+    "article": {
+      "one": "{n} artykuł",
+      "few": "{n} artykuły",
+      "many": "{n} artykułów",
+      "other": "{n} artykułu"
+    }
+  },
+  "category": {
+    "empty": "W tym dziale nie ma jeszcze artykułów."
+  },
+  "home": {
+    "all": "Wszystkie",
+    "readMore": "Zobacz wszystko"
+  },
+  "page": {
+    "updated": "Aktualizacja"
   }
 }

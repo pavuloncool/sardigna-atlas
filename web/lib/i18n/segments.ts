@@ -16,6 +16,7 @@ const SEGMENTS = {
   contact: { pl: "kontakt", en: "contact" },
   privacy: { pl: "polityka-prywatnosci", en: "privacy-policy" },
   cookies: { pl: "polityka-cookies", en: "cookie-policy" },
+  pagination: { pl: "strona", en: "page" },
 } as const satisfies Record<string, Partial<Record<Locale, string>>>;
 
 export type SegmentKey = keyof typeof SEGMENTS;
@@ -36,6 +37,8 @@ const ENTITY_SEGMENT = {
 
 export type EntityType = keyof typeof ENTITY_SEGMENT;
 
+export const entitySegmentKey = (t: EntityType): SegmentKey => ENTITY_SEGMENT[t];
+
 export const isEntityType = (t: string): t is EntityType => t in ENTITY_SEGMENT;
 
 /** Encje mają wspólny slug we wszystkich językach. */
@@ -50,3 +53,12 @@ export function articlePath(locale: Locale, categorySlug: string, slug: string):
 
 export const homePath = (locale: Locale) => `/${locale}/`;
 export const pagePath = (locale: Locale, key: SegmentKey) => `/${locale}/${segment(key, locale)}/`;
+
+/** Strona N działu (N ≥ 2): `strona-2` (PL), `page-2` (EN). Strona 1 to adres samego działu. */
+export const paginationSlug = (locale: Locale, n: number) => `${segment("pagination", locale)}-${n}`;
+
+export function parsePaginationSlug(locale: Locale, slug: string): number | null {
+  const m = new RegExp(`^${segment("pagination", locale)}-(\\d+)$`).exec(slug);
+  const n = m ? Number(m[1]) : NaN;
+  return n >= 2 ? n : null;
+}

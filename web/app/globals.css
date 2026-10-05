@@ -516,3 +516,301 @@ figure.fig figcaption {
 .wide {
   margin: 10vh 11vw 0;
 }
+
+/* ── Widoki wewnętrzne (z tokenów prototypu: marginesy 8,3vw / 11vw, typografia, cienkie linie) ── */
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-nav);
+  color: var(--mute);
+}
+.crumbs a {
+  border-bottom: 1px solid var(--rule);
+}
+.crumbs a:hover {
+  color: var(--fg);
+}
+.pg-head,
+.art-head {
+  padding: 12vh 8.3vw 0;
+}
+.pg-head h1,
+.art-head h1 {
+  margin: 0;
+  max-width: 22em;
+  font: 400 var(--fs-display) / 1.1 var(--sans);
+  letter-spacing: -0.015em;
+}
+.pg-head .txt,
+.art-head .txt {
+  margin: 1.2em 0 0;
+}
+.meta {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-nav);
+  color: var(--mute);
+}
+.meta a {
+  border-bottom: 1px solid var(--rule);
+}
+.art-hero {
+  margin: 8vh 11vw 0;
+}
+.art-body {
+  padding: 8vh 8.3vw 0;
+}
+.art-body .affiliate-note {
+  margin-bottom: 2.4rem;
+}
+.sec {
+  padding: 12vh 8.3vw 0;
+}
+.sec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2rem;
+  margin: 0 0 var(--space-3);
+  font: 400 var(--fs-card-title) / 1.3 var(--sans);
+}
+.sec-head h2 {
+  margin: 0;
+  font: inherit;
+}
+.sec-head h2 a,
+.sec-head > a {
+  border-bottom: 1px solid var(--rule);
+}
+.sec-head h2 a:hover,
+.sec-head > a:hover {
+  border-bottom-color: var(--fg);
+}
+.sec-head span,
+.sec-head > a {
+  color: var(--mute);
+}
+.feed {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+}
+@media (min-width: 900px) {
+  .feed {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 8.4vw;
+    align-items: start;
+  }
+}
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 2.4rem 3.5vw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tile h3 {
+  margin: 0.8rem 0 0.2rem;
+  font: 400 var(--fs-card-title) / 1.3 var(--sans);
+}
+.tile h3 a {
+  border-bottom: 1px solid var(--rule);
+}
+.tile h3 a:hover {
+  border-bottom-color: var(--fg);
+}
+.tile .sub {
+  margin: 0;
+  font-size: var(--fs-nav);
+  color: var(--mute);
+}
+.tile .aff {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: var(--fs-nav);
+  color: var(--mute);
+  border-bottom: 1px solid var(--rule);
+}
+.tile .aff:hover {
+  color: var(--fg);
+}
+.tile .tag {
+  margin-left: 0.5rem;
+  font-size: 12px;
+  color: var(--mute);
+}
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 8vh 8.3vw 0;
+  font-size: var(--fs-nav);
+  color: var(--mute);
+}
+.pager a {
+  border-bottom: 1px solid var(--rule);
+}
+.pager a:hover {
+  color: var(--fg);
+}
+.plain-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.9em;
+  justify-items: start;
+  font-size: clamp(14px, 1.2vw, 18px);
+}
+.plain-list a {
+  border-bottom: 1px solid var(--rule);
+}
+.plain-list a:hover {
+  border-bottom-color: var(--fg);
+}
+.plain-list span {
+  color: var(--mute);
+}
+.cols-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+@media (min-width: 900px) {
+  .cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 3.5vw;
+  }
+}
+.sec-sub {
+  margin: 0 0 var(--space-2);
+  font: 400 var(--fs-card-title) / 1.3 var(--sans);
+  color: var(--mute);
+}
+.ad-slot {
+  aspect-ratio: 1.93;
+  min-height: 10rem;
+}
+.ad-slot[hidden] {
+  display: none;
+}
+.prose.page-prose {
+  padding: 8vh 8.3vw 0;
+  max-width: calc(var(--measure) + 16.6vw);
+}
+.prose.page-prose h1 {
+  display: none;
+}
+
+/* ── Mapa Explore ──────────────────────────────────────────────────────── */
+.atlas-map {
+  position: relative;
+  margin: 12vh 8.3vw 0;
+}
+.atlas-map svg {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  height: auto;
+}
+.atlas-map .region {
+  fill: var(--rule);
+  stroke: var(--bg);
+  stroke-width: 0.6;
+}
+.atlas-map a.region-link .region {
+  fill: var(--piasek);
+  cursor: pointer;
+}
+.atlas-map a.region-link:hover .region,
+.atlas-map a.region-link:focus-visible .region {
+  fill: var(--terakota);
+}
+.atlas-map a.region-link:focus-visible {
+  outline: none;
+}
+.atlas-map a.region-link:focus-visible .region {
+  stroke: var(--focus);
+  stroke-width: 1.6;
+}
+.map-tip {
+  position: absolute;
+  z-index: 2;
+  padding: 0.35rem 0.7rem;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 13px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.map-legend {
+  margin: 1.4rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2rem;
+  font-size: var(--fs-nav);
+}
+.map-legend a {
+  border-bottom: 1px solid var(--rule);
+}
+.map-legend a:hover {
+  border-bottom-color: var(--fg);
+}
+.map-legend span {
+  color: var(--mute);
+}
+
+/* ── Wyniki wyszukiwania (Pagefind) ────────────────────────────────────── */
+.header-right {
+  position: relative;
+}
+.search-results {
+  position: absolute;
+  top: calc(100% + 1.2rem);
+  right: 0;
+  z-index: 30;
+  width: min(32rem, 92vw);
+  max-height: 70vh;
+  overflow: auto;
+  padding: 1rem 1.2rem;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  color: var(--fg);
+}
+.search-results ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+.search-results a {
+  font: 400 var(--fs-card-title) / 1.3 var(--sans);
+  border-bottom: 1px solid var(--rule);
+}
+.search-results a:hover {
+  border-bottom-color: var(--fg);
+}
+.search-results p {
+  margin: 0.3rem 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--mute);
+}
+.search-results mark {
+  background: none;
+  color: var(--fg);
+  font-weight: 500;
+}
+.search-status {
+  margin: 0;
+  font-size: var(--fs-nav);
+  color: var(--mute);
+}
+.search input::-webkit-search-cancel-button {
+  display: none;
+}
