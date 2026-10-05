@@ -38,3 +38,14 @@ przeglądarkom) wszystkie strony mieszczą się w 120 kB. Zob. `docs/DECISIONS.m
 | artykuł PL/EN | 136,3 | 116,9 |
 | home | 138,6 | 118,9 |
 | dział, Atlas, kontakt | 139,1 | 119,3 |
+
+## Pomiar na produkcji (2026-10-05, https://mysardinia.online/pl/, po wyłączeniu zdjęcia hero i włączeniu Web Analytics)
+
+Kompresja brotli i CDN Cloudflare poprawiają wyniki względem pomiarów lokalnych powyżej.
+
+| Metoda | Perf | A11y | BP | SEO | FCP | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|---|
+| symulowana (domyślna Lighthouse) | 95 | 100 | 100 | 100 | – | 3,0 s | 0 | 50 ms |
+| **zastosowana** (4G + 4× CPU), 2 przebiegi | – | – | – | – | 1,7 s | **1,7 s** | – | 170–180 ms |
+
+Element LCP to tekst akapitu pod hasłem (`p.txt`); opóźnienie renderu wynika z hydracji (JS), nie z sieci. Budżet z briefu (LCP < 2,5 s, CLS < 0,05) spełniony w pomiarze zastosowanym; symulowane 3,0 s jest powyżej, ale to model pesymistyczny (zob. wyżej).
