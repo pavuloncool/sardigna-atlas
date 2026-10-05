@@ -1,0 +1,33 @@
+{
+ "page": "http://localhost:4173/pl/",
+ "form_factor": "mobile",
+ "throttling": "simulate",
+ "label": "home light simulated",
+ "lighthouse": "12.8.2",
+ "fetchTime": "2026-10-05T12:53:32.851Z",
+ "scores": {
+  "performance": 80,
+  "accessibility": 100,
+  "best-practices": 100,
+  "seo": 100
+ },
+ "metrics": {
+  "FCP": "1.1 s",
+  "LCP": "5.4 s",
+  "CLS": "0",
+  "TBT": "50 ms",
+  "SpeedIndex": "1.1 s"
+ },
+ "failedAudits": [
+  "mainthread-work-breakdown",
+  "largest-contentful-paint-element",
+  "unused-javascript",
+  "modern-image-formats",
+  "uses-text-compression",
+  "legacy-javascript",
+  "cache-insight",
+  "image-delivery-insight",
+  "legacy-javascript-insight",
+  "network-dependency-tree-insight"
+ ]
+}

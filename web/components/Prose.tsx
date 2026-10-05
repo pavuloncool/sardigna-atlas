@@ -1,5 +1,5 @@
 import { PortableText, type PortableTextComponents } from "next-sanity";
-import Link from "next/link";
+import Link from "@/components/Link";
 import type { Locale } from "@/lib/i18n/locales";
 import { entityPath, isEntityType } from "@/lib/i18n/segments";
 import type { SanityImage } from "@/lib/sanity/image";

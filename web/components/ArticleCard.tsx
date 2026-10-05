@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/Link";
 import type { Locale } from "@/lib/i18n/locales";
 import { articlePath } from "@/lib/i18n/segments";
 import type { ArticleCardData } from "@/lib/sanity/types";
@@ -18,7 +18,7 @@ export function ArticleCard({
   const href = articlePath(locale, article.category?.slug ?? article.category?.key ?? "", article.slug);
   return (
     <article className="card">
-      <Figure image={article.heroImage} ratio={ratio} fallback={fallback} caption={false} />
+      <Figure image={article.heroImage} ratio={ratio} fallback={fallback} caption={false} decorative />
       <h3>
         <Link href={href}>{article.title}</Link>
         {article.category?.name ? <span>{article.category.name}</span> : null}

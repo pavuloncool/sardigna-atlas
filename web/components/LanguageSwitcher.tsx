@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/Link";
 import { ENABLED_LOCALES, type Locale } from "@/lib/i18n/locales";
 import { format, getDictionary } from "@/lib/i18n/dictionary";
 import { homePath } from "@/lib/i18n/segments";

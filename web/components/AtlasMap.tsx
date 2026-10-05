@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/Link";
 import { useRef, useState } from "react";
 import { MAP_COAST_PATH, MAP_REGIONS, MAP_VIEWBOX, mapRegionPath } from "@/lib/atlasMap";
 

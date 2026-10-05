@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/Link";
 import { notFound } from "next/navigation";
 import { CategoryView } from "@/components/CategoryView";
-import { ContactForm } from "@/components/ContactForm";
+import dynamic from "next/dynamic";
 import { MapSection, type MapPlace } from "@/components/MapSection";
 import { PageShell } from "@/components/PageShell";
 import { loadPage, type PageName } from "@/lib/content";
@@ -23,6 +23,9 @@ import {
   sectionParams,
   type StaticSection,
 } from "@/lib/site";
+
+// Formularz kontaktowy (Turnstile) jest osobną paczką JS, ładowaną tylko na stronie Kontakt.
+const ContactForm = dynamic(() => import("@/components/ContactForm").then((m) => m.ContactForm));
 
 export const dynamicParams = false;
 export const generateStaticParams = sectionParams;

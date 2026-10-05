@@ -13,6 +13,7 @@ export function Figure({
   fallback,
   caption = true,
   label,
+  decorative = false,
 }: {
   image?: SanityImage | null;
   ratio?: number;
@@ -22,6 +23,8 @@ export function Figure({
   caption?: boolean;
   /** Podpis wewnątrz placeholdera (np. „[zdjęcie 1,93:1]”); tylko gdy brak zdjęcia. */
   label?: string;
+  /** Miniatura obok linku o tej samej nazwie: `alt=""` (czytnik ekranu czyta nazwę z linku, bez dublowania). */
+  decorative?: boolean;
 }) {
   const style = {
     "--ratio": ratio,
@@ -37,10 +40,11 @@ export function Figure({
         {hasImage && image ? (
           <Image
             src={imageSrc(image, ratio)}
-            alt={image.alt ?? ""}
+            alt={decorative ? "" : (image.alt ?? "")}
             fill
             sizes={sizes}
             priority={priority}
+            {...(priority ? { fetchPriority: "high" as const } : {})}
             {...(image.lqip ? { placeholder: "blur" as const, blurDataURL: image.lqip } : {})}
           />
         ) : null}

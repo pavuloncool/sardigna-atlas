@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/Link";
 import type { Locale } from "@/lib/i18n/locales";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { homePath } from "@/lib/i18n/segments";
@@ -46,7 +46,7 @@ export function Header({
         <Wordmark />
       </Link>
       <div className="header-right">
-        <SearchBox locale={locale} />
+        <SearchBox locale={locale} labels={{ placeholder: dict.search.placeholder, open: dict.search.open }} />
         <LanguageSwitcher locale={locale} alternates={alternates} />
         <ThemeToggle label={dict.theme.toggle} />
       </div>

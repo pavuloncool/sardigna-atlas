@@ -1,0 +1,31 @@
+{
+ "page": "http://localhost:4173/pl/kulinaria/pane-carasau-chleb-z-potrzeby/",
+ "form_factor": "mobile",
+ "throttling": "simulate",
+ "label": "article dark simulated",
+ "lighthouse": "12.8.2",
+ "fetchTime": "2026-10-05T12:55:18.506Z",
+ "scores": {
+  "performance": 82,
+  "accessibility": 100,
+  "best-practices": 100,
+  "seo": 100
+ },
+ "metrics": {
+  "FCP": "1.1 s",
+  "LCP": "4.9 s",
+  "CLS": "0",
+  "TBT": "50 ms",
+  "SpeedIndex": "1.1 s"
+ },
+ "failedAudits": [
+  "largest-contentful-paint-element",
+  "unused-javascript",
+  "uses-text-compression",
+  "legacy-javascript",
+  "cache-insight",
+  "lcp-discovery-insight",
+  "legacy-javascript-insight",
+  "network-dependency-tree-insight"
+ ]
+}

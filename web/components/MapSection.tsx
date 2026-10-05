@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/Link";
 import type { Locale } from "@/lib/i18n/locales";
 import { getDictionary, plural } from "@/lib/i18n/dictionary";
 import { entityPath } from "@/lib/i18n/segments";

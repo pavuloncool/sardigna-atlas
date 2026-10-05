@@ -15,7 +15,8 @@
     "test:links": "tsx scripts/check-links.ts",
     "test:e2e": "playwright test",
     "test": "pnpm test:unit && pnpm test:links && pnpm test:e2e",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run",
+    "test:budget": "tsx scripts/check-budget.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",

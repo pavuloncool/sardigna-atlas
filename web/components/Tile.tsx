@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/Link";
 import type { ReactNode } from "react";
 import type { SanityImage } from "@/lib/sanity/image";
 import { Figure } from "./Figure";
@@ -23,7 +23,7 @@ export function Tile({
 }) {
   return (
     <li className="tile">
-      <Figure image={image} ratio={ratio} fallback={fallback} caption={false} sizes="(min-width: 900px) 22vw, 60vw" />
+      <Figure image={image} ratio={ratio} fallback={fallback} caption={false} decorative sizes="(min-width: 900px) 22vw, 60vw" />
       <h3>
         <Link href={href}>{title}</Link>
       </h3>
