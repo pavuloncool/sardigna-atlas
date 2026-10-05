@@ -1,6 +1,6 @@
 import { siteUrl } from "@/lib/config";
 import { DEFAULT_LOCALE, isLocale, locales, type Locale } from "@/lib/i18n/locales";
-import { entityPath, homePath, pagePath, type EntityType } from "@/lib/i18n/segments";
+import { entityPath, homePath, pagePath, segment, type EntityType } from "@/lib/i18n/segments";
 import { client } from "@/lib/sanity/client";
 import { sitemapQuery } from "@/lib/sanity/queries";
 import { categorySlug, getArticleRoutes, getCategories, STATIC_SECTIONS } from "@/lib/site";
@@ -15,6 +15,8 @@ type Sitemap = {
   products: { slug: string; _updatedAt: string }[];
   experiences: { slug: string; _updatedAt: string }[];
   hotels: { slug: string; _updatedAt: string }[];
+  brands: { slug: string; _updatedAt: string }[];
+  authors: { slug: string; _updatedAt: string }[];
 };
 
 type Entry = { loc: string; lastmod?: string; alternates?: Partial<Record<Locale, string>> };
@@ -44,6 +46,8 @@ export async function GET() {
   entity("product", data.products);
   entity("experience", data.experiences);
   entity("hotel", data.hotels);
+  entity("brand", data.brands);
+  for (const a of data.authors ?? []) perLocale((l) => `/${l}/${segment("authors", l)}/${a.slug}/`, a._updatedAt);
 
   // Artykuły: slug per język; alternatywy z `translation.metadata`.
   const articleCat = new Map((await getArticleRoutes()).map((r) => [`${r.language}:${r.slug}`, r.categoryKey]));

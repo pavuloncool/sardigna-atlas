@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 import Link from "@/components/Link";
 import { notFound } from "next/navigation";
 import { CategoryView } from "@/components/CategoryView";
+import { Tile } from "@/components/Tile";
 import dynamic from "next/dynamic";
 import { MapSection, type MapPlace } from "@/components/MapSection";
 import { PageShell } from "@/components/PageShell";
 import { loadPage, type PageName } from "@/lib/content";
-import { getDictionary } from "@/lib/i18n/dictionary";
+import { getDictionary, plural } from "@/lib/i18n/dictionary";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
-import { entityPath, pagePath, type SegmentKey } from "@/lib/i18n/segments";
+import { entityPath, pagePath, segment, type SegmentKey } from "@/lib/i18n/segments";
 import { client } from "@/lib/sanity/client";
-import { atlasIndexQuery, exploreMapQuery } from "@/lib/sanity/queries";
-import type { AtlasIndexData } from "@/lib/sanity/types";
+import { atlasIndexQuery, authorsIndexQuery, exploreMapQuery } from "@/lib/sanity/queries";
+import type { AtlasIndexData, AuthorsIndexItem } from "@/lib/sanity/types";
 import { ogImageUrl } from "@/lib/sanity/image";
 import { pageMetadata } from "@/lib/seo";
 import {
@@ -30,7 +31,7 @@ const ContactForm = dynamic(() => import("@/components/ContactForm").then((m) =>
 export const dynamicParams = false;
 export const generateStaticParams = sectionParams;
 
-const PAGE_FILE: Record<Exclude<StaticSection, "atlas">, PageName> = {
+const PAGE_FILE: Record<Exclude<StaticSection, "atlas" | "authors">, PageName> = {
   about: "about",
   contact: "contact",
   privacy: "privacy-policy",
@@ -59,6 +60,9 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/[section
   if (resolved.page === "atlas") {
     return pageMetadata({ locale, title: getDictionary(locale).atlas.title, path, alternates });
   }
+  if (resolved.page === "authors") {
+    return pageMetadata({ locale, title: getDictionary(locale).authors.title, path, alternates });
+  }
   const page = loadPage(PAGE_FILE[resolved.page], locale);
   return pageMetadata({ locale, title: page.title, description: page.description, path, alternates });
 }
@@ -82,6 +86,7 @@ export default async function SectionPage({ params }: PageProps<"/[locale]/[sect
   const alternates = allLocales((x) => pagePath(x, resolved.page as SegmentKey));
 
   if (resolved.page === "atlas") return <AtlasPage locale={locale} alternates={alternates} />;
+  if (resolved.page === "authors") return <AuthorsPage locale={locale} alternates={alternates} />;
 
   const page = loadPage(PAGE_FILE[resolved.page], locale);
   return (
@@ -149,7 +154,39 @@ async function AtlasPage({
           {list(dict.sections.products, (idx?.products ?? []).map((p) => ({ _id: p._id, label: p.name, href: entityPath(locale, "product", p.slug) })))}
           {list(dict.sections.stays, (idx?.hotels ?? []).map((p) => ({ _id: p._id, label: p.name, href: entityPath(locale, "hotel", p.slug) })))}
           {list(dict.sections.experiences, (idx?.experiences ?? []).map((p) => ({ _id: p._id, label: p.title, href: entityPath(locale, "experience", p.slug) })))}
+          {list(dict.sections.brands, (idx?.brands ?? []).map((p) => ({ _id: p._id, label: p.name, href: entityPath(locale, "brand", p.slug) })))}
         </div>
+      </section>
+    </PageShell>
+  );
+}
+
+async function AuthorsPage({ locale, alternates }: { locale: Locale; alternates: Partial<Record<Locale, string>> }) {
+  const dict = getDictionary(locale);
+  const authors = (await client.fetch<AuthorsIndexItem[]>(authorsIndexQuery, { lang: locale })) ?? [];
+  return (
+    <PageShell locale={locale} alternates={alternates}>
+      <header className="pg-head">
+        <h1>{dict.authors.title}</h1>
+        <p className="txt">{dict.authors.intro}</p>
+      </header>
+      <section className="sec" aria-label={dict.authors.title}>
+        {authors.length ? (
+          <ul className="tiles">
+            {authors.map((a) => (
+              <Tile
+                key={a._id}
+                href={`/${locale}/${segment("authors", locale)}/${a.slug}/`}
+                title={a.name}
+                sub={[a.kind === "guest" ? dict.authors.guest : null, a.role, a.articleCount ? plural(locale, a.articleCount, dict.authors.count) : null].filter(Boolean).join(" · ")}
+                image={a.photo}
+                ratio={1.2}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className="txt">{dict.authors.empty}</p>
+        )}
       </section>
     </PageShell>
   );

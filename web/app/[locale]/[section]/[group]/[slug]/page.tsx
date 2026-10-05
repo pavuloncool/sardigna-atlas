@@ -18,7 +18,7 @@ import { client } from "@/lib/sanity/client";
 import { entityHubQuery, placeBySlugQuery, relatedQuery } from "@/lib/sanity/queries";
 import type { EntityHubData, PlacePageData } from "@/lib/sanity/types";
 import { ogImageUrl } from "@/lib/sanity/image";
-import { breadcrumbLd, lodgingLd, personLd, placeLd } from "@/lib/jsonld";
+import { breadcrumbLd, lodgingLd, organizationLd, personLd, placeLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { allLocales, getEntityRoutes, resolveSection } from "@/lib/site";
 
@@ -127,7 +127,9 @@ export default async function EntityPage({ params }: PageProps<"/[locale]/[secti
         ? personLd({ locale, path, name: title ?? "", jobTitle: data.hub.role, description: summary, image: ogImg, sameAs: data.hub.sameAs })
         : data.type === "hotel"
           ? lodgingLd({ path, name: title ?? "", description: summary, image: ogImg, priceRange: data.hub.priceRange, coordinates: data.hub.coordinates, locality: data.hub.place?.name, website: data.hub.websiteUrl })
-          : null;
+          : data.type === "brand"
+            ? organizationLd({ path, name: title ?? "", description: summary, image: ogImg, website: data.hub.websiteUrl })
+            : null;
 
   return (
     <PageShell locale={locale} alternates={allLocales((x) => entityPath(x, type, slug))}>
@@ -152,6 +154,14 @@ export default async function EntityPage({ params }: PageProps<"/[locale]/[secti
         </nav>
         <h1>{title}</h1>
         {summary ? <p className="txt">{summary}</p> : null}
+        {data.type !== "place" && data.hub.brand?.slug ? (
+          <p className="meta">
+            {dict.brandOf}: <Link href={entityPath(locale, "brand", data.hub.brand.slug)}>{data.hub.brand.name}</Link>
+          </p>
+        ) : null}
+        {data.type === "brand" && data.hub.partnership && data.hub.partnership !== "none" ? (
+          <p className="meta">{(dict.brandPartnership as Record<string, string>)[data.hub.partnership]}</p>
+        ) : null}
         {data.type !== "place" ? (
           <p className="meta" style={{ marginTop: "1.2rem" }}>
             {data.hub.affiliateUrl ? <OfferLink locale={locale} url={data.hub.affiliateUrl} isSponsored={data.hub.isSponsored} /> : null}
@@ -177,6 +187,10 @@ export default async function EntityPage({ params }: PageProps<"/[locale]/[secti
           {tiles(dict.sections.children, (data.place.children ?? []).map((c) => ({ _id: c._id, type: "place" as const, slug: c.slug, title: c.name, image: c.cover })))}
         </>
       ) : null}
+
+      {data.type === "brand"
+        ? tiles(dict.brandProducts, (data.hub.brandProducts ?? []).map((p) => ({ _id: p._id, type: "product" as const, slug: p.slug, title: p.name, offer: p })))
+        : null}
 
       {articles.length ? (
         <section className="sec" aria-label={dict.sections.articles}>

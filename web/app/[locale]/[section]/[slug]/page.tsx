@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "@/components/Link";
 import { notFound } from "next/navigation";
+import { AuthorView, fetchAuthor } from "@/components/AuthorView";
 import { CategoryView, fetchCategoryPage } from "@/components/CategoryView";
 import { Figure } from "@/components/Figure";
 import { JsonLd } from "@/components/JsonLd";
@@ -12,13 +13,14 @@ import { Tile } from "@/components/Tile";
 import { RELATED_LIMIT } from "@/lib/config";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { isLocale, locales, type Locale } from "@/lib/i18n/locales";
-import { entityPath, paginationSlug, parsePaginationSlug } from "@/lib/i18n/segments";
+import { entityPath, paginationSlug, parsePaginationSlug, segment } from "@/lib/i18n/segments";
 import { client } from "@/lib/sanity/client";
-import { articleBySlugQuery, relatedQuery } from "@/lib/sanity/queries";
+import { articleBySlugQuery, authorRoutesQuery, relatedQuery } from "@/lib/sanity/queries";
 import type { ArticlePageData } from "@/lib/sanity/types";
 import { ogImageUrl } from "@/lib/sanity/image";
-import { articleLd, breadcrumbLd } from "@/lib/jsonld";
+import { articleLd, breadcrumbLd, personLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
+import { allLocales } from "@/lib/site";
 import {
   articleAlternates,
   categoryName,
@@ -53,7 +55,9 @@ export async function generateStaticParams() {
       ),
     )
   ).flat();
-  return [...articles, ...pages];
+  const authors = (await client.fetch<{ slug: string }[]>(authorRoutesQuery)) ?? [];
+  const authorParams = locales.flatMap((locale) => authors.map((a) => ({ locale, section: segment("authors", locale), slug: a.slug })));
+  return [...articles, ...pages, ...authorParams];
 }
 
 const dateFmt = (locale: Locale, iso: string | null) =>
@@ -66,7 +70,20 @@ async function loadArticle(locale: Locale, slug: string) {
 export async function generateMetadata({ params }: PageProps<"/[locale]/[section]/[slug]">): Promise<Metadata> {
   const { locale, section, slug } = await params;
   if (!isLocale(locale)) return {};
-  const cat = (await resolveSection(locale, section)) as { kind: string; category: Awaited<ReturnType<typeof getCategories>>[number] } | null;
+  const resolvedSection = await resolveSection(locale, section);
+  if (resolvedSection?.kind === "static" && resolvedSection.page === "authors") {
+    const author = await fetchAuthor(locale, slug);
+    if (!author) return {};
+    return pageMetadata({
+      locale,
+      title: author.name,
+      description: author.bio,
+      image: ogImageUrl(author.photo),
+      path: `/${locale}/${section}/${slug}/`,
+      alternates: allLocales((l) => `/${l}/${segment("authors", l)}/${slug}/`),
+    });
+  }
+  const cat = resolvedSection as { kind: string; category: Awaited<ReturnType<typeof getCategories>>[number] } | null;
   if (!cat || cat.kind !== "category") return {};
   const page = parsePaginationSlug(locale, slug);
   if (page) {
@@ -95,6 +112,26 @@ export default async function ArticleOrPage({ params }: PageProps<"/[locale]/[se
   if (!isLocale(l)) notFound();
   const locale: Locale = l;
   const resolved = await resolveSection(locale, section);
+  if (resolved?.kind === "static" && resolved.page === "authors") {
+    const author = await fetchAuthor(locale, slug);
+    if (!author) notFound();
+    const path = `/${locale}/${section}/${slug}/`;
+    return (
+      <PageShell locale={locale} alternates={allLocales((l) => `/${l}/${segment("authors", l)}/${slug}/`)}>
+        <JsonLd
+          data={[
+            personLd({ locale, path, name: author.name, jobTitle: author.role, description: author.bio, image: ogImageUrl(author.photo), sameAs: [author.website, ...(author.links ?? []).map((l) => l.url)].filter((u): u is string => Boolean(u)) }),
+            breadcrumbLd([
+              { name: "Sardigna Atlas", path: `/${locale}/` },
+              { name: getDictionary(locale).authors.title, path: `/${locale}/${section}/` },
+              { name: author.name, path },
+            ]),
+          ]}
+        />
+        <AuthorView locale={locale} author={author} />
+      </PageShell>
+    );
+  }
   if (!resolved || resolved.kind !== "category") notFound();
 
   const cats = await getCategories();

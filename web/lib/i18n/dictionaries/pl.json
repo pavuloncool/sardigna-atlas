@@ -36,7 +36,8 @@
     "privacy": "Polityka prywatności",
     "cookies": "Polityka cookies",
     "top": "Do góry ↑",
-    "photo": "Zdjęcie"
+    "photo": "Zdjęcie",
+    "authors": "Autorzy"
   },
   "article": {
     "related": "Powiązane",
@@ -53,7 +54,9 @@
     "experiences": "Doświadczenia",
     "articles": "Artykuły",
     "children": "W okolicy",
-    "hotels": "Noclegi"
+    "hotels": "Noclegi",
+    "brands": "Marki",
+    "equipment": "Sprzęt"
   },
   "entity": {
     "visit": "Strona obiektu",
@@ -109,5 +112,29 @@
       "network": "Brak połączenia z serwerem. Sprawdź internet i spróbuj ponownie.",
       "captchaWait": "Poczekaj chwilę, aż zakończy się weryfikacja anty-spamowa, i wyślij ponownie."
     }
-  }
+  },
+  "authors": {
+    "title": "Autorzy",
+    "intro": "[PLACEHOLDER] Redakcja i twórcy, z którymi współpracujemy.",
+    "empty": "Brak autorów.",
+    "guest": "Autor gościnny",
+    "about": "O autorze",
+    "articles": "Artykuły autora",
+    "website": "Strona autora",
+    "disclosureLabel": "Współprace autora",
+    "count": {
+      "one": "{n} artykuł",
+      "few": "{n} artykuły",
+      "many": "{n} artykułów",
+      "other": "{n} artykułu"
+    }
+  },
+  "brandPartnership": {
+    "none": "",
+    "affiliate": "Partner afiliacyjny",
+    "sponsor": "Sponsor serwisu",
+    "barter": "Współpraca barterowa"
+  },
+  "brandProducts": "Produkty i sprzęt marki",
+  "brandOf": "Marka"
 }

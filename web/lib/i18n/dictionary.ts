@@ -3,8 +3,9 @@ import en from "./dictionaries/en.json";
 import pl from "./dictionaries/pl.json";
 
 // Formy liczby mnogiej zależą od języka (PL: one/few/many/other, EN: one/other).
-export type Dictionary = Omit<typeof pl, "count"> & {
+export type Dictionary = Omit<typeof pl, "count" | "authors"> & {
   count: { article: Partial<Record<Intl.LDMLPluralRule, string>> };
+  authors: Omit<typeof pl.authors, "count"> & { count: Partial<Record<Intl.LDMLPluralRule, string>> };
 };
 
 // Brakujący język (np. `de`) → fallback na język domyślny, bez zmian w komponentach.

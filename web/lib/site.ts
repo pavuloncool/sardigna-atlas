@@ -39,7 +39,7 @@ export const categoryPath = (cats: Category[], key: string, locale: Locale) => {
 };
 
 /** Strony statyczne obsługiwane przez `[section]` (segment tłumaczony per język). */
-export const STATIC_SECTIONS = ["atlas", "about", "contact", "privacy", "cookies"] as const satisfies SegmentKey[];
+export const STATIC_SECTIONS = ["atlas", "authors", "about", "contact", "privacy", "cookies"] as const satisfies SegmentKey[];
 export type StaticSection = (typeof STATIC_SECTIONS)[number];
 
 export type Section =

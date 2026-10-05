@@ -14,6 +14,7 @@ export function Footer({ locale, note }: { locale: Locale; note?: string }) {
       <nav className="footer-links" aria-label={dict.footer.aria}>
         <Link href={`${homePath(locale)}#opowiesci`}>{dict.nav.journal}</Link>
         <Link href={pagePath(locale, "atlas")}>{dict.nav.atlas}</Link>
+        <Link href={pagePath(locale, "authors")}>{dict.footer.authors}</Link>
         <Link href={pagePath(locale, "about")}>{dict.nav.about}</Link>
         <Link href={pagePath(locale, "contact")}>{dict.footer.contact}</Link>
         <Link href={pagePath(locale, "privacy")}>{dict.footer.privacy}</Link>

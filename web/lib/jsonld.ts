@@ -112,3 +112,10 @@ export function lodgingLd(h: {
     }),
   };
 }
+
+export function organizationLd(o: { path: string; name: string; description?: string | null; image?: string | null; website?: string | null }) {
+  return {
+    "@context": CONTEXT,
+    ...clean({ "@type": "Organization", name: o.name, description: o.description, logo: o.image, image: o.image, url: abs(o.path), sameAs: o.website ? [o.website] : null }),
+  };
+}

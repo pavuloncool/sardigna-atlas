@@ -36,7 +36,8 @@
     "privacy": "Privacy policy",
     "cookies": "Cookie policy",
     "top": "Back to top ↑",
-    "photo": "Photo"
+    "photo": "Photo",
+    "authors": "Authors"
   },
   "article": {
     "related": "Related",
@@ -53,7 +54,9 @@
     "experiences": "Experiences",
     "articles": "Articles",
     "children": "Nearby",
-    "hotels": "Stays"
+    "hotels": "Stays",
+    "brands": "Brands",
+    "equipment": "Equipment"
   },
   "entity": {
     "visit": "Website",
@@ -107,5 +110,27 @@
       "network": "Cannot reach the server. Check your connection and try again.",
       "captchaWait": "Please wait a moment for the anti-spam check to finish, then send again."
     }
-  }
+  },
+  "authors": {
+    "title": "Authors",
+    "intro": "[PLACEHOLDER] The editors and the creators we work with.",
+    "empty": "No authors yet.",
+    "guest": "Guest author",
+    "about": "About the author",
+    "articles": "Articles by this author",
+    "website": "Author's website",
+    "disclosureLabel": "Author's collaborations",
+    "count": {
+      "one": "{n} article",
+      "other": "{n} articles"
+    }
+  },
+  "brandPartnership": {
+    "none": "",
+    "affiliate": "Affiliate partner",
+    "sponsor": "Site sponsor",
+    "barter": "Barter collaboration"
+  },
+  "brandProducts": "Products and equipment by the brand",
+  "brandOf": "Brand"
 }
