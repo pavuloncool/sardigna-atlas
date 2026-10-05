@@ -12,3 +12,4 @@ dist
 playwright-report
 test-results
 .claude/settings.local.json
+scripts/seed/out

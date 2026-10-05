@@ -1,5 +1,6 @@
 import {PinIcon} from '@sanity/icons/Pin'
 import {defineField, defineType} from 'sanity'
+import {tagsField} from '../lib/fields'
 import {slugFromLocalized} from '../lib/slugFromLocalized'
 
 /**
@@ -60,6 +61,7 @@ export const place = defineType({
     defineField({name: 'summary', title: 'Opis', type: 'localizedText'}),
     defineField({name: 'cover', title: 'Zdjęcie', type: 'mediaImage'}),
     defineField({name: 'coordinates', title: 'Współrzędne', type: 'geopoint'}),
+    tagsField(),
   ],
   preview: {
     select: {title: 'name.pl', kind: 'kind', parent: 'parent.name.pl', media: 'cover'},

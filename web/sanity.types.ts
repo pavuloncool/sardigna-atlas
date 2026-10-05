@@ -71,6 +71,68 @@ export type LocalizedString = {
   en?: string;
 };
 
+export type Tag = {
+  _id: string;
+  _type: "tag";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: LocalizedString;
+  slug?: Slug;
+  kind?: "theme" | "region" | "era";
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
+export type PlaceReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "place";
+};
+
+export type TagReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "tag";
+};
+
+export type Restaurant = {
+  _id: string;
+  _type: "restaurant";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  slug?: Slug;
+  place?: PlaceReference;
+  summary?: LocalizedText;
+  image?: MediaImage;
+  websiteUrl?: string;
+  affiliateUrl?: string;
+  affiliateNetwork?: string;
+  isAffiliate?: boolean;
+  isSponsored?: boolean;
+  coordinates?: Geopoint;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
+};
+
+export type Geopoint = {
+  _type: "geopoint";
+  lat?: number;
+  lng?: number;
+  alt?: number;
+};
+
 export type TranslationMetadata = {
   _id: string;
   _type: "translation.metadata";
@@ -98,13 +160,6 @@ export type InternationalizedArrayReferenceValue = {
   _type: "internationalizedArrayReferenceValue";
   value?: ArticleReference;
   language?: string;
-};
-
-export type PlaceReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "place";
 };
 
 export type PersonReference = {
@@ -236,6 +291,16 @@ export type Article = {
       _key: string;
     } & ArticleReference
   >;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
+  pinnedRelated?: Array<
+    {
+      _key: string;
+    } & ArticleReference
+  >;
   author?: AuthorReference;
   publishedAt?: string;
   seo?: Seo;
@@ -272,12 +337,6 @@ export type Author = {
     url?: string;
     _key: string;
   }>;
-};
-
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
 };
 
 export type Category = {
@@ -320,6 +379,15 @@ export type Experience = {
   seasons?: Array<string>;
   priceNote?: LocalizedString;
   bookingUrl?: string;
+  affiliateUrl?: string;
+  affiliateNetwork?: string;
+  isAffiliate?: boolean;
+  isSponsored?: boolean;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
 };
 
 export type Hotel = {
@@ -346,16 +414,16 @@ export type Hotel = {
     | "\u20AC\u20AC\u20AC\u20AC";
   websiteUrl?: string;
   bookingUrl?: string;
+  affiliateUrl?: string;
+  affiliateNetwork?: string;
   isAffiliate?: boolean;
   isSponsored?: boolean;
   coordinates?: Geopoint;
-};
-
-export type Geopoint = {
-  _type: "geopoint";
-  lat?: number;
-  lng?: number;
-  alt?: number;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
 };
 
 export type Product = {
@@ -380,6 +448,15 @@ export type Product = {
       _key: string;
     } & PersonReference
   >;
+  affiliateUrl?: string;
+  affiliateNetwork?: string;
+  isAffiliate?: boolean;
+  isSponsored?: boolean;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
 };
 
 export type Person = {
@@ -403,6 +480,11 @@ export type Person = {
     url?: string;
     _key: string;
   }>;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
 };
 
 export type Place = {
@@ -419,6 +501,11 @@ export type Place = {
   summary?: LocalizedText;
   cover?: MediaImage;
   coordinates?: Geopoint;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -519,11 +606,16 @@ export type AllSanitySchemaTypes =
   | LocalizedSlug
   | LocalizedText
   | LocalizedString
+  | Tag
+  | Slug
+  | PlaceReference
+  | TagReference
+  | Restaurant
+  | Geopoint
   | TranslationMetadata
   | InternationalizedArrayReference
   | ArticleReference
   | InternationalizedArrayReferenceValue
-  | PlaceReference
   | PersonReference
   | ProductReference
   | HotelReference
@@ -534,11 +626,9 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | Author
-  | Slug
   | Category
   | Experience
   | Hotel
-  | Geopoint
   | Product
   | Person
   | Place
@@ -549,3 +639,2417 @@ export type AllSanitySchemaTypes =
   | SanityFileAsset
   | SanityAssetSourceData
   | SanityImageAsset;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: articleBySlugQuery
+// Query: *[_type == "article" && language == $lang && slug.current == $slug][0]{  _id, title, "slug": slug.current, language, excerpt, format, publishedAt, _updatedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "gallery": gallery[]{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  body[]{  ...,  _type == "block" => {    markDefs[]{      ...,      _type == "entityLink" => {        "target": target->{          _type, "slug": slug.current,          "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl)        }      }    }  },  _type == "mediaImage" => {    "lqip": asset->metadata.lqip,    "width": asset->metadata.dimensions.width,    "height": asset->metadata.dimensions.height  }},  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "author": author->{ name, "slug": slug.current, "bio": coalesce(bio[$lang], bio.en, bio.pl), "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  "location": location[]->{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,  "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current }},  "people": people[]->{  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "products": products[]->{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "experiences": experiences[]->{  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "hotel": hotel[]->{  _id, name, "slug": slug.current, type, priceRange,  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "related": related[]->{  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "similar": *[    _type == "article" && language == $lang && _id != ^._id &&    references(      coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) +      coalesce(^.products[]._ref, []) + coalesce(^.experiences[]._ref, []) +      coalesce(^.hotel[]._ref, [])    )  ] | order(publishedAt desc)[0...4] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  seo{ title, description, noIndex, "ogImage": ogImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  "translations": (  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language })[defined(slug)]}
+export type ArticleBySlugQueryResult = {
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  language: string | null;
+  excerpt: string | null;
+  format: "guide" | "profile" | "recipe" | "story" | null;
+  publishedAt: string | null;
+  _updatedAt: string;
+  heroImage: {
+    _type: "mediaImage";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    credit?: string;
+    lqip: string | null;
+    width: number | null;
+    height: number | null;
+  } | null;
+  gallery: Array<{
+    _key: string;
+    _type: "mediaImage";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    credit?: string;
+    lqip: string | null;
+    width: number | null;
+    height: number | null;
+  }> | null;
+  body: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h2" | "h3" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<
+          | {
+              target:
+                | {
+                    _type: "experience";
+                    slug: string | null;
+                    label:
+                      | Array<{
+                          _type: "localizedString";
+                          pl?: string;
+                          en?: string;
+                        }>
+                      | string
+                      | null;
+                  }
+                | {
+                    _type: "hotel";
+                    slug: string | null;
+                    label: Array<string> | string | null;
+                  }
+                | {
+                    _type: "person";
+                    slug: string | null;
+                    label: Array<string> | string | null;
+                  }
+                | {
+                    _type: "place";
+                    slug: string | null;
+                    label:
+                      | Array<{
+                          _type: "localizedString";
+                          pl?: string;
+                          en?: string;
+                        }>
+                      | LocalizedString
+                      | string
+                      | null;
+                  }
+                | {
+                    _type: "product";
+                    slug: string | null;
+                    label:
+                      | Array<{
+                          _type: "localizedString";
+                          pl?: string;
+                          en?: string;
+                        }>
+                      | LocalizedString
+                      | string
+                      | null;
+                  }
+                | null;
+              _type: "entityLink";
+              _key: string;
+            }
+          | {
+              href?: string;
+              _type: "link";
+              _key: string;
+            }
+        > | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        _key: string;
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      }
+    | {
+        _key: string;
+        _type: "pullQuote";
+        quote?: string;
+        attribution?: string;
+      }
+  > | null;
+  category: {
+    key:
+      "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: Array<{
+      _type: "localizedSlug";
+      pl?: string;
+      en?: string;
+    }> | null;
+  } | null;
+  author: {
+    name: string | null;
+    slug: string | null;
+    bio:
+      | Array<{
+          _type: "localizedText";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    photo: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+  } | null;
+  location: Array<{
+    _id: string;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    parent: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+    } | null;
+  }> | null;
+  people: Array<{
+    _id: string;
+    name: string | null;
+    slug: string | null;
+    role:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    portrait: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+  }> | null;
+  products: Array<{
+    _id: string;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    kind: "craft" | "drink" | "food" | null;
+    protectedStatus:
+      "DOC" | "DOCG" | "DOP" | "IGP" | "none" | "PAT" | "STG" | null;
+    affiliateUrl: string | null;
+    isAffiliate: boolean | null;
+    isSponsored: boolean | null;
+    image: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+  }> | null;
+  experiences: Array<{
+    _id: string;
+    title:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    kind:
+      | "culture"
+      | "festival"
+      | "outdoor"
+      | "sea"
+      | "tasting"
+      | "workshop"
+      | null;
+    durationMinutes: number | null;
+    seasons: Array<string> | null;
+    bookingUrl: string | null;
+    affiliateUrl: string | null;
+    isAffiliate: boolean | null;
+    isSponsored: boolean | null;
+    image: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }> | null;
+  hotel: Array<{
+    _id: string;
+    name: string | null;
+    slug: string | null;
+    type: "agriturismo" | "bnb" | "boutique" | "hotel" | "villa" | null;
+    priceRange:
+      | "\u20AC"
+      | "\u20AC\u20AC"
+      | "\u20AC\u20AC\u20AC"
+      | "\u20AC\u20AC\u20AC\u20AC"
+      | null;
+    websiteUrl: string | null;
+    bookingUrl: string | null;
+    affiliateUrl: string | null;
+    isAffiliate: boolean | null;
+    isSponsored: boolean | null;
+    image: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }> | null;
+  related: Array<{
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    language: string | null;
+    excerpt: string | null;
+    format: "guide" | "profile" | "recipe" | "story" | null;
+    publishedAt: string | null;
+    heroImage: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    category: {
+      key:
+        "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: Array<{
+        _type: "localizedSlug";
+        pl?: string;
+        en?: string;
+      }> | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }> | null;
+  similar: Array<{
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    language: string | null;
+    excerpt: string | null;
+    format: "guide" | "profile" | "recipe" | "story" | null;
+    publishedAt: string | null;
+    heroImage: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    category: {
+      key:
+        "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: Array<{
+        _type: "localizedSlug";
+        pl?: string;
+        en?: string;
+      }> | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }>;
+  seo: {
+    title: string | null;
+    description: string | null;
+    noIndex: boolean | null;
+    ogImage: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+  } | null;
+  translations: Array<{
+    slug: string;
+    language: string | null;
+  }> | null;
+} | null;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: articleParamsQuery
+// Query: *[_type == "article" && defined(slug.current) && defined(language)]{  "slug": slug.current, language}
+export type ArticleParamsQueryResult = Array<{
+  slug: string | null;
+  language: string | null;
+}>;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: placeBySlugQuery
+// Query: *[_type == "place" && slug.current == $slug][0]{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, mapId, coordinates,  "summary": coalesce(summary[$lang], summary.en, summary.pl),  "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "ancestors": [    parent->parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },    parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }  ][defined(slug)],  "children": *[_type == "place" && parent._ref == ^._id] | order(name.pl asc){    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "articleCount": count(*[_type == "article" && language == $lang && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))])  },  "siblings": *[_type == "place" && defined(parent._ref) && parent._ref == ^.parent._ref && _id != ^._id][0...6]{    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }  },  "articles": *[_type == "article" && language == $lang && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(publishedAt desc)[0...$limit] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "people": *[_type == "person" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name asc) {  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "products": *[_type == "product" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name.pl asc) {  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "experiences": *[_type == "experience" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] {  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "hotels": *[_type == "hotel" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name asc) {  _id, name, "slug": slug.current, type, priceRange,  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }}}
+export type PlaceBySlugQueryResult = {
+  _id: string;
+  name:
+    | Array<{
+        _type: "localizedString";
+        pl?: string;
+        en?: string;
+      }>
+    | string
+    | null;
+  slug: string | null;
+  kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+  mapId: string | null;
+  coordinates: Geopoint | null;
+  summary:
+    | Array<{
+        _type: "localizedText";
+        pl?: string;
+        en?: string;
+      }>
+    | string
+    | null;
+  cover: {
+    _type: "mediaImage";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    credit?: string;
+    lqip: string | null;
+    width: number | null;
+    height: number | null;
+  } | null;
+  ancestors: Array<{
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+  } | null>;
+  children: Array<{
+    _id: string;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    cover: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    articleCount: number;
+  }>;
+  siblings: Array<{
+    _id: string;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    cover: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+  }>;
+  articles: Array<{
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    language: string | null;
+    excerpt: string | null;
+    format: "guide" | "profile" | "recipe" | "story" | null;
+    publishedAt: string | null;
+    heroImage: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    category: {
+      key:
+        "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: Array<{
+        _type: "localizedSlug";
+        pl?: string;
+        en?: string;
+      }> | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }>;
+  people: Array<{
+    _id: string;
+    name: string | null;
+    slug: string | null;
+    role:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    portrait: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+  }>;
+  products: Array<{
+    _id: string;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    kind: "craft" | "drink" | "food" | null;
+    protectedStatus:
+      "DOC" | "DOCG" | "DOP" | "IGP" | "none" | "PAT" | "STG" | null;
+    affiliateUrl: string | null;
+    isAffiliate: boolean | null;
+    isSponsored: boolean | null;
+    image: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+  }>;
+  experiences: Array<{
+    _id: string;
+    title:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    kind:
+      | "culture"
+      | "festival"
+      | "outdoor"
+      | "sea"
+      | "tasting"
+      | "workshop"
+      | null;
+    durationMinutes: number | null;
+    seasons: Array<string> | null;
+    bookingUrl: string | null;
+    affiliateUrl: string | null;
+    isAffiliate: boolean | null;
+    isSponsored: boolean | null;
+    image: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }>;
+  hotels: Array<{
+    _id: string;
+    name: string | null;
+    slug: string | null;
+    type: "agriturismo" | "bnb" | "boutique" | "hotel" | "villa" | null;
+    priceRange:
+      | "\u20AC"
+      | "\u20AC\u20AC"
+      | "\u20AC\u20AC\u20AC"
+      | "\u20AC\u20AC\u20AC\u20AC"
+      | null;
+    websiteUrl: string | null;
+    bookingUrl: string | null;
+    affiliateUrl: string | null;
+    isAffiliate: boolean | null;
+    isSponsored: boolean | null;
+    image: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }>;
+} | null;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: placeParamsQuery
+// Query: *[_type == "place" && defined(slug.current)]{ "slug": slug.current }
+export type PlaceParamsQueryResult = Array<{
+  slug: string | null;
+}>;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: entityHubQuery
+// Query: *[_type == $type && slug.current == $slug][0]{  _type, _id, "slug": slug.current,  "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl),  "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),  "image": coalesce(portrait, image){ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }}}
+export type EntityHubQueryResult =
+  | {
+      _type: "article";
+      _id: string;
+      slug: string | null;
+      label: Array<string> | null;
+      summary: null;
+      image: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "author";
+      _id: string;
+      slug: string | null;
+      label: Array<string> | string | null;
+      summary:
+        | Array<{
+            _type: "localizedText";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      image: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "category";
+      _id: string;
+      slug: null;
+      label:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | LocalizedString
+        | string
+        | null;
+      summary: null;
+      image: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "experience";
+      _id: string;
+      slug: string | null;
+      label:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      summary:
+        | Array<{
+            _type: "localizedText";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "hotel";
+      _id: string;
+      slug: string | null;
+      label: Array<string> | string | null;
+      summary:
+        | Array<{
+            _type: "localizedText";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "person";
+      _id: string;
+      slug: string | null;
+      label: Array<string> | string | null;
+      summary:
+        | Array<{
+            _type: "localizedText";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "place";
+      _id: string;
+      slug: string | null;
+      label:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | LocalizedString
+        | string
+        | null;
+      summary:
+        | Array<{
+            _type: "localizedText";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      image: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "product";
+      _id: string;
+      slug: string | null;
+      label:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | LocalizedString
+        | string
+        | null;
+      summary:
+        | Array<{
+            _type: "localizedText";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "restaurant";
+      _id: string;
+      slug: string | null;
+      label: Array<string> | string | null;
+      summary:
+        | Array<{
+            _type: "localizedText";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "sanity.fileAsset";
+      _id: string;
+      slug: null;
+      label: Array<string> | null;
+      summary: Array<string> | null;
+      image: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "sanity.imageAsset";
+      _id: string;
+      slug: null;
+      label: Array<string> | null;
+      summary: Array<string> | null;
+      image: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "tag";
+      _id: string;
+      slug: string | null;
+      label:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | LocalizedString
+        | string
+        | null;
+      summary: null;
+      image: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "translation.metadata";
+      _id: string;
+      slug: null;
+      label: null;
+      summary: null;
+      image: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | null;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: exploreMapQuery
+// Query: *[_type == "place" && kind == "region" && defined(mapId)] | order(name.pl asc){  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, mapId,  "articleCount": count(*[_type == "article" && language == $lang && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))])}
+export type ExploreMapQueryResult = Array<{
+  _id: string;
+  name:
+    | Array<{
+        _type: "localizedString";
+        pl?: string;
+        en?: string;
+      }>
+    | string
+    | null;
+  slug: string | null;
+  mapId: string;
+  articleCount: number;
+}>;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: homeQuery
+// Query: {  "featured": *[_type == "article" && language == $lang && featured == true] | order(publishedAt desc)[0] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "latest": *[_type == "article" && language == $lang] | order(publishedAt desc)[0...6] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "categories": *[_type == "category"] | order(order asc){    _id, key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang], "intro": coalesce(intro[$lang], intro.en, intro.pl),    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc)[0...3] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }}  },  "regions": *[_type == "place" && kind == "region" && defined(mapId)] | order(name.pl asc){  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, mapId,  "articleCount": count(*[_type == "article" && language == $lang && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))])}}
+export type HomeQueryResult = {
+  featured: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    language: string | null;
+    excerpt: string | null;
+    format: "guide" | "profile" | "recipe" | "story" | null;
+    publishedAt: string | null;
+    heroImage: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    category: {
+      key:
+        "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: Array<{
+        _type: "localizedSlug";
+        pl?: string;
+        en?: string;
+      }> | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  } | null;
+  latest: Array<{
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    language: string | null;
+    excerpt: string | null;
+    format: "guide" | "profile" | "recipe" | "story" | null;
+    publishedAt: string | null;
+    heroImage: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    category: {
+      key:
+        "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: Array<{
+        _type: "localizedSlug";
+        pl?: string;
+        en?: string;
+      }> | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }>;
+  categories: Array<{
+    _id: string;
+    key:
+      "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: Array<{
+      _type: "localizedSlug";
+      pl?: string;
+      en?: string;
+    }> | null;
+    intro:
+      | Array<{
+          _type: "localizedText";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    cover: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    articles: Array<{
+      _id: string;
+      title: string | null;
+      slug: string | null;
+      language: string | null;
+      excerpt: string | null;
+      format: "guide" | "profile" | "recipe" | "story" | null;
+      publishedAt: string | null;
+      heroImage: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+      category: {
+        key:
+          | "craft"
+          | "experiences"
+          | "food"
+          | "history"
+          | "people"
+          | "stay"
+          | null;
+        name:
+          | Array<{
+              _type: "localizedString";
+              pl?: string;
+              en?: string;
+            }>
+          | string
+          | null;
+        slug: Array<{
+          _type: "localizedSlug";
+          pl?: string;
+          en?: string;
+        }> | null;
+      } | null;
+      place: {
+        name:
+          | Array<{
+              _type: "localizedString";
+              pl?: string;
+              en?: string;
+            }>
+          | string
+          | null;
+        slug: string | null;
+        kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+      } | null;
+    }>;
+  }>;
+  regions: Array<{
+    _id: string;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: string | null;
+    mapId: string;
+    articleCount: number;
+  }>;
+};
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: categoryPageQuery
+// Query: {  "category": *[_type == "category" && slugs[$lang] == $slug][0]{    _id, key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang], "intro": coalesce(intro[$lang], intro.en, intro.pl),    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }, "alternates": slugs  },  "articles": *[    _type == "article" && language == $lang &&    category._ref == *[_type == "category" && slugs[$lang] == $slug][0]._id  ] | order(publishedAt desc)[$start...$end] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "total": count(*[    _type == "article" && language == $lang &&    category._ref == *[_type == "category" && slugs[$lang] == $slug][0]._id  ])}
+export type CategoryPageQueryResult = {
+  category: {
+    _id: string;
+    key:
+      "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+    name:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    slug: Array<{
+      _type: "localizedSlug";
+      pl?: string;
+      en?: string;
+    }> | null;
+    intro:
+      | Array<{
+          _type: "localizedText";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    cover: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    alternates: LocalizedSlug | null;
+  } | null;
+  articles: Array<{
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    language: string | null;
+    excerpt: string | null;
+    format: "guide" | "profile" | "recipe" | "story" | null;
+    publishedAt: string | null;
+    heroImage: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    category: {
+      key:
+        "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: Array<{
+        _type: "localizedSlug";
+        pl?: string;
+        en?: string;
+      }> | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }>;
+  total: number;
+};
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: sitemapQuery
+// Query: {  "articles": *[_type == "article" && defined(slug.current) && defined(language)]{    "slug": slug.current, language, _updatedAt,    "alternates": (  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language })[defined(slug)]  },  "categories": *[_type == "category"]{ slugs, _updatedAt },  "places": *[_type == "place" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "people": *[_type == "person" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "products": *[_type == "product" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "experiences": *[_type == "experience" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt }}
+export type SitemapQueryResult = {
+  articles: Array<{
+    slug: string | null;
+    language: string | null;
+    _updatedAt: string;
+    alternates: Array<{
+      slug: string;
+      language: string | null;
+    }> | null;
+  }>;
+  categories: Array<{
+    slugs: LocalizedSlug | null;
+    _updatedAt: string;
+  }>;
+  places: Array<{
+    slug: string | null;
+    _updatedAt: string;
+  }>;
+  people: Array<{
+    slug: string | null;
+    _updatedAt: string;
+  }>;
+  products: Array<{
+    slug: string | null;
+    _updatedAt: string;
+  }>;
+  experiences: Array<{
+    slug: string | null;
+    _updatedAt: string;
+  }>;
+  hotels: Array<{
+    slug: string | null;
+    _updatedAt: string;
+  }>;
+};
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: relatedQuery
+// Query: (  *[    _type == "article" && language == $lang &&    _id in coalesce(*[_id == $id][0].pinnedRelated[]._ref, [])  ] | order(coalesce(publishedAt, _createdAt) desc) {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }}  +  *[    _type in ["article", "place", "person", "product", "hotel", "experience"] &&    _id != $id &&    !(_id in coalesce(*[_id == $id][0].pinnedRelated[]._ref, [])) &&    (_type != "article" || language == $lang) &&    (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&    references(array::compact(  [$id, *[_id == $id][0].category._ref, *[_id == $id][0].place._ref, *[_id == $id][0].parent._ref]  + coalesce(*[_id == $id][0].tags[]._ref, []) + coalesce(*[_id == $id][0].location[]._ref, []) + coalesce(*[_id == $id][0].people[]._ref, []) + coalesce(*[_id == $id][0].products[]._ref, [])  + coalesce(*[_id == $id][0].experiences[]._ref, []) + coalesce(*[_id == $id][0].hotel[]._ref, []) + coalesce(*[_id == $id][0].origin[]._ref, []) + coalesce(*[_id == $id][0].makers[]._ref, [])))  ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }})[0...$limit]
+export type RelatedQueryResult = Array<
+  | {
+      _id: string;
+      _type: "article";
+      slug: string | null;
+      date: string;
+      title: string | null;
+      language: string | null;
+      excerpt: string | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+      category: {
+        key:
+          | "craft"
+          | "experiences"
+          | "food"
+          | "history"
+          | "people"
+          | "stay"
+          | null;
+        name:
+          | Array<{
+              _type: "localizedString";
+              pl?: string;
+              en?: string;
+            }>
+          | string
+          | null;
+        slug: Array<{
+          _type: "localizedSlug";
+          pl?: string;
+          en?: string;
+        }> | null;
+      } | null;
+    }
+  | {
+      _id: string;
+      _type: "article";
+      slug: string | null;
+      date: string;
+      title: string | null;
+      language: string | null;
+      excerpt: string | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+      category: {
+        key:
+          | "craft"
+          | "experiences"
+          | "food"
+          | "history"
+          | "people"
+          | "stay"
+          | null;
+        name:
+          | Array<{
+              _type: "localizedString";
+              pl?: string;
+              en?: string;
+            }>
+          | string
+          | null;
+        slug: Array<{
+          _type: "localizedSlug";
+          pl?: string;
+          en?: string;
+        }> | null;
+      } | null;
+    }
+  | {
+      _id: string;
+      _type: "experience";
+      slug: string | null;
+      date: string;
+      title:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      kind:
+        | "culture"
+        | "festival"
+        | "outdoor"
+        | "sea"
+        | "tasting"
+        | "workshop"
+        | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+    }
+  | {
+      _id: string;
+      _type: "hotel";
+      slug: string | null;
+      date: string;
+      title: string | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+    }
+  | {
+      _id: string;
+      _type: "person";
+      slug: string | null;
+      date: string;
+      title: string | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+    }
+  | {
+      _id: string;
+      _type: "place";
+      slug: string | null;
+      date: string;
+      title:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+    }
+  | {
+      _id: string;
+      _type: "product";
+      slug: string | null;
+      date: string;
+      title:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      kind: "craft" | "drink" | "food" | null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
+    }
+>;
+
+// Query TypeMap
+declare global {
+  interface SanityQueries {
+    '*[_type == "article" && language == $lang && slug.current == $slug][0]{\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt, _updatedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "gallery": gallery[]{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  body[]{\n  ...,\n  _type == "block" => {\n    markDefs[]{\n      ...,\n      _type == "entityLink" => {\n        "target": target->{\n          _type, "slug": slug.current,\n          "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl)\n        }\n      }\n    }\n  },\n  _type == "mediaImage" => {\n    "lqip": asset->metadata.lqip,\n    "width": asset->metadata.dimensions.width,\n    "height": asset->metadata.dimensions.height\n  }\n},\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "author": author->{ name, "slug": slug.current, "bio": coalesce(bio[$lang], bio.en, bio.pl), "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  "location": location[]->{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,\n  "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current }\n},\n  "people": people[]->{\n  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),\n  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "products": products[]->{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "experiences": experiences[]->{\n  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "hotel": hotel[]->{\n  _id, name, "slug": slug.current, type, priceRange,\n  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "related": related[]->{\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "similar": *[\n    _type == "article" && language == $lang && _id != ^._id &&\n    references(\n      coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) +\n      coalesce(^.products[]._ref, []) + coalesce(^.experiences[]._ref, []) +\n      coalesce(^.hotel[]._ref, [])\n    )\n  ] | order(publishedAt desc)[0...4] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  seo{ title, description, noIndex, "ogImage": ogImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  "translations": (\n  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language }\n)[defined(slug)]\n}': ArticleBySlugQueryResult;
+    '*[_type == "article" && defined(slug.current) && defined(language)]{\n  "slug": slug.current, language\n}': ArticleParamsQueryResult;
+    '*[_type == "place" && slug.current == $slug][0]{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, mapId, coordinates,\n  "summary": coalesce(summary[$lang], summary.en, summary.pl),\n  "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "ancestors": [\n    parent->parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },\n    parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n  ][defined(slug)],\n  "children": *[_type == "place" && parent._ref == ^._id] | order(name.pl asc){\n    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "articleCount": count(*[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)])\n  },\n  "siblings": *[_type == "place" && defined(parent._ref) && parent._ref == ^.parent._ref && _id != ^._id][0...6]{\n    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n  },\n  "articles": *[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(publishedAt desc)[0...$limit] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "people": *[_type == "person" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name asc) {\n  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),\n  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "products": *[_type == "product" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name.pl asc) {\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "experiences": *[_type == "experience" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] {\n  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "hotels": *[_type == "hotel" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name asc) {\n  _id, name, "slug": slug.current, type, priceRange,\n  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n}': PlaceBySlugQueryResult;
+    '*[_type == "place" && defined(slug.current)]{ "slug": slug.current }': PlaceParamsQueryResult;
+    '*[_type == $type && slug.current == $slug][0]{\n  _type, _id, "slug": slug.current,\n  "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl),\n  "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),\n  "image": coalesce(portrait, image){ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n}': EntityHubQueryResult;
+    '*[_type == "place" && kind == "region" && defined(mapId)] | order(name.pl asc){\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, mapId,\n  "articleCount": count(*[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)])\n}': ExploreMapQueryResult;
+    '{\n  "featured": *[_type == "article" && language == $lang && featured == true] | order(publishedAt desc)[0] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "latest": *[_type == "article" && language == $lang] | order(publishedAt desc)[0...6] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "categories": *[_type == "category"] | order(order asc){\n    _id, key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang], "intro": coalesce(intro[$lang], intro.en, intro.pl),\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc)[0...3] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n  },\n  "regions": *[_type == "place" && kind == "region" && defined(mapId)] | order(name.pl asc){\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, mapId,\n  "articleCount": count(*[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)])\n}\n}': HomeQueryResult;
+    '{\n  "category": *[_type == "category" && slugs[$lang] == $slug][0]{\n    _id, key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang], "intro": coalesce(intro[$lang], intro.en, intro.pl),\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }, "alternates": slugs\n  },\n  "articles": *[\n    _type == "article" && language == $lang &&\n    category._ref == *[_type == "category" && slugs[$lang] == $slug][0]._id\n  ] | order(publishedAt desc)[$start...$end] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "total": count(*[\n    _type == "article" && language == $lang &&\n    category._ref == *[_type == "category" && slugs[$lang] == $slug][0]._id\n  ])\n}': CategoryPageQueryResult;
+    '{\n  "articles": *[_type == "article" && defined(slug.current) && defined(language)]{\n    "slug": slug.current, language, _updatedAt,\n    "alternates": (\n  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language }\n)[defined(slug)]\n  },\n  "categories": *[_type == "category"]{ slugs, _updatedAt },\n  "places": *[_type == "place" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "people": *[_type == "person" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "products": *[_type == "product" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "experiences": *[_type == "experience" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SitemapQueryResult;
+    '(\n  *[\n    _type == "article" && language == $lang &&\n    _id in coalesce(*[_id == $id][0].pinnedRelated[]._ref, [])\n  ] | order(coalesce(publishedAt, _createdAt) desc) {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n  +\n  *[\n    _type in ["article", "place", "person", "product", "hotel", "experience"] &&\n    _id != $id &&\n    !(_id in coalesce(*[_id == $id][0].pinnedRelated[]._ref, [])) &&\n    (_type != "article" || language == $lang) &&\n    (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&\n    references(array::compact(\n  [$id, *[_id == $id][0].category._ref, *[_id == $id][0].place._ref, *[_id == $id][0].parent._ref]\n  + coalesce(*[_id == $id][0].tags[]._ref, []) + coalesce(*[_id == $id][0].location[]._ref, []) + coalesce(*[_id == $id][0].people[]._ref, []) + coalesce(*[_id == $id][0].products[]._ref, [])\n  + coalesce(*[_id == $id][0].experiences[]._ref, []) + coalesce(*[_id == $id][0].hotel[]._ref, []) + coalesce(*[_id == $id][0].origin[]._ref, []) + coalesce(*[_id == $id][0].makers[]._ref, [])\n))\n  ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n)[0...$limit]': RelatedQueryResult;
+  }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
+}

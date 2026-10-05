@@ -5,8 +5,19 @@
   "scripts": {
     "dev": "pnpm --filter web dev",
     "studio": "pnpm --filter sardigna-atlas-studio dev",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "pnpm -r typecheck && tsc -p scripts",
     "lint": "pnpm -r lint",
-    "build": "pnpm --filter web build"
-  }
+    "build": "pnpm --filter web build",
+    "seed:build": "tsx scripts/seed/build.ts",
+    "seed:import": "pnpm seed:build && cd studio && sanity datasets import --replace -d production ../scripts/seed/out/seed.ndjson",
+    "verify:queries": "tsx scripts/verify-queries.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "groq": "^6.17.0",
+    "groq-js": "^2.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  },
+  "type": "module"
 }

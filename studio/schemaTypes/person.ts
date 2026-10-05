@@ -1,5 +1,6 @@
 import {UserIcon} from '@sanity/icons/User'
 import {defineField, defineType} from 'sanity'
+import {tagsField} from '../lib/fields'
 
 export const person = defineType({
   name: 'person',
@@ -45,6 +46,7 @@ export const person = defineType({
         },
       ],
     }),
+    tagsField(),
   ],
   preview: {select: {title: 'name', subtitle: 'role.pl', media: 'portrait'}},
 })

@@ -1,5 +1,6 @@
 import {TagIcon} from '@sanity/icons/Tag'
 import {defineField, defineType} from 'sanity'
+import {affiliateFields, tagsField} from '../lib/fields'
 import {slugFromLocalized} from '../lib/slugFromLocalized'
 
 /** Produkt regionalny: jedzenie, napój albo przedmiot rękodzieła. */
@@ -62,6 +63,8 @@ export const product = defineType({
       type: 'array',
       of: [{type: 'reference', to: [{type: 'person'}]}],
     }),
+    ...affiliateFields,
+    tagsField(),
   ],
   preview: {select: {title: 'name.pl', subtitle: 'kind', media: 'image'}},
 })

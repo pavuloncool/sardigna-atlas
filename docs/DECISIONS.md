@@ -36,3 +36,17 @@ Format: decyzja, powód, alternatywa.
 - **Treść kolumn:** `web/content/home.pl.json` (tekst z prototypu), `home.en.json` oznaczony `[DRAFT]` do akceptacji redakcji. Karty Opowieści i zdjęcia to placeholdery do czasu danych z Sanity (faza 3).
 - **`lib/i18n/categorySlugs.ts` jest TYMCZASOWA** (slugi sześciu działów); zastąpiona danymi `category.slugs` po fazie 2/3. Linki do działów i Atlasu dają na razie 404, bo te strony powstają w fazie 3.
 - **`main` bez paddingu u góry na home** (`flush`), strony treści dostają `main.page`.
+
+## 2026-10-05 — Faza 2 (model i dane)
+
+- **Typ `tag`, pole `tags` na artykule i encjach (place, person, product, hotel, experience, restaurant), `pinnedRelated` na artykule (max 3, ten sam język).** Istniejące referencje zostają (sekcja 5a). Pole `related` z concepta (ręczne powiązania) zostaje, bo korzysta z niego dostarczone `articleBySlugQuery`; redakcji polecamy `pinnedRelated` (opis pola „pole starsze”). Do rozważenia usunięcie `related` w wersji 2.
+- **Afiliacja (sekcja 12):** wspólny zestaw pól `affiliateUrl` (walidacja `https`), `affiliateNetwork`, `isAffiliate`, `isSponsored` w `studio/lib/fields.ts`, użyty w hotel, experience, product, restaurant. Hotel zachował `bookingUrl`; jego dawne `isAffiliate`/`isSponsored` przejął wspólny zestaw. Brak Amazona.
+- **`restaurant` bez własnej strony w v1.0:** brief wymienia ten typ tylko przy afiliacji, a tabela routingu (sekcja 5) go nie zawiera.
+- **Zmiany w dostarczonym `queries.ts` (wyjątek od zasady 7, test powtórzony):**
+  1. `affiliateUrl`, `isAffiliate`, `isSponsored` dopisane do projekcji `hotelRef`, `experienceRef`, `productRef` (sekcja 12 wymaga ich na frontendzie),
+  2. `sitemapQuery` używał `translationsProjection.replace(...)`, czego typegen nie wykonuje (zapytanie nie dostawało typów). Zastąpione literałem `alternatesProjection` o tej samej treści,
+  3. dopisany `relatedQuery` (reszta zapytań bez zmian). `$lang` zostaje zamiast `$locale` z briefu (zob. wpis z fazy 0).
+- **`relatedQuery`:** jeden wspólny zestaw „kluczy powiązań” (tagi + dział/miejsce/osoby/produkty/doświadczenia/noclegi/pochodzenie/wytwórcy + sam dokument). Kandydat qualifies, gdy `references(klucze)`. Encje bez nazwy w `$lang` są odfiltrowane (person i hotel mają nazwę niewielojęzyczną, więc zawsze przechodzą). `$limit` trzeba podawać zawsze (GROQ nie ma domyślnej wartości parametru).
+- **Seed ma stałe `_id` z prefiksem `seed-`** (wyjątek od zasady „Sanity nadaje id”): relacje w NDJSON wymagają znanych id, a `--replace` pozwala powtórzyć import bez duplikatów. Obrazy to lokalnie generowane gradienty PNG (`scripts/seed/png.ts`), bez pobierania z sieci.
+- **Test zapytań bez sieci i bez zapisu:** `pnpm verify:queries` (groq-js, zbiór seeda w pamięci): 26 asercji, w tym reguły bloku „Powiązane” z AC sekcji 5a.
+- **Typegen:** `pnpm --filter sardigna-atlas-studio typegen`, 10 zapytań z typami. Sprawdzone: włączenie `de` w `studio/lib/languages.ts` nie wywraca typegenu ani `tsc`.

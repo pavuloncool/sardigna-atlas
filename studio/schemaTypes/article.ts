@@ -1,5 +1,6 @@
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {tagsField} from '../lib/fields'
 import {isUniqueInLanguage} from '../lib/isUniqueInLanguage'
 import {bodyMembers} from './objects/body'
 
@@ -91,7 +92,7 @@ export const article = defineType({
     defineField({name: 'hotel', title: 'Hotele', type: 'array', group: 'relations', of: refs('hotel')}),
     defineField({
       name: 'related',
-      title: 'Powiązane artykuły (ręcznie)',
+      title: 'Powiązane artykuły (ręcznie, pole starsze)',
       type: 'array',
       group: 'relations',
       description: 'Tylko artykuły w tym samym języku. Reszta powiązań liczy się automatycznie z miejsc, ludzi i produktów.',
@@ -110,6 +111,31 @@ export const article = defineType({
           },
         }),
       ],
+    }),
+    tagsField('relations'),
+    defineField({
+      name: 'pinnedRelated',
+      title: 'Przypięte powiązane (opcjonalnie)',
+      type: 'array',
+      group: 'relations',
+      description:
+        'Ręcznie wybrane pozycje wyświetlane na górze bloku „Powiązane”. Reszta listy liczy się automatycznie z tagów i referencji.',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: 'article'}],
+          options: {
+            filter: ({document}) => ({
+              filter: 'language == $language && _id != $id',
+              params: {
+                language: document.language ?? null,
+                id: String(document._id ?? '').replace(/^drafts\./, ''),
+              },
+            }),
+          },
+        }),
+      ],
+      validation: (Rule) => Rule.max(3),
     }),
     defineField({name: 'author', title: 'Autor', type: 'reference', to: [{type: 'author'}], group: 'relations'}),
     defineField({

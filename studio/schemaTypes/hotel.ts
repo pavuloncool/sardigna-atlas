@@ -1,5 +1,6 @@
 import {HomeIcon} from '@sanity/icons/Home'
 import {defineField, defineType} from 'sanity'
+import {affiliateFields, tagsField} from '../lib/fields'
 
 export const hotel = defineType({
   name: 'hotel',
@@ -55,20 +56,9 @@ export const hotel = defineType({
     }),
     defineField({name: 'websiteUrl', title: 'Strona obiektu', type: 'url'}),
     defineField({name: 'bookingUrl', title: 'Link do rezerwacji', type: 'url'}),
-    defineField({
-      name: 'isAffiliate',
-      title: 'Link afiliacyjny',
-      type: 'boolean',
-      description: 'Zaznacz, jeśli zarabiasz na kliknięciu. Front pokaże oznaczenie.',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'isSponsored',
-      title: 'Treść sponsorowana',
-      type: 'boolean',
-      initialValue: false,
-    }),
+    ...affiliateFields,
     defineField({name: 'coordinates', title: 'Współrzędne', type: 'geopoint'}),
+    tagsField(),
   ],
   preview: {
     select: {title: 'name', type: 'type', place: 'place.name.pl', media: 'image'},

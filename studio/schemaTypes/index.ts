@@ -10,6 +10,8 @@ import {seo} from './objects/seo'
 import {person} from './person'
 import {place} from './place'
 import {product} from './product'
+import {restaurant} from './restaurant'
+import {tag} from './tag'
 
 export const schemaTypes = [
   // dokumenty
@@ -19,6 +21,8 @@ export const schemaTypes = [
   product,
   hotel,
   experience,
+  restaurant,
+  tag,
   category,
   author,
   // obiekty

@@ -1,5 +1,6 @@
 import {SparklesIcon} from '@sanity/icons/Sparkles'
 import {defineField, defineType} from 'sanity'
+import {affiliateFields, tagsField} from '../lib/fields'
 import {slugFromLocalized} from '../lib/slugFromLocalized'
 
 export const experience = defineType({
@@ -64,6 +65,8 @@ export const experience = defineType({
     }),
     defineField({name: 'priceNote', title: 'Informacja o cenie', type: 'localizedString'}),
     defineField({name: 'bookingUrl', title: 'Link do rezerwacji / kontaktu', type: 'url'}),
+    ...affiliateFields,
+    tagsField(),
   ],
   preview: {select: {title: 'title.pl', subtitle: 'kind', media: 'image'}},
 })
