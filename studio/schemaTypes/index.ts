@@ -1,5 +1,6 @@
 import {article} from './article'
 import {author} from './author'
+import {brand} from './brand'
 import {category} from './category'
 import {experience} from './experience'
 import {hotel} from './hotel'
@@ -22,6 +23,7 @@ export const schemaTypes = [
   hotel,
   experience,
   restaurant,
+  brand,
   tag,
   category,
   author,

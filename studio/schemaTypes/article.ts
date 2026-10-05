@@ -1,6 +1,6 @@
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {defineArrayMember, defineField, defineType} from 'sanity'
-import {tagsField} from '../lib/fields'
+import {partnershipTypes, tagsField} from '../lib/fields'
 import {isUniqueInLanguage} from '../lib/isUniqueInLanguage'
 import {bodyMembers} from './objects/body'
 
@@ -138,6 +138,47 @@ export const article = defineType({
       validation: (Rule) => Rule.max(3),
     }),
     defineField({name: 'author', title: 'Autor', type: 'reference', to: [{type: 'author'}], group: 'relations'}),
+    defineField({
+      name: 'partnership',
+      title: 'Współpraca (oznaczenie dla czytelnika)',
+      type: 'object',
+      group: 'relations',
+      description:
+        'Wybierz, jeśli tekst jest współpracą, sponsoringiem lub barterem. Afiliacja jest oznaczana automatycznie, gdy artykuł zawiera linki afiliacyjne. Oznaczenie pojawia się na początku tekstu.',
+      options: {collapsible: true, collapsed: false},
+      fields: [
+        defineField({
+          name: 'type',
+          title: 'Rodzaj współpracy',
+          type: 'string',
+          options: {layout: 'radio', list: [...partnershipTypes]},
+          initialValue: 'none',
+        }),
+        defineField({
+          name: 'partners',
+          title: 'Partnerzy',
+          type: 'array',
+          of: [defineArrayMember({type: 'reference', to: [{type: 'brand'}, {type: 'author'}]})],
+          hidden: ({parent}) => !parent?.type || parent.type === 'none',
+        }),
+        defineField({
+          name: 'note',
+          title: 'Dodatkowa informacja (opcjonalnie)',
+          type: 'text',
+          rows: 2,
+          description: 'W języku tego artykułu. Pokazywana obok oznaczenia.',
+          hidden: ({parent}) => !parent?.type || parent.type === 'none',
+        }),
+      ],
+      validation: (Rule) =>
+        Rule.custom((value) => {
+          const v = value as {type?: string; partners?: unknown[]} | undefined
+          if (v?.type && ['sponsored', 'collaboration', 'gifted'].includes(v.type) && !(v.partners && v.partners.length)) {
+            return 'Dla sponsoringu, współpracy i barteru wskaż co najmniej jednego partnera.'
+          }
+          return true
+        }),
+    }),
     defineField({
       name: 'publishedAt',
       title: 'Data publikacji',

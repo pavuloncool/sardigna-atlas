@@ -1,6 +1,26 @@
 import {defineArrayMember, defineField} from 'sanity'
 
 /**
+ * Rodzaje współpracy z markami i twórcami. Etykieta dla czytelnika jest wyliczana na froncie
+ * (components/PartnershipNote.tsx); `affiliate` wykrywany jest także automatycznie z `affiliateUrl`.
+ */
+export const partnershipTypes = [
+  {title: 'Brak', value: 'none'},
+  {title: 'Linki afiliacyjne', value: 'affiliate'},
+  {title: 'Materiał sponsorowany (reklama)', value: 'sponsored'},
+  {title: 'Współpraca reklamowa z marką/twórcą', value: 'collaboration'},
+  {title: 'Produkt przekazany przez producenta (barter)', value: 'gifted'},
+] as const
+
+/** Rodzaje współpracy na poziomie marki (relacja stała, nie pojedynczego artykułu). */
+export const brandPartnershipTypes = [
+  {title: 'Brak współpracy', value: 'none'},
+  {title: 'Afiliacja', value: 'affiliate'},
+  {title: 'Sponsor', value: 'sponsor'},
+  {title: 'Barter (produkty w zamian za wzmiankę)', value: 'barter'},
+] as const
+
+/**
  * Tagi (sekcja 5a briefu): redaktor tylko taguje, a bloki „Powiązane” liczą się w buildzie.
  * Pole jest dodawane do article oraz do wszystkich encji.
  */

@@ -14,6 +14,12 @@
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
+type ArrayOf<T> = Array<
+  T & {
+    _key: string;
+  }
+>;
+
 // Source: schema.json
 export type SanityImageAssetReference = {
   _ref: string;
@@ -204,6 +210,13 @@ export type AuthorReference = {
   [internalGroqTypeReferenceTo]?: "author";
 };
 
+export type BrandReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "brand";
+};
+
 export type Article = {
   _id: string;
   _type: "article";
@@ -302,6 +315,11 @@ export type Article = {
     } & ArticleReference
   >;
   author?: AuthorReference;
+  partnership?: {
+    type?: "none" | "affiliate" | "sponsored" | "collaboration" | "gifted";
+    partners?: ArrayOf<BrandReference | AuthorReference>;
+    note?: string;
+  };
   publishedAt?: string;
   seo?: Seo;
 };
@@ -330,13 +348,23 @@ export type Author = {
   _rev: string;
   name?: string;
   slug?: Slug;
+  kind?: "staff" | "guest";
+  role?: LocalizedString;
   bio?: LocalizedText;
   photo?: MediaImage;
+  website?: string;
+  disclosure?: LocalizedText;
+  featured?: boolean;
   links?: Array<{
     label?: string;
     url?: string;
     _key: string;
   }>;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
 };
 
 export type Category = {
@@ -434,8 +462,9 @@ export type Product = {
   _rev: string;
   name?: LocalizedString;
   slug?: Slug;
-  kind?: "food" | "drink" | "craft";
+  kind?: "food" | "drink" | "craft" | "equipment";
   protectedStatus?: "none" | "DOP" | "IGP" | "STG" | "DOC" | "DOCG" | "PAT";
+  brand?: BrandReference;
   description?: LocalizedText;
   image?: MediaImage;
   origin?: Array<
@@ -448,6 +477,30 @@ export type Product = {
       _key: string;
     } & PersonReference
   >;
+  affiliateUrl?: string;
+  affiliateNetwork?: string;
+  isAffiliate?: boolean;
+  isSponsored?: boolean;
+  tags?: Array<
+    {
+      _key: string;
+    } & TagReference
+  >;
+};
+
+export type Brand = {
+  _id: string;
+  _type: "brand";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  slug?: Slug;
+  kinds?: Array<string>;
+  logo?: MediaImage;
+  description?: LocalizedText;
+  websiteUrl?: string;
+  partnership?: "none" | "affiliate" | "sponsor" | "barter";
   affiliateUrl?: string;
   affiliateNetwork?: string;
   isAffiliate?: boolean;
@@ -622,6 +675,7 @@ export type AllSanitySchemaTypes =
   | ExperienceReference
   | CategoryReference
   | AuthorReference
+  | BrandReference
   | Article
   | SanityImageCrop
   | SanityImageHotspot
@@ -630,6 +684,7 @@ export type AllSanitySchemaTypes =
   | Experience
   | Hotel
   | Product
+  | Brand
   | Person
   | Place
   | SanityImagePaletteSwatch
@@ -878,7 +933,7 @@ export type ArticleBySlugQueryResult = {
       | string
       | null;
     slug: string | null;
-    kind: "craft" | "drink" | "food" | null;
+    kind: "craft" | "drink" | "equipment" | "food" | null;
     protectedStatus:
       "DOC" | "DOCG" | "DOP" | "IGP" | "none" | "PAT" | "STG" | null;
     affiliateUrl: string | null;
@@ -1313,7 +1368,7 @@ export type PlaceBySlugQueryResult = {
       | string
       | null;
     slug: string | null;
-    kind: "craft" | "drink" | "food" | null;
+    kind: "craft" | "drink" | "equipment" | "food" | null;
     protectedStatus:
       "DOC" | "DOCG" | "DOP" | "IGP" | "none" | "PAT" | "STG" | null;
     affiliateUrl: string | null;
@@ -1541,7 +1596,7 @@ export type EntityHubQueryResult =
         | string
         | null;
       image: null;
-      kind: null;
+      kind: "guest" | "staff" | null;
       protectedStatus: null;
       websiteUrl: null;
       bookingUrl: null;
@@ -1551,6 +1606,97 @@ export type EntityHubQueryResult =
       coordinates: null;
       priceRange: null;
       sameAs: Array<string | null> | null;
+      role:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      place: null;
+      articles: Array<{
+        _id: string;
+        title: string | null;
+        slug: string | null;
+        language: string | null;
+        excerpt: string | null;
+        format: "guide" | "profile" | "recipe" | "story" | null;
+        publishedAt: string | null;
+        heroImage: {
+          _type: "mediaImage";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          credit?: string;
+          lqip: string | null;
+          width: number | null;
+          height: number | null;
+        } | null;
+        category: {
+          key:
+            | "craft"
+            | "experiences"
+            | "food"
+            | "history"
+            | "people"
+            | "stay"
+            | null;
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: Array<{
+            _type: "localizedSlug";
+            pl?: string;
+            en?: string;
+          }> | null;
+        } | null;
+        place: {
+          name:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          slug: string | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+        } | null;
+      }>;
+    }
+  | {
+      _type: "brand";
+      _id: string;
+      slug: string | null;
+      label: Array<string> | string | null;
+      summary:
+        | Array<{
+            _type: "localizedText";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      image: null;
+      kind: null;
+      protectedStatus: null;
+      websiteUrl: string | null;
+      bookingUrl: null;
+      affiliateUrl: string | null;
+      isAffiliate: boolean | null;
+      isSponsored: boolean | null;
+      coordinates: null;
+      priceRange: null;
+      sameAs: null;
       role: null;
       place: null;
       articles: Array<{
@@ -2169,7 +2315,7 @@ export type EntityHubQueryResult =
         width: number | null;
         height: number | null;
       } | null;
-      kind: "craft" | "drink" | "food" | null;
+      kind: "craft" | "drink" | "equipment" | "food" | null;
       protectedStatus:
         "DOC" | "DOCG" | "DOP" | "IGP" | "none" | "PAT" | "STG" | null;
       websiteUrl: null;
@@ -3215,7 +3361,7 @@ export type RelatedQueryResult =
               }>
             | string
             | null;
-          kind: "craft" | "drink" | "food" | null;
+          kind: "craft" | "drink" | "equipment" | "food" | null;
           image: {
             _type: "mediaImage";
             asset?: SanityImageAssetReference;
@@ -3404,7 +3550,7 @@ export type AtlasIndexQueryResult = {
       | string
       | null;
     slug: string | null;
-    kind: "craft" | "drink" | "food" | null;
+    kind: "craft" | "drink" | "equipment" | "food" | null;
   }>;
   hotels: Array<{
     _id: string;
