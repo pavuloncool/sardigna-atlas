@@ -7,8 +7,11 @@
  */
 export type Doc = Record<string, unknown> & {_id: string; _type: string}
 
-/** Zwraca wartość pola `asset` dla klucza obrazu (NDJSON: plik lokalny; test: referencja). */
-export type AssetResolver = (key: string) => unknown
+/**
+ * Pola obrazu dla klucza (spread do obiektu zdjęcia). NDJSON: `{_sanityAsset}` (import sam tworzy
+ * `asset`), test w pamięci: gotowa referencja `asset`.
+ */
+export type AssetResolver = (key: string) => Record<string, unknown>
 
 const ref = (id: string, weak = false) => ({_type: 'reference', _ref: id, ...(weak ? {_weak: true} : {})})
 const refs = (...ids: string[]) => ids.map((id) => ({_key: id, ...ref(id)}))
@@ -27,7 +30,7 @@ export const IMAGE_KEYS = {
 export type ImageKey = keyof typeof IMAGE_KEYS
 
 export function buildDocuments(asset: AssetResolver): Doc[] {
-  const img = (key: ImageKey, alt: string) => ({_type: 'mediaImage', alt: `${PH} ${alt}`, asset: asset(key)})
+  const img = (key: ImageKey, alt: string) => ({_type: 'mediaImage', alt: `${PH} ${alt}`, ...asset(key)})
 
   const block = (key: string, text: string, style = 'normal', markDefs: unknown[] = [], marked: string[] = []) => ({
     _type: 'block',

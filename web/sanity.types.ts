@@ -2809,230 +2809,188 @@ export type SitemapQueryResult = {
 
 // Source: ../web/lib/sanity/queries.ts
 // Variable: relatedQuery
-// Query: (  *[    _type == "article" && language == $lang &&    _id in coalesce(*[_id == $id][0].pinnedRelated[]._ref, [])  ] | order(coalesce(publishedAt, _createdAt) desc) {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }}  +  *[    _type in ["article", "place", "person", "product", "hotel", "experience"] &&    _id != $id &&    !(_id in coalesce(*[_id == $id][0].pinnedRelated[]._ref, [])) &&    (_type != "article" || language == $lang) &&    (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&    references(array::compact(  [$id, *[_id == $id][0].category._ref, *[_id == $id][0].place._ref, *[_id == $id][0].parent._ref]  + coalesce(*[_id == $id][0].tags[]._ref, []) + coalesce(*[_id == $id][0].location[]._ref, []) + coalesce(*[_id == $id][0].people[]._ref, []) + coalesce(*[_id == $id][0].products[]._ref, [])  + coalesce(*[_id == $id][0].experiences[]._ref, []) + coalesce(*[_id == $id][0].hotel[]._ref, []) + coalesce(*[_id == $id][0].origin[]._ref, []) + coalesce(*[_id == $id][0].makers[]._ref, [])))  ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }})[0...$limit]
-export type RelatedQueryResult = Array<
-  | {
-      _id: string;
-      _type: "article";
-      slug: string | null;
-      date: string;
-      title: string | null;
-      language: string | null;
-      excerpt: string | null;
-      image: {
-        _type: "mediaImage";
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        credit?: string;
-        lqip: string | null;
-        width: number | null;
-        height: number | null;
-      } | null;
-      category: {
-        key:
-          | "craft"
-          | "experiences"
-          | "food"
-          | "history"
-          | "people"
-          | "stay"
-          | null;
-        name:
-          | Array<{
-              _type: "localizedString";
+// Query: *[_id == $id][0]{  "items": (    *[      _type == "article" && language == $lang &&      _id in coalesce(^.pinnedRelated[]._ref, [])    ] | order(coalesce(publishedAt, _createdAt) desc) {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }}    +    *[      _type in ["article", "place", "person", "product", "hotel", "experience"] &&      _id != ^._id &&      !(_id in coalesce(^.pinnedRelated[]._ref, [])) &&      (_type != "article" || language == $lang) &&      (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&      references(array::compact(  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref]  + coalesce(^.tags[]._ref, []) + coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) + coalesce(^.products[]._ref, [])  + coalesce(^.experiences[]._ref, []) + coalesce(^.hotel[]._ref, []) + coalesce(^.origin[]._ref, []) + coalesce(^.makers[]._ref, [])))    ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }}  )[0...$limit]}.items
+export type RelatedQueryResult =
+  | Array<
+      | {
+          _id: string;
+          _type: "article";
+          slug: string | null;
+          date: string;
+          title: string | null;
+          language: string | null;
+          excerpt: string | null;
+          image: {
+            _type: "mediaImage";
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            caption?: string;
+            credit?: string;
+            lqip: string | null;
+            width: number | null;
+            height: number | null;
+          } | null;
+          category: {
+            key:
+              | "craft"
+              | "experiences"
+              | "food"
+              | "history"
+              | "people"
+              | "stay"
+              | null;
+            name:
+              | Array<{
+                  _type: "localizedString";
+                  pl?: string;
+                  en?: string;
+                }>
+              | string
+              | null;
+            slug: Array<{
+              _type: "localizedSlug";
               pl?: string;
               en?: string;
-            }>
-          | string
-          | null;
-        slug: Array<{
-          _type: "localizedSlug";
-          pl?: string;
-          en?: string;
-        }> | null;
-      } | null;
-    }
-  | {
-      _id: string;
-      _type: "article";
-      slug: string | null;
-      date: string;
-      title: string | null;
-      language: string | null;
-      excerpt: string | null;
-      image: {
-        _type: "mediaImage";
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        credit?: string;
-        lqip: string | null;
-        width: number | null;
-        height: number | null;
-      } | null;
-      category: {
-        key:
-          | "craft"
-          | "experiences"
-          | "food"
-          | "history"
-          | "people"
-          | "stay"
-          | null;
-        name:
-          | Array<{
-              _type: "localizedString";
-              pl?: string;
-              en?: string;
-            }>
-          | string
-          | null;
-        slug: Array<{
-          _type: "localizedSlug";
-          pl?: string;
-          en?: string;
-        }> | null;
-      } | null;
-    }
-  | {
-      _id: string;
-      _type: "experience";
-      slug: string | null;
-      date: string;
-      title:
-        | Array<{
-            _type: "localizedString";
-            pl?: string;
-            en?: string;
-          }>
-        | string
-        | null;
-      kind:
-        | "culture"
-        | "festival"
-        | "outdoor"
-        | "sea"
-        | "tasting"
-        | "workshop"
-        | null;
-      image: {
-        _type: "mediaImage";
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        credit?: string;
-        lqip: string | null;
-        width: number | null;
-        height: number | null;
-      } | null;
-    }
-  | {
-      _id: string;
-      _type: "hotel";
-      slug: string | null;
-      date: string;
-      title: string | null;
-      image: {
-        _type: "mediaImage";
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        credit?: string;
-        lqip: string | null;
-        width: number | null;
-        height: number | null;
-      } | null;
-    }
-  | {
-      _id: string;
-      _type: "person";
-      slug: string | null;
-      date: string;
-      title: string | null;
-      image: {
-        _type: "mediaImage";
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        credit?: string;
-        lqip: string | null;
-        width: number | null;
-        height: number | null;
-      } | null;
-    }
-  | {
-      _id: string;
-      _type: "place";
-      slug: string | null;
-      date: string;
-      title:
-        | Array<{
-            _type: "localizedString";
-            pl?: string;
-            en?: string;
-          }>
-        | string
-        | null;
-      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
-      image: {
-        _type: "mediaImage";
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        credit?: string;
-        lqip: string | null;
-        width: number | null;
-        height: number | null;
-      } | null;
-    }
-  | {
-      _id: string;
-      _type: "product";
-      slug: string | null;
-      date: string;
-      title:
-        | Array<{
-            _type: "localizedString";
-            pl?: string;
-            en?: string;
-          }>
-        | string
-        | null;
-      kind: "craft" | "drink" | "food" | null;
-      image: {
-        _type: "mediaImage";
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        credit?: string;
-        lqip: string | null;
-        width: number | null;
-        height: number | null;
-      } | null;
-    }
->;
+            }> | null;
+          } | null;
+        }
+      | {
+          _id: string;
+          _type: "experience";
+          slug: string | null;
+          date: string;
+          title:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          kind:
+            | "culture"
+            | "festival"
+            | "outdoor"
+            | "sea"
+            | "tasting"
+            | "workshop"
+            | null;
+          image: {
+            _type: "mediaImage";
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            caption?: string;
+            credit?: string;
+            lqip: string | null;
+            width: number | null;
+            height: number | null;
+          } | null;
+        }
+      | {
+          _id: string;
+          _type: "hotel";
+          slug: string | null;
+          date: string;
+          title: string | null;
+          image: {
+            _type: "mediaImage";
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            caption?: string;
+            credit?: string;
+            lqip: string | null;
+            width: number | null;
+            height: number | null;
+          } | null;
+        }
+      | {
+          _id: string;
+          _type: "person";
+          slug: string | null;
+          date: string;
+          title: string | null;
+          image: {
+            _type: "mediaImage";
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            caption?: string;
+            credit?: string;
+            lqip: string | null;
+            width: number | null;
+            height: number | null;
+          } | null;
+        }
+      | {
+          _id: string;
+          _type: "place";
+          slug: string | null;
+          date: string;
+          title:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+          image: {
+            _type: "mediaImage";
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            caption?: string;
+            credit?: string;
+            lqip: string | null;
+            width: number | null;
+            height: number | null;
+          } | null;
+        }
+      | {
+          _id: string;
+          _type: "product";
+          slug: string | null;
+          date: string;
+          title:
+            | Array<{
+                _type: "localizedString";
+                pl?: string;
+                en?: string;
+              }>
+            | string
+            | null;
+          kind: "craft" | "drink" | "food" | null;
+          image: {
+            _type: "mediaImage";
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            caption?: string;
+            credit?: string;
+            lqip: string | null;
+            width: number | null;
+            height: number | null;
+          } | null;
+        }
+    >
+  | Array<never>
+  | null;
 
 // Query TypeMap
 declare global {
@@ -3046,7 +3004,7 @@ declare global {
     '{\n  "featured": *[_type == "article" && language == $lang && featured == true] | order(publishedAt desc)[0] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "latest": *[_type == "article" && language == $lang] | order(publishedAt desc)[0...6] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "categories": *[_type == "category"] | order(order asc){\n    _id, key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang], "intro": coalesce(intro[$lang], intro.en, intro.pl),\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc)[0...3] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n  },\n  "regions": *[_type == "place" && kind == "region" && defined(mapId)] | order(name.pl asc){\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, mapId,\n  "articleCount": count(*[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)])\n}\n}': HomeQueryResult;
     '{\n  "category": *[_type == "category" && slugs[$lang] == $slug][0]{\n    _id, key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang], "intro": coalesce(intro[$lang], intro.en, intro.pl),\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }, "alternates": slugs\n  },\n  "articles": *[\n    _type == "article" && language == $lang &&\n    category._ref == *[_type == "category" && slugs[$lang] == $slug][0]._id\n  ] | order(publishedAt desc)[$start...$end] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "total": count(*[\n    _type == "article" && language == $lang &&\n    category._ref == *[_type == "category" && slugs[$lang] == $slug][0]._id\n  ])\n}': CategoryPageQueryResult;
     '{\n  "articles": *[_type == "article" && defined(slug.current) && defined(language)]{\n    "slug": slug.current, language, _updatedAt,\n    "alternates": (\n  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language }\n)[defined(slug)]\n  },\n  "categories": *[_type == "category"]{ slugs, _updatedAt },\n  "places": *[_type == "place" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "people": *[_type == "person" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "products": *[_type == "product" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "experiences": *[_type == "experience" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SitemapQueryResult;
-    '(\n  *[\n    _type == "article" && language == $lang &&\n    _id in coalesce(*[_id == $id][0].pinnedRelated[]._ref, [])\n  ] | order(coalesce(publishedAt, _createdAt) desc) {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n  +\n  *[\n    _type in ["article", "place", "person", "product", "hotel", "experience"] &&\n    _id != $id &&\n    !(_id in coalesce(*[_id == $id][0].pinnedRelated[]._ref, [])) &&\n    (_type != "article" || language == $lang) &&\n    (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&\n    references(array::compact(\n  [$id, *[_id == $id][0].category._ref, *[_id == $id][0].place._ref, *[_id == $id][0].parent._ref]\n  + coalesce(*[_id == $id][0].tags[]._ref, []) + coalesce(*[_id == $id][0].location[]._ref, []) + coalesce(*[_id == $id][0].people[]._ref, []) + coalesce(*[_id == $id][0].products[]._ref, [])\n  + coalesce(*[_id == $id][0].experiences[]._ref, []) + coalesce(*[_id == $id][0].hotel[]._ref, []) + coalesce(*[_id == $id][0].origin[]._ref, []) + coalesce(*[_id == $id][0].makers[]._ref, [])\n))\n  ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n)[0...$limit]': RelatedQueryResult;
+    '*[_id == $id][0]{\n  "items": (\n    *[\n      _type == "article" && language == $lang &&\n      _id in coalesce(^.pinnedRelated[]._ref, [])\n    ] | order(coalesce(publishedAt, _createdAt) desc) {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n    +\n    *[\n      _type in ["article", "place", "person", "product", "hotel", "experience"] &&\n      _id != ^._id &&\n      !(_id in coalesce(^.pinnedRelated[]._ref, [])) &&\n      (_type != "article" || language == $lang) &&\n      (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&\n      references(array::compact(\n  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref]\n  + coalesce(^.tags[]._ref, []) + coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) + coalesce(^.products[]._ref, [])\n  + coalesce(^.experiences[]._ref, []) + coalesce(^.hotel[]._ref, []) + coalesce(^.origin[]._ref, []) + coalesce(^.makers[]._ref, [])\n))\n    ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n  )[0...$limit]\n}.items': RelatedQueryResult;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

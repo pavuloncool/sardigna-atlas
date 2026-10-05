@@ -247,17 +247,16 @@ export const sitemapQuery = groq`{
 
 // ─── Polecane / Powiązane (sekcja 5a briefu) ─────────────────────────────────
 
-/** Bieżący dokument; `$id` to _id opublikowanego dokumentu (bez prefiksu `drafts.`). */
-const current = `*[_id == $id][0]`
-const refIds = (path: string) => `coalesce(${current}.${path}[]._ref, [])`
-
 /**
- * Wszystkie „klucze powiązań” bieżącego dokumentu: jego tagi i referencje (dział, miejsce,
- * nadrzędne miejsce, osoby, produkty, doświadczenia, noclegi, pochodzenie, wytwórcy)
- * oraz on sam (żeby encję łapały artykuły, które do niej prowadzą).
+ * Wszystkie „klucze powiązań” bieżącego dokumentu (`^` = dokument, dla którego liczymy blok):
+ * jego tagi i referencje (dział, miejsce, nadrzędne miejsce, osoby, produkty, doświadczenia,
+ * noclegi, pochodzenie, wytwórcy) oraz on sam (żeby encję łapały artykuły, które do niej prowadzą).
+ * Uwaga: zapis przez `^` jest wymagany. Wersja z podzapytaniem `*[_id == $id][0]...` wewnątrz
+ * `references()` zwraca pusto na żywym API, choć groq-js ją akceptuje (wykryte testem live).
  */
+const refIds = (path: string) => `coalesce(^.${path}[]._ref, [])`
 const relatedKeys = `array::compact(
-  [$id, ${current}.category._ref, ${current}.place._ref, ${current}.parent._ref]
+  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref]
   + ${refIds('tags')} + ${refIds('location')} + ${refIds('people')} + ${refIds('products')}
   + ${refIds('experiences')} + ${refIds('hotel')} + ${refIds('origin')} + ${refIds('makers')}
 )`
@@ -284,20 +283,22 @@ const relatedCard = `{
  * - odfiltrowani: bieżący dokument oraz pozycje bez tłumaczenia w $lang,
  * - kolejność: najnowsze najpierw (publishedAt, a dla encji _createdAt),
  * - `pinnedRelated` (tylko artykuł) idzie na górę, reszta jest automatyczna,
- * - pusty wynik = frontend nie renderuje bloku.
+ * - wynik `null` (brak dokumentu) lub `[]` = frontend nie renderuje bloku.
  */
-export const relatedQuery = groq`(
-  *[
-    _type == "article" && language == $lang &&
-    _id in coalesce(${current}.pinnedRelated[]._ref, [])
-  ] | order(coalesce(publishedAt, _createdAt) desc) ${relatedCard}
-  +
-  *[
-    _type in ["article", "place", "person", "product", "hotel", "experience"] &&
-    _id != $id &&
-    !(_id in coalesce(${current}.pinnedRelated[]._ref, [])) &&
-    (_type != "article" || language == $lang) &&
-    (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&
-    references(${relatedKeys})
-  ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] ${relatedCard}
-)[0...$limit]`
+export const relatedQuery = groq`*[_id == $id][0]{
+  "items": (
+    *[
+      _type == "article" && language == $lang &&
+      _id in coalesce(^.pinnedRelated[]._ref, [])
+    ] | order(coalesce(publishedAt, _createdAt) desc) ${relatedCard}
+    +
+    *[
+      _type in ["article", "place", "person", "product", "hotel", "experience"] &&
+      _id != ^._id &&
+      !(_id in coalesce(^.pinnedRelated[]._ref, [])) &&
+      (_type != "article" || language == $lang) &&
+      (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&
+      references(${relatedKeys})
+    ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] ${relatedCard}
+  )[0...$limit]
+}.items`

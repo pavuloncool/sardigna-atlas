@@ -4,12 +4,13 @@
  * Użycie: `pnpm verify:queries`.
  */
 import {evaluate, parse} from 'groq-js'
+import {cases} from './cases.ts'
 import * as Q from '../web/lib/sanity/queries.ts'
 import {buildDocuments, type Doc} from './seed/data.ts'
 
 type Dataset = Doc[]
 const base = (): Dataset =>
-  buildDocuments((key) => ({_type: 'reference', _ref: `image-${key}`})).map((d, i) => ({
+  buildDocuments((key) => ({asset: {_type: 'reference', _ref: `image-${key}`}})).map((d, i) => ({
     ...d,
     _createdAt: new Date(Date.UTC(2026, 8, 1, 0, i)).toISOString(),
   }))
@@ -32,21 +33,6 @@ const nonEmpty = (v: unknown) => (Array.isArray(v) ? v.length > 0 : v != null)
 const ds = base()
 const main = async () => {
   // 1) każde zapytanie zwraca dane (oba języki tam, gdzie zależy od $lang)
-  const cases: [string, string, Record<string, unknown>][] = [
-    ['articleBySlugQuery pl', Q.articleBySlugQuery, {lang: 'pl', slug: 'pane-carasau-chleb-z-potrzeby'}],
-    ['articleBySlugQuery en', Q.articleBySlugQuery, {lang: 'en', slug: 'pane-carasau-bread-born-of-necessity'}],
-    ['articleParamsQuery', Q.articleParamsQuery, {}],
-    ['placeBySlugQuery', Q.placeBySlugQuery, {lang: 'pl', slug: 'barbagia', limit: 12}],
-    ['placeParamsQuery', Q.placeParamsQuery, {}],
-    ['entityHubQuery person', Q.entityHubQuery, {lang: 'pl', type: 'person', slug: 'osoba-a'}],
-    ['entityHubQuery product', Q.entityHubQuery, {lang: 'en', type: 'product', slug: 'pane-carasau'}],
-    ['exploreMapQuery', Q.exploreMapQuery, {lang: 'pl'}],
-    ['homeQuery pl', Q.homeQuery, {lang: 'pl'}],
-    ['homeQuery en', Q.homeQuery, {lang: 'en'}],
-    ['categoryPageQuery', Q.categoryPageQuery, {lang: 'pl', slug: 'kulinaria', start: 0, end: 12}],
-    ['sitemapQuery', Q.sitemapQuery, {}],
-    ['relatedQuery', Q.relatedQuery, {lang: 'pl', id: 'seed-article-pane-pl', limit: 6}],
-  ]
   for (const [name, q, params] of cases) {
     const r = await run(q, ds, params)
     check(`${name} zwraca dane`, nonEmpty(r), r)
@@ -61,14 +47,15 @@ const main = async () => {
 
   // 3) relatedQuery (sekcja 5a)
   const related = async (id: string, lang = 'pl', limit = 6, data = ds): Promise<any[]> =>
-    (await run(Q.relatedQuery, data, {id, lang, limit})) as any[]
+    ((await run(Q.relatedQuery, data, {id, lang, limit})) as any[] | null) ?? []
 
   const r1 = await related('seed-article-pane-pl')
   check('related: bez bieżącego dokumentu', !r1.some((x) => x._id === 'seed-article-pane-pl'), r1.map((x) => x._id))
   check('related: artykuł EN nie pojawia się w PL', !r1.some((x) => x.language === 'en'), r1.map((x) => x._id))
   check('related: zawiera drugi artykuł PL (2 wspólne tagi)', r1.some((x) => x._id === 'seed-article-tkactwo-pl'), r1.map((x) => x._id))
+  check('related: niepusty wynik', r1.length > 0, r1)
   const dates = r1.map((x) => x.date as string)
-  check('related: kolejność od najnowszej', dates.every((d, i) => i === 0 || dates[i - 1] >= d), dates)
+  check('related: kolejność od najnowszej', dates.length > 1 && dates.every((d, i) => i === 0 || dates[i - 1] >= d), dates)
   check('related: limit', (await related('seed-article-pane-pl', 'pl', 2)).length === 2)
 
   // brak tłumaczenia w bieżącym języku: encja z nazwą tylko po polsku znika z EN
