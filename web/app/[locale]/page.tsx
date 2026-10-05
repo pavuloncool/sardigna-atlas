@@ -1,36 +1,64 @@
-import { ArticleCard } from "@/components/ArticleCard";
-import { PageShell } from "@/components/PageShell";
-import { Prose } from "@/components/Prose";
-import { isLocale } from "@/lib/i18n/locales";
 import { notFound } from "next/navigation";
+import { Figure } from "@/components/Figure";
+import { Hero, type HeroColumn } from "@/components/Hero";
+import { PageShell } from "@/components/PageShell";
+import { getDictionary } from "@/lib/i18n/dictionary";
+import { categoryPath } from "@/lib/i18n/categorySlugs";
+import { isLocale, type Locale } from "@/lib/i18n/locales";
+import { pagePath, type SegmentKey } from "@/lib/i18n/segments";
+import homeEn from "@/content/home.en.json";
+import homePl from "@/content/home.pl.json";
 
-// Tymczasowa strona główna fazy 1: pokazuje komponenty design systemu.
-// Faza 3 zastępuje ją właściwym home (hero, Opowieści, działy, mapa).
-const sample = [
-  { _id: "a", title: "[PLACEHOLDER] Tytuł artykułu", slug: "x", excerpt: "[PLACEHOLDER] Zajawka artykułu w dwóch zdaniach.", category: { name: "Kulinaria", slug: "kulinaria" } },
-  { _id: "b", title: "[PLACEHOLDER] Drugi tytuł", slug: "y", excerpt: "[PLACEHOLDER] Zajawka artykułu w dwóch zdaniach.", category: { name: "Rękodzieło", slug: "rekodzielo" } },
-];
+type Target = { segment: string } | { category: string };
+type HomeContent = Omit<typeof homePl, "columns"> & {
+  columns: { word: string; text: string; links: { label: string; to: Target }[] }[];
+};
 
-const body = [
-  { _type: "block", _key: "1", style: "h2", markDefs: [], children: [{ _type: "span", _key: "s", text: "[PLACEHOLDER] Nagłówek", marks: [] }] },
-  { _type: "block", _key: "2", style: "normal", markDefs: [{ _key: "l", _type: "link", href: "https://example.com" }], children: [{ _type: "span", _key: "s", text: "[PLACEHOLDER] Akapit z ", marks: [] }, { _type: "span", _key: "t", text: "linkiem", marks: ["l"] }, { _type: "span", _key: "u", text: ".", marks: [] }] },
-  { _type: "pullQuote", _key: "3", quote: "[PLACEHOLDER] Cytat wyróżniony.", attribution: "[PLACEHOLDER]" },
+// Treść trzech kolumn w repo (migracja do Sanity w wersji 2). Brakujący język → polski.
+const content: Partial<Record<Locale, HomeContent>> = { pl: homePl as HomeContent, en: homeEn as HomeContent };
+
+const hrefFor = (to: Target, locale: Locale) =>
+  "segment" in to ? pagePath(locale, to.segment as SegmentKey) : categoryPath(to.category, locale);
+
+// Placeholdery zdjęć (jednolite gradienty) do czasu podpięcia artykułów z Sanity (faza 3).
+const GRADIENTS: [string, string][] = [
+  ["#c8501f", "#d99a2b"],
+  ["#2b5c9e", "#4f9aa8"],
 ];
+const WIDE_GRADIENT: [string, string] = ["#8f8a7e", "#c9b08a"];
 
 export default async function Home({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
+  const dict = getDictionary(locale);
+  const home = content[locale] ?? homePl;
+  const columns: HeroColumn[] = home.columns.map((c) => ({
+    word: c.word,
+    text: c.text,
+    links: c.links.map((l) => ({ label: l.label, href: hrefFor(l.to, locale) })),
+  }));
+
   return (
-    <PageShell locale={locale}>
-      <h1 className="sr">SARDIGNA. Su Mari. S&apos;Isula. Sa Bida.</h1>
-      <section id="opowiesci" className="container" style={{ display: "grid", gap: "4rem", paddingBlock: "8vh" }}>
-        <h2 className="sr">Opowieści</h2>
-        {sample.map((a, i) => (
-          <ArticleCard key={a._id} article={a} locale={locale} ratio={i ? 2.27 : 1.93} fallback={i ? ["var(--kobalt)", "var(--morze)"] : ["var(--terakota)", "var(--ochra)"]} />
+    <PageShell locale={locale} flush>
+      <h1 className="sr">{dict.brand}</h1>
+      <Hero columns={columns} />
+
+      <section className="voices" id="opowiesci" aria-label={home.voicesAria}>
+        {home.cards.map((card, i) => (
+          <article className="card" key={card.title}>
+            <Figure ratio={i === 0 ? 1.93 : 2.27} fallback={GRADIENTS[i]} label={card.label} />
+            <h3>
+              <a href="#">{card.title}</a>
+              <span>{card.category}</span>
+            </h3>
+            <p>{card.excerpt}</p>
+          </article>
         ))}
-        <Prose value={body as never} locale={locale} />
       </section>
+      <div className="wide">
+        <Figure ratio={2.4} fallback={WIDE_GRADIENT} label={home.wideLabel} />
+      </div>
     </PageShell>
   );
 }

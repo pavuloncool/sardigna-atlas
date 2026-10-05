@@ -12,11 +12,14 @@ export function PageShell({
   locale,
   alternates,
   nav,
+  flush = false,
   children,
 }: {
   locale: Locale;
   alternates?: Partial<Record<Locale, string>>;
   nav?: NavItem[];
+  /** Home: treść startuje od góry okna (hero pod stałym headerem). */
+  flush?: boolean;
   children: ReactNode;
 }) {
   const dict = getDictionary(locale);
@@ -26,7 +29,7 @@ export function PageShell({
         {dict.skipToContent}
       </a>
       <Header locale={locale} alternates={alternates} nav={nav} />
-      <main id="main">{children}</main>
+      <main id="main" className={flush ? undefined : "page"}>{children}</main>
       <Footer locale={locale} />
     </>
   );

@@ -8,7 +8,8 @@
     "atlas": "Atlas",
     "people": "Ludzie",
     "about": "O projekcie",
-    "menu": "Menu"
+    "menu": "Menu",
+    "new": "Nowość"
   },
   "search": { "label": "Szukaj", "placeholder": "Szukaj na wyspie" },
   "theme": { "toggle": "Przełącz motyw jasny/ciemny" },

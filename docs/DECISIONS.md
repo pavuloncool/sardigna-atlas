@@ -24,3 +24,15 @@ Format: decyzja, powód, alternatywa.
 - **Słowniki UI z fallbackiem na język domyślny** (`lib/i18n/dictionary.ts`) oraz mapa segmentów URL z fallbackiem `lang → en → pl` (`lib/i18n/segments.ts`): dodanie `de` nie wymaga zmian w komponentach.
 - **Nawigacja: „Ludzie" dochodzi w fazie 3** (slug działu `people` pochodzi z Sanity). Pole wyszukiwania to na razie sam markup; Pagefind w fazie 3.
 - **Typy obrazów ręczne** (`SanityImage`, `ArticleCardData`) do czasu fazy 2, kiedy pojawią się zapytania i typegen.
+
+## 2026-10-05 — Strona główna 1:1 z prototypem (korekta fazy 1)
+
+- **Faza 1 oddała tymczasowy pokaz komponentów zamiast home z prototypu; naprawione.** `app/[locale]/page.tsx` odtwarza prototyp: hero (`components/Hero.tsx`, logika `measure()`/`frame()` przeniesiona bez zmian), trzy kolumny, Opowieści, panorama, stopka. CSS hero/voices skopiowany z prototypu do `globals.css`.
+- **Weryfikacja:** pozycje (`getBoundingClientRect`) znaku, słów, kolumn, zdjęć i stopki oraz `opacity` tekstu są identyczne z prototypem przy przewinięciach 0/150/336/673/1000/1400 (okno 1210×673) i 0/200/420/800/1100 (okno 1210×420). Wysokość dokumentu 2443 px i 1857 px w obu.
+- **Świadome różnice względem prototypu** (poza wymaganiami briefu):
+  1. szary tekst `#757575` zamiast `#9a9a9a` (kontrast AA; zob. wpis z fazy 1; przywrócenie = zmiana `--mute` w `:root`),
+  2. stopka ma Polityka prywatności i Polityka cookies (sekcja 14 briefu) zamiast „Newsletter" (Resend Free nie obsługuje newslettera),
+  3. poniżej 900 px jest menu `<details>` (prototyp ukrywał nawigację bez zastępnika).
+- **Treść kolumn:** `web/content/home.pl.json` (tekst z prototypu), `home.en.json` oznaczony `[DRAFT]` do akceptacji redakcji. Karty Opowieści i zdjęcia to placeholdery do czasu danych z Sanity (faza 3).
+- **`lib/i18n/categorySlugs.ts` jest TYMCZASOWA** (slugi sześciu działów); zastąpiona danymi `category.slugs` po fazie 2/3. Linki do działów i Atlasu dają na razie 404, bo te strony powstają w fazie 3.
+- **`main` bez paddingu u góry na home** (`flush`), strony treści dostają `main.page`.

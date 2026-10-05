@@ -12,6 +12,7 @@ export function Figure({
   priority = false,
   fallback,
   caption = true,
+  label,
 }: {
   image?: SanityImage | null;
   ratio?: number;
@@ -19,6 +20,8 @@ export function Figure({
   priority?: boolean;
   fallback?: [string, string];
   caption?: boolean;
+  /** Podpis wewnątrz placeholdera (np. „[zdjęcie 1,93:1]”); tylko gdy brak zdjęcia. */
+  label?: string;
 }) {
   const style = {
     "--ratio": ratio,
@@ -30,7 +33,7 @@ export function Figure({
 
   return (
     <figure className="fig">
-      <div className="ph" style={style}>
+      <div className="ph" style={style} data-l={hasImage ? undefined : label}>
         {hasImage && image ? (
           <Image
             src={imageSrc(image, ratio)}

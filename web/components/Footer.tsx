@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BackToTop } from "./BackToTop";
 import type { Locale } from "@/lib/i18n/locales";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { homePath, pagePath } from "@/lib/i18n/segments";
@@ -17,7 +18,7 @@ export function Footer({ locale }: { locale: Locale }) {
         <Link href={pagePath(locale, "contact")}>{dict.footer.contact}</Link>
         <Link href={pagePath(locale, "privacy")}>{dict.footer.privacy}</Link>
         <Link href={pagePath(locale, "cookies")}>{dict.footer.cookies}</Link>
-        <a href="#top">{dict.footer.top}</a>
+        <BackToTop>{dict.footer.top}</BackToTop>
       </nav>
     </footer>
   );

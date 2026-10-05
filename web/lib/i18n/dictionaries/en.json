@@ -8,7 +8,8 @@
     "atlas": "Atlas",
     "people": "People",
     "about": "About",
-    "menu": "Menu"
+    "menu": "Menu",
+    "new": "New"
   },
   "search": { "label": "Search", "placeholder": "Search the island" },
   "theme": { "toggle": "Switch light/dark theme" },

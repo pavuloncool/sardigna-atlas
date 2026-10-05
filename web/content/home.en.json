@@ -1,0 +1,38 @@
+{
+  "tagline": "Su Mari. S'Isula. Sa Bida.",
+  "columns": [
+    {
+      "word": "Su Mari",
+      "text": "[DRAFT] The coast that shaped the kitchen, the rhythm of the days and the roads onto the island. Bays, harbours and places you return to and stay.",
+      "links": [
+        { "label": "Coast", "to": { "segment": "atlas" } },
+        { "label": "Stays", "to": { "category": "stay" } },
+        { "label": "Experiences", "to": { "category": "experiences" } }
+      ]
+    },
+    {
+      "word": "S'Isula",
+      "text": "[DRAFT] An island to be read in order: region by region, town by town, down to a single village. Stone, memory and history written into places.",
+      "links": [
+        { "label": "Atlas", "to": { "segment": "atlas" } },
+        { "label": "Places", "to": { "segment": "atlas" } },
+        { "label": "History", "to": { "category": "history" } }
+      ]
+    },
+    {
+      "word": "Sa Bida",
+      "text": "[DRAFT] Bread, textile, ceramics, wine. Things born of need that stayed for life, and the people who still make them.",
+      "links": [
+        { "label": "Food & products", "to": { "category": "food" } },
+        { "label": "Craft", "to": { "category": "craft" } },
+        { "label": "People", "to": { "category": "people" } }
+      ]
+    }
+  ],
+  "voicesAria": "Stories",
+  "cards": [
+    { "title": "[PLACEHOLDER] Pane carasau: bread born of necessity", "category": "Food", "excerpt": "[PLACEHOLDER] Article teaser in two sentences.", "label": "[photo 1.93:1, Sanity hotspot]" },
+    { "title": "[PLACEHOLDER] The women of Sardinian weaving", "category": "Craft", "excerpt": "[PLACEHOLDER] Article teaser in two sentences.", "label": "[photo 2.27:1]" }
+  ],
+  "wideLabel": "[panoramic photo 2.4:1]"
+}

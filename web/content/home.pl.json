@@ -1,0 +1,38 @@
+{
+  "tagline": "Su Mari. S'Isula. Sa Bida.",
+  "columns": [
+    {
+      "word": "Su Mari",
+      "text": "Wybrzeże, które ukształtowało kuchnię, rytm dni i drogi na wyspę. Zatoki, porty i miejsca, do których wraca się na dłużej.",
+      "links": [
+        { "label": "Wybrzeże", "to": { "segment": "atlas" } },
+        { "label": "Hotele", "to": { "category": "stay" } },
+        { "label": "Doświadczenia", "to": { "category": "experiences" } }
+      ]
+    },
+    {
+      "word": "S'Isula",
+      "text": "Wyspa do czytania po kolei: region po regionie, miasto po mieście, aż po pojedynczą wieś. Kamień, pamięć i historia zapisane w miejscach.",
+      "links": [
+        { "label": "Atlas", "to": { "segment": "atlas" } },
+        { "label": "Miejsca", "to": { "segment": "atlas" } },
+        { "label": "Historia", "to": { "category": "history" } }
+      ]
+    },
+    {
+      "word": "Sa Bida",
+      "text": "Chleb, tkanina, ceramika, wino. Rzeczy, które powstały z potrzeby i zostały na życie, oraz ludzie, którzy je wciąż robią.",
+      "links": [
+        { "label": "Kulinaria & produkty", "to": { "category": "food" } },
+        { "label": "Rękodzieło", "to": { "category": "craft" } },
+        { "label": "Ludzie", "to": { "category": "people" } }
+      ]
+    }
+  ],
+  "voicesAria": "Opowieści",
+  "cards": [
+    { "title": "Pane carasau: chleb, który powstał z potrzeby", "category": "Kulinaria", "excerpt": "[PLACEHOLDER] Zajawka artykułu w dwóch zdaniach.", "label": "[zdjęcie 1,93:1, hotspot z Sanity]" },
+    { "title": "Kobiety sardyjskiego tkactwa", "category": "Rękodzieło", "excerpt": "[PLACEHOLDER] Zajawka artykułu w dwóch zdaniach.", "label": "[zdjęcie 2,27:1]" }
+  ],
+  "wideLabel": "[zdjęcie panoramiczne 2,4:1]"
+}
