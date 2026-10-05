@@ -1,0 +1,14 @@
+node_modules
+.DS_Store
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.next
+out
+dist
+.sanity
+.wrangler
+playwright-report
+test-results
+.claude/settings.local.json

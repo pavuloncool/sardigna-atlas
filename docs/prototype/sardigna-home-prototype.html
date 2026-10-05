@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SARDIGNA. Su Mari. S'Isula. Sa Bida.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=Newsreader:opsz,wght@6..72,300&display=swap">
+<style>
+:root{--bg:#fff;--fg:#222;--mute:#9a9a9a;--rule:#d4d4d4;--nav:#555;
+ --sans:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;--serif:'Newsreader',Georgia,'Times New Roman',serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--fg:#eee;--mute:#8a8a8a;--rule:#3a3a3a;--nav:#b5b5b5}}
+:root[data-theme="dark"]{--bg:#121212;--fg:#eee;--mute:#8a8a8a;--rule:#3a3a3a;--nav:#b5b5b5}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.4 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #2b5c9e;outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* HEADER: nawigacja po lewej, znak w środku, wyszukiwarka + język po prawej */
+header{position:fixed;top:0;left:0;right:0;z-index:20;height:calc(100px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 2.9vw 0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;background:var(--bg)}
+nav{display:flex;gap:1rem;font-size:15px;color:var(--nav)}
+.brand{display:block;position:relative;z-index:2}
+.wm{display:block;font:700 26px/1 var(--sans);letter-spacing:.08em;white-space:nowrap}
+.wm i{font-style:normal;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(180deg,var(--a) 0 var(--s1,50%),var(--b) var(--s1,50%) var(--s2,100%),var(--c,var(--b)) var(--s2,100%))}
+.right{justify-self:end;display:flex;align-items:center;gap:1.4rem;font-size:15px;color:var(--mute)}
+.search{display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--rule);padding-bottom:.35rem;width:clamp(120px,14vw,172px)}
+.search input{all:unset;flex:1;min-width:0;font:300 17px var(--serif);color:var(--fg)}
+.search input::placeholder{color:var(--mute)}
+#theme{all:unset;cursor:pointer;color:var(--mute)}
+@media(max-width:899px){nav{display:none}header{grid-template-columns:auto 1fr}.right{grid-column:2}.search{display:none}}
+
+/* HERO (tryb statyczny = domyślny: bez JS, reduced motion, mobile) */
+.hero{padding:calc(100px + 12vh) 2.9vw 8vh}
+.cols{display:grid;gap:3rem}
+.w{display:inline-block;font:400 clamp(28px,3vw,52px)/1.1 var(--sans);letter-spacing:-.015em;border-bottom:1px solid var(--rule);padding-bottom:.04em;white-space:nowrap}
+.txt{margin:1.6em 0 1.4em;max-width:26em;font:300 clamp(16px,1.3vw,20px)/1.45 var(--serif);color:var(--mute)}
+.links{list-style:none;margin:0;padding:0;display:grid;gap:.9em;justify-items:start;font-size:clamp(14px,1.2vw,18px);color:var(--mute)}
+.links a{border-bottom:1px solid var(--rule)}
+.links a:hover{color:var(--fg)}
+.pt{display:inline-block;overflow:hidden;vertical-align:bottom;max-width:0;opacity:0}
+.ghost{display:none}
+.ghost .pt{max-width:none;opacity:1}
+@media(min-width:900px){.cols{grid-template-columns:repeat(3,1fr);column-gap:3.5vw}}
+/* HERO animowane: znak z centrum ekranu wjeżdża do headera, hasło rozsuwa się na trzy kolumny */
+.anim .hero{height:200vh;padding:0}
+.anim .stage{position:sticky;top:0;height:100vh}
+.anim .cols{position:absolute;left:2.9vw;right:2.9vw;top:36vh}
+.anim .col:nth-child(2){margin-top:4px}.anim .col:nth-child(3){margin-top:8px}
+.anim .txt,.anim .links{opacity:0}
+.anim .ghost{display:flex;position:absolute;left:0;right:0;top:60vh;justify-content:center;gap:.45em;visibility:hidden}
+
+/* VOICES → „Opowieści” */
+.voices{display:grid;grid-template-columns:1fr;gap:4rem;padding:8vh 8.3vw 0}
+@media(min-width:900px){.voices{grid-template-columns:1fr 1fr;column-gap:8.4vw;padding-top:12vh;align-items:start}}
+.ph{position:relative;aspect-ratio:1.93;background:linear-gradient(135deg,var(--c1),var(--c2))}
+.ph::after{content:attr(data-l);position:absolute;left:.8rem;bottom:.6rem;font-size:12px;color:#fff;opacity:.85}
+.card:nth-child(2) .ph{aspect-ratio:2.27}
+.card h3{display:flex;justify-content:space-between;gap:2rem;margin:1rem 0 .4rem;font:400 clamp(17px,1.35vw,22px)/1.3 var(--sans)}
+.card h3 a{border-bottom:1px solid var(--rule)}
+.card h3 span{color:var(--mute);white-space:nowrap}
+.card p{margin:0;font-size:clamp(17px,1.35vw,22px);line-height:1.4}
+.wide{margin:10vh 11vw 0}.wide .ph{aspect-ratio:2.4}
+footer{padding:14vh 2.9vw 3rem}
+footer .big{margin:0 0 3rem;font:400 clamp(28px,3vw,52px)/1.1 var(--sans);letter-spacing:-.015em}
+.fl{display:flex;flex-wrap:wrap;gap:.6rem 2rem;color:var(--mute);font-size:15px}
+.fl a:hover{color:var(--fg)}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header>
+  <nav aria-label="Główna"><a href="#">Journal</a><a href="#">Atlas</a><a href="#">Ludzie</a><a href="#">O projekcie</a><a href="#" title="Nowość" aria-label="Nowość">🫒</a></nav>
+  <a class="brand" id="brand" href="#" aria-label="SARDIGNA, strona główna">
+    <span class="wm" aria-hidden="true"><i style="--a:#c8501f;--b:#7a1f3d">S</i><i style="--a:#2f6b45;--b:#2b5c9e;--c:#c9b08a;--s1:38%;--s2:70%">A</i><i style="--a:#2b5c9e;--b:#4f9aa8">R</i><i style="--a:#d99a2b;--b:#c8501f">D</i><i style="--a:#7a1f3d;--b:#8f8a7e">I</i><i style="--a:#4f9aa8;--b:#2f6b45">G</i><i style="--a:#8f8a7e;--b:#d99a2b;--c:#c8501f;--s1:36%;--s2:68%">N</i><i style="--a:#c8501f;--b:#d99a2b;--c:#2f6b45;--s1:38%;--s2:70%">A</i><i style="--a:#2b5c9e;--b:#2b5c9e">.</i></span>
+  </a>
+  <div class="right">
+    <label class="search"><span class="sr">Szukaj</span><input type="search" placeholder="Szukaj na wyspie"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></label>
+    <a href="#">EN</a><button id="theme" type="button" aria-label="Przełącz motyw jasny/ciemny">◐</button>
+  </div>
+</header>
+
+<main>
+<h1 class="sr">SARDIGNA. Su Mari. S'Isula. Sa Bida.</h1>
+<div class="hero" id="hero"><div class="stage" id="stage">
+  <div class="ghost" aria-hidden="true"><span class="w">Su Mari<b class="pt">.</b></span><span class="w">S'Isula<b class="pt">.</b></span><span class="w">Sa Bida<b class="pt">.</b></span></div>
+  <div class="cols">
+    <section class="col" aria-label="Su Mari"><h2 class="w" style="margin:0">Su Mari<b class="pt" aria-hidden="true">.</b></h2>
+      <p class="txt">Wybrzeże, które ukształtowało kuchnię, rytm dni i drogi na wyspę. Zatoki, porty i miejsca, do których wraca się na dłużej.</p>
+      <ul class="links"><li><a href="#">Wybrzeże</a></li><li><a href="#">Hotele</a></li><li><a href="#">Doświadczenia</a></li></ul></section>
+    <section class="col" aria-label="S'Isula"><h2 class="w" style="margin:0">S'Isula<b class="pt" aria-hidden="true">.</b></h2>
+      <p class="txt">Wyspa do czytania po kolei: region po regionie, miasto po mieście, aż po pojedynczą wieś. Kamień, pamięć i historia zapisane w miejscach.</p>
+      <ul class="links"><li><a href="#">Atlas</a></li><li><a href="#">Miejsca</a></li><li><a href="#">Historia</a></li></ul></section>
+    <section class="col" aria-label="Sa Bida"><h2 class="w" style="margin:0">Sa Bida<b class="pt" aria-hidden="true">.</b></h2>
+      <p class="txt">Chleb, tkanina, ceramika, wino. Rzeczy, które powstały z potrzeby i zostały na życie, oraz ludzie, którzy je wciąż robią.</p>
+      <ul class="links"><li><a href="#">Kulinaria &amp; produkty</a></li><li><a href="#">Rękodzieło</a></li><li><a href="#">Ludzie</a></li></ul></section>
+  </div>
+</div></div>
+
+<section class="voices" aria-label="Opowieści">
+  <article class="card"><div class="ph" style="--c1:#c8501f;--c2:#d99a2b" data-l="[zdjęcie 1,93:1, hotspot z Sanity]"></div>
+    <h3><a href="#">Pane carasau: chleb, który powstał z potrzeby</a><span>Kulinaria</span></h3><p>[PLACEHOLDER] Zajawka artykułu w dwóch zdaniach.</p></article>
+  <article class="card"><div class="ph" style="--c1:#2b5c9e;--c2:#4f9aa8" data-l="[zdjęcie 2,27:1]"></div>
+    <h3><a href="#">Kobiety sardyjskiego tkactwa</a><span>Rękodzieło</span></h3><p>[PLACEHOLDER] Zajawka artykułu w dwóch zdaniach.</p></article>
+</section>
+<div class="wide"><div class="ph" style="--c1:#8f8a7e;--c2:#c9b08a" data-l="[zdjęcie panoramiczne 2,4:1]"></div></div>
+</main>
+
+<footer>
+  <p class="big">SARDIGNA. Su Mari. S'Isula. Sa Bida.</p>
+  <div class="fl"><a href="#">Journal</a><a href="#">Atlas</a><a href="#">O projekcie</a><a href="#">Kontakt</a><a href="#">Newsletter</a><a href="#" id="top">Do góry ↑</a></div>
+</footer>
+
+<script>
+(function(){
+  var d=document.documentElement,mq=matchMedia('(min-width:900px) and (prefers-reduced-motion:no-preference)'),
+  brand=document.getElementById('brand'),hero=document.getElementById('hero'),stage=document.getElementById('stage'),
+  words=[].slice.call(document.querySelectorAll('.cols .w')),ghosts=[].slice.call(document.querySelectorAll('.ghost .w')),
+  fades=[].slice.call(document.querySelectorAll('.cols .txt,.cols .links')),pts=[].slice.call(document.querySelectorAll('.cols .pt')),G=null,tick=false;
+  var ease=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2},clamp=function(v){return Math.min(1,Math.max(0,v))};
+  function reset(){stage.style.height='';stage.style.top='';hero.style.height='';brand.style.transform='';words.forEach(function(w){w.style.transform=''});fades.forEach(function(x){x.style.opacity='';x.style.transform=''});pts.forEach(function(x){x.style.maxWidth='';x.style.opacity=''})}
+  function measure(){
+    reset();G=null;d.classList.toggle('anim',mq.matches);if(!mq.matches)return;
+    var vh=innerHeight,cols=stage.querySelector('.cols'),need=Math.max(vh,cols.offsetTop+cols.offsetHeight+vh*.06);
+    stage.style.height=need+'px';stage.style.top=Math.min(0,vh-need)+'px';hero.style.height=(need+vh)+'px';
+    var b=brand.getBoundingClientRect(),S=Math.min(innerWidth*.48,640)/b.width;
+    G={S:S,dy:vh*.44-(b.top+b.height/2),max:vh,d:words.map(function(w,i){var a=w.getBoundingClientRect(),g=ghosts[i].getBoundingClientRect();return[g.left-a.left,g.top-a.top]})};
+    frame();
+  }
+  function frame(){
+    tick=false;if(!G)return;
+    var p=clamp(scrollY/G.max),r=1-ease(clamp(p/.55)),f=clamp((p-.5)/.25);
+    brand.style.transform='translate3d(0,'+G.dy*r+'px,0) scale('+(1+(G.S-1)*r)+')';
+    words.forEach(function(w,i){w.style.transform='translate3d('+G.d[i][0]*r+'px,'+G.d[i][1]*r+'px,0)'});
+    pts.forEach(function(x){x.style.maxWidth=(.5*r)+'em';x.style.opacity=r});
+    fades.forEach(function(x){x.style.opacity=f;x.style.transform='translateY('+(1-f)*14+'px)'});
+  }
+  function req(){if(!tick){tick=true;requestAnimationFrame(frame)}}
+  addEventListener('scroll',req,{passive:true});addEventListener('resize',measure);mq.addEventListener('change',measure);
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(measure);measure();
+  document.getElementById('top').addEventListener('click',function(e){e.preventDefault();scrollTo({top:0,behavior:'smooth'})});
+  brand.addEventListener('click',function(e){e.preventDefault();scrollTo({top:0,behavior:'smooth'})});
+  document.getElementById('theme').addEventListener('click',function(){var dk=d.dataset.theme?d.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;d.dataset.theme=dk?'light':'dark';try{localStorage.setItem('theme',d.dataset.theme)}catch(e){}});
+  try{var t=localStorage.getItem('theme');if(t)d.dataset.theme=t}catch(e){}
+})();
+</script>
+</body>
+</html>
