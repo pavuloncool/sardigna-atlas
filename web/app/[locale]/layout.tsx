@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { ThemeScript } from "@/components/ThemeScript";
 import { sans, serif } from "@/lib/fonts";
 import { isLocale, locales } from "@/lib/i18n/locales";
-import { siteUrl } from "@/lib/config";
+import { ADS_ENABLED, siteUrl } from "@/lib/config";
+import { getDictionary } from "@/lib/i18n/dictionary";
+import { pagePath } from "@/lib/i18n/segments";
+import { ConsentProvider } from "@/components/consent/ConsentProvider";
 import "../globals.css";
 
 export const dynamicParams = false;
@@ -24,13 +27,18 @@ export default async function LocaleLayout({
 }: LayoutProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
+  const c = getDictionary(locale).consent;
+  // etykiety banera tylko przy włączonej fladze; przy `false` warstwa zgód nie renderuje się wcale
+  const labels = ADS_ENABLED ? { ...c, policyHref: pagePath(locale, "cookies") } : undefined;
 
   return (
     <html lang={locale} className={`${sans.variable} ${serif.variable}`} suppressHydrationWarning>
       <head>
         <ThemeScript />
       </head>
-      <body id="top">{children}</body>
+      <body id="top">
+        {labels ? <ConsentProvider labels={labels}>{children}</ConsentProvider> : children}
+      </body>
     </html>
   );
 }

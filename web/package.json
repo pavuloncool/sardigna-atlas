@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "rm -rf .next/cache/fetch-cache && next build && pagefind --site out",
+    "build:ads": "NEXT_DIST_DIR=out-ads NEXT_PUBLIC_ADS_ENABLED=true NEXT_PUBLIC_AD_EVERY=2 NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-1111111111111111 NEXT_PUBLIC_ADSENSE_SLOT=1111111111 NEXT_PUBLIC_ADSENSE_LAYOUT_KEY=-aa+bb+cc next build",
     "start": "npx serve out",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit"

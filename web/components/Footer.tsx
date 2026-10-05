@@ -1,5 +1,6 @@
 import Link from "@/components/Link";
 import { BackToTop } from "./BackToTop";
+import { ADS_ENABLED } from "@/lib/config";
 import type { Locale } from "@/lib/i18n/locales";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { homePath, pagePath } from "@/lib/i18n/segments";
@@ -20,6 +21,11 @@ export function Footer({ locale, note }: { locale: Locale; note?: string }) {
         <Link href={pagePath(locale, "contact")}>{dict.footer.contact}</Link>
         <Link href={pagePath(locale, "privacy")}>{dict.footer.privacy}</Link>
         <Link href={pagePath(locale, "cookies")}>{dict.footer.cookies}</Link>
+        {ADS_ENABLED ? (
+          <button type="button" className="footer-link-btn" data-consent-open>
+            {dict.consent.settings}
+          </button>
+        ) : null}
         <BackToTop>{dict.footer.top}</BackToTop>
       </nav>
       {note ? <p className="footer-note">{note}</p> : null}

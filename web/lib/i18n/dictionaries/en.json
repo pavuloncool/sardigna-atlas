@@ -158,5 +158,14 @@
       "giftedAnon": "Products were provided free of charge by the maker.",
       "affiliate": "This piece contains affiliate links. If you use them we may earn a commission, at no extra cost to you."
     }
+  },
+  "consent": {
+    "aria": "Cookie consent",
+    "title": "Cookies and ads",
+    "text": "With your consent we show ads that may use cookies. Without it the site works the same and no ads are loaded.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "policy": "Cookie policy",
+    "settings": "Consent settings"
   }
 }

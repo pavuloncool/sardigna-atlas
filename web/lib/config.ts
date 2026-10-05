@@ -1,7 +1,13 @@
 /** Co ile kart w feedzie wstawiamy slot In-Feed (sekcja 13 briefu). */
-export const AD_EVERY = 6;
+export const AD_EVERY = Number(process.env.NEXT_PUBLIC_AD_EVERY) || 6;
 /** Flaga reklam: w wersji 1.0 zawsze `false` (slot jest pusty i ukryty). */
 export const ADS_ENABLED = process.env.NEXT_PUBLIC_ADS_ENABLED === "true";
+/** Identyfikatory AdSense (wypełniane dopiero przy włączeniu reklam, CP5); puste = brak reklam. */
+export const ADSENSE = {
+  client: process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "",
+  slot: process.env.NEXT_PUBLIC_ADSENSE_SLOT ?? "",
+  layoutKey: process.env.NEXT_PUBLIC_ADSENSE_LAYOUT_KEY ?? "",
+} as const;
 /** Artykułów na stronę działu. */
 export const PAGE_SIZE = 12;
 /** Pozycji w bloku „Polecane / Powiązane”. */

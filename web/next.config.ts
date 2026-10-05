@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
+  // wariant testowy z włączoną warstwą zgód buduje się do osobnego katalogu (pnpm --filter web build:ads)
+  ...(process.env.NEXT_DIST_DIR ? { distDir: process.env.NEXT_DIST_DIR } : {}),
   trailingSlash: true,
   images: {
     loader: "custom",

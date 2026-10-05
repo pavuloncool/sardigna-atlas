@@ -1,0 +1,3 @@
+# [PLACEHOLDER] Uzupełnić identyfikatorem wydawcy AdSense (pub-XXXXXXXXXXXXXXXX) dopiero przy włączeniu reklam (CP5).
+# Format: <domena sieci>, <ID wydawcy>, <relacja>, <ID certyfikacji>
+google.com, pub-[PLACEHOLDER], DIRECT, f08c47fec0942fa0

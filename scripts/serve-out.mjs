@@ -4,7 +4,7 @@ import {existsSync, readFileSync, statSync} from 'node:fs'
 import {extname, join, normalize, resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
-const root = resolve(fileURLToPath(new URL('../web/out', import.meta.url)))
+const root = resolve(fileURLToPath(new URL(`../web/${process.env.OUT_DIR ?? 'out'}`, import.meta.url)))
 const port = Number(process.env.PORT ?? 4173)
 const types = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.png': 'image/png', '.jpg': 'image/jpeg', '.pf_meta': 'application/octet-stream'}
 

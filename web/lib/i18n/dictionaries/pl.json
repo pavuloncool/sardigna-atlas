@@ -162,5 +162,14 @@
       "giftedAnon": "Produkty przekazał nieodpłatnie producent.",
       "affiliate": "Ten materiał zawiera linki afiliacyjne. Jeśli z nich skorzystasz, możemy otrzymać prowizję, bez dodatkowych kosztów dla Ciebie."
     }
+  },
+  "consent": {
+    "aria": "Zgody na cookies",
+    "title": "Cookies i reklamy",
+    "text": "Za Twoją zgodą wyświetlamy reklamy, które mogą używać plików cookies. Bez zgody serwis działa tak samo, a reklam nie ładujemy.",
+    "accept": "Akceptuję",
+    "reject": "Odrzucam",
+    "policy": "Polityka cookies",
+    "settings": "Ustawienia zgód"
   }
 }
