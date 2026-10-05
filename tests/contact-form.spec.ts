@@ -68,6 +68,20 @@ test('błędne dane: komunikat i podświetlone pola', async ({page}) => {
   await expect(page.locator('.field-bad')).toHaveCount(1)
 })
 
+test('temat: lista opcji, domyślny i ustawiany z ?topic=, wysyłany w żądaniu', async ({page}) => {
+  const {requests} = await setup(page, {status: 200, body: {ok: true}})
+  await page.goto('/pl/kontakt/?topic=creator')
+  const select = page.getByLabel('Temat')
+  await expect(select.locator('option')).toHaveCount(5)
+  await expect(select).toHaveValue('creator')
+  await fill(page)
+  await page.waitForTimeout(250)
+  await page.getByRole('button', {name: 'Wyślij wiadomość'}).click()
+  await expect(page.getByRole('status')).toContainText('wiadomość została wysłana')
+  expect(requests[0].body).toContain('name="topic"')
+  expect(requests[0].body).toContain('creator')
+})
+
 test('wersja EN ma angielskie etykiety', async ({page}) => {
   await setup(page, {status: 200, body: {ok: true}})
   await page.goto('/en/contact/')

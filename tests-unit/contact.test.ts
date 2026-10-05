@@ -126,6 +126,27 @@ describe('handleContact', () => {
     expect((await handleContact(req, env, f)).status).toBe(200)
   })
 
+  it('temat: domyślnie „pytanie”, poprawny trafia do tematu maila i treści', async () => {
+    const f = fakeFetch({success: true}, {status: 200})
+    await handleContact(post(good), env, f)
+    const def = JSON.parse(String(f.mock.calls.find(([u]) => u.includes('resend'))![1]?.body))
+    expect(def.subject).toContain('Pytanie lub uwaga')
+
+    const f2 = fakeFetch({success: true}, {status: 200})
+    await handleContact(post({...good, topic: 'creator'}), env, f2)
+    const sent = JSON.parse(String(f2.mock.calls.find(([u]) => u.includes('resend'))![1]?.body))
+    expect(sent.subject).toContain('Propozycja współpracy (twórca)')
+    expect(sent.text).toContain('Temat / topic: Propozycja współpracy (twórca)')
+  })
+
+  it('temat spoza listy → invalid i brak wysyłki', async () => {
+    const f = fakeFetch({success: true}, {status: 200})
+    const res = await handleContact(post({...good, topic: 'hack'}), env, f)
+    expect(res.status).toBe(422)
+    expect((await body(res)).fields).toContain('topic')
+    expect(f).not.toHaveBeenCalled()
+  })
+
   it('za duże ciało → 413', async () => {
     const res = await handleContact(post(good, {'Content-Length': '999999'}), env, fakeFetch({success: true}, {status: 200}))
     expect(res.status).toBe(413)

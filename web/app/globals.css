@@ -1033,3 +1033,26 @@ figure.fig figcaption {
 .art-note .affiliate-note a {
   border-bottom: 1px solid var(--rule);
 }
+.field select {
+  all: unset;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  cursor: pointer;
+  padding-bottom: 0.35rem;
+  padding-right: 1.6rem;
+  border-bottom: 1px solid var(--rule);
+  font: 300 var(--fs-lede) / 1.45 var(--serif);
+  color: var(--fg);
+  background-image: linear-gradient(45deg, transparent 50%, var(--mute) 50%), linear-gradient(135deg, var(--mute) 50%, transparent 50%);
+  background-position: calc(100% - 12px) 58%, calc(100% - 6px) 58%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+.field select:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+.field select option {
+  color: initial;
+}

@@ -71,7 +71,18 @@ async function readFields(request: Request): Promise<Record<string, string> | nu
   }
 }
 
+/** Tematy formularza (wartości wysyłane przez front); etykiety w mailu są po polsku, bo czyta je redakcja. */
+export const TOPICS = {
+  question: "Pytanie lub uwaga",
+  creator: "Propozycja współpracy (twórca)",
+  brand: "Partnerstwo (marka)",
+  correction: "Poprawka w tekście",
+  other: "Inne",
+} as const;
+export type Topic = keyof typeof TOPICS;
+
 export interface ContactInput {
+  topic: Topic;
   name: string;
   email: string;
   message: string;
@@ -85,12 +96,16 @@ export function validate(fields: Record<string, string>): { ok: true; value: Con
   const email = (fields.email ?? "").trim();
   const message = (fields.message ?? "").replace(/\r\n/g, "\n").trim();
   const bad: string[] = [];
+  // Brak tematu = „pytanie” (zgodność ze starszym frontem); nieznana wartość = błąd.
+  const rawTopic = (fields.topic ?? "question").trim() || "question";
+  const topic = rawTopic in TOPICS ? (rawTopic as Topic) : null;
+  if (!topic) bad.push("topic");
   if (name.length < 1) bad.push("name");
   if (email.length > 254 || !EMAIL_RE.test(email)) bad.push("email");
   if (message.length < 10 || message.length > 5000) bad.push("message");
   if (bad.length) return { ok: false, fields: bad };
   const locale = /^[a-z]{2}$/.test(fields.locale ?? "") ? fields.locale : "pl";
-  return { ok: true, value: { name, email, message, token: fields["cf-turnstile-response"] ?? "", locale } };
+  return { ok: true, value: { topic: topic!, name, email, message, token: fields["cf-turnstile-response"] ?? "", locale } };
 }
 
 async function verifyTurnstile(token: string, ip: string | null, env: Env, doFetch: Fetch) {
@@ -113,6 +128,7 @@ async function verifyTurnstile(token: string, ip: string | null, env: Env, doFet
 
 async function sendMail(input: ContactInput, env: Env, doFetch: Fetch) {
   const text = [
+    `Temat / topic: ${TOPICS[input.topic]}`,
     `Imię / name: ${input.name}`,
     `E-mail: ${input.email}`,
     `Język strony / site language: ${input.locale}`,
@@ -127,7 +143,7 @@ async function sendMail(input: ContactInput, env: Env, doFetch: Fetch) {
         from: `Sardigna Atlas <${env.CONTACT_FROM_EMAIL}>`,
         to: [env.CONTACT_TO_EMAIL],
         reply_to: input.email,
-        subject: `[Sardigna Atlas] Wiadomość od ${oneLine(input.name, 60)}`,
+        subject: `[Sardigna Atlas] ${TOPICS[input.topic]}: ${oneLine(input.name, 60)}`,
         text,
       }),
       signal: AbortSignal.timeout(TIMEOUT_MS),

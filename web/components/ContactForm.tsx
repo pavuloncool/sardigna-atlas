@@ -34,6 +34,7 @@ export function ContactForm({ locale, dict, privacyHref, siteKey }: Props) {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<keyof Dictionary["contact"]["errors"] | null>(null);
   const [bad, setBad] = useState<string[]>([]);
+  const topicEl = useRef<HTMLSelectElement>(null);
 
   function mount() {
     if (widgetId.current || !widget.current || !window.turnstile) return;
@@ -58,6 +59,12 @@ export function ContactForm({ locale, dict, privacyHref, siteKey }: Props) {
   }
 
   useEffect(() => () => void (widgetId.current = null), []);
+
+  // Linki ze strony „Współpraca” ustawiają temat przez `?topic=creator|brand`.
+  useEffect(() => {
+    const t = new URLSearchParams(location.search).get("topic");
+    if (t && t in dict.topics && topicEl.current) topicEl.current.value = t;
+  }, [dict.topics]);
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -111,6 +118,17 @@ export function ContactForm({ locale, dict, privacyHref, siteKey }: Props) {
 
   return (
     <form className="contact-form" aria-label={dict.aria} onSubmit={submit} onFocusCapture={load} noValidate>
+      {field(
+        "topic",
+        dict.topic,
+        <select id={`${uid}-topic`} name="topic" ref={topicEl} defaultValue="question">
+          {Object.entries(dict.topics).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>,
+      )}
       {field("name", dict.name, <input id={`${uid}-name`} name="name" type="text" autoComplete="name" required maxLength={100} aria-invalid={bad.includes("name")} />)}
       {field("email", dict.email, <input id={`${uid}-email`} name="email" type="email" autoComplete="email" required maxLength={254} aria-invalid={bad.includes("email")} />)}
       {field("message", dict.message, <textarea id={`${uid}-message`} name="message" rows={6} required minLength={10} maxLength={5000} aria-invalid={bad.includes("message")} />)}

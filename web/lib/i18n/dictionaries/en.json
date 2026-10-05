@@ -109,6 +109,14 @@
       "unavailable": "The message cannot be sent right now. Please try again shortly.",
       "network": "Cannot reach the server. Check your connection and try again.",
       "captchaWait": "Please wait a moment for the anti-spam check to finish, then send again."
+    },
+    "topic": "Topic",
+    "topics": {
+      "question": "Question or comment",
+      "creator": "Collaboration proposal (creator)",
+      "brand": "Partnership (brand)",
+      "correction": "Correction",
+      "other": "Other"
     }
   },
   "authors": {

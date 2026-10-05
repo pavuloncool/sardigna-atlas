@@ -111,6 +111,14 @@
       "unavailable": "Wiadomości nie można teraz wysłać. Spróbuj ponownie za chwilę.",
       "network": "Brak połączenia z serwerem. Sprawdź internet i spróbuj ponownie.",
       "captchaWait": "Poczekaj chwilę, aż zakończy się weryfikacja anty-spamowa, i wyślij ponownie."
+    },
+    "topic": "Temat",
+    "topics": {
+      "question": "Pytanie lub uwaga",
+      "creator": "Propozycja współpracy (twórca)",
+      "brand": "Partnerstwo (marka)",
+      "correction": "Poprawka w tekście",
+      "other": "Inne"
     }
   },
   "authors": {
