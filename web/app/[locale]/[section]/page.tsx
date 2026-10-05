@@ -172,6 +172,7 @@ async function AuthorsPage({ locale, alternates }: { locale: Locale; alternates:
         <p className="txt">{dict.authors.intro}</p>
       </header>
       <section className="sec" aria-label={dict.authors.title}>
+        <h2 className="sr">{dict.authors.title}</h2>
         {authors.length ? (
           <ul className="tiles">
             {authors.map((a) => (

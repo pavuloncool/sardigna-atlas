@@ -26,8 +26,15 @@ export function Header({
       <div>
         <nav className="site-nav" aria-label={dict.nav.aria}>
           {items.map((i) => (
-            <Link key={i.label} href={i.href} title={i.title} aria-label={i.ariaLabel}>
-              {i.label}
+            <Link key={i.label} href={i.href} title={i.title}>
+              {i.ariaLabel ? (
+                <>
+                  <span aria-hidden="true">{i.label}</span>
+                  <span className="sr">{i.ariaLabel}</span>
+                </>
+              ) : (
+                i.label
+              )}
             </Link>
           ))}
         </nav>
@@ -35,8 +42,15 @@ export function Header({
           <summary>{dict.nav.menu}</summary>
           <nav aria-label={dict.nav.aria}>
             {items.map((i) => (
-              <Link key={i.label} href={i.href} title={i.title} aria-label={i.ariaLabel}>
-                {i.label}
+              <Link key={i.label} href={i.href} title={i.title}>
+                {i.ariaLabel ? (
+                  <>
+                    <span aria-hidden="true">{i.label}</span>
+                    <span className="sr">{i.ariaLabel}</span>
+                  </>
+                ) : (
+                  i.label
+                )}
               </Link>
             ))}
           </nav>
