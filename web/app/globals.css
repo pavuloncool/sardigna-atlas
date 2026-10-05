@@ -27,6 +27,7 @@
 
   /* typografia */
   --fs-nav: 15px;
+  --fs-header: 16px; /* nawigacja w headerze: większa i grubsza dla czytelności nad zdjęciem */
   --fs-display: clamp(28px, 3vw, 52px);
   --fs-card-title: clamp(17px, 1.35vw, 22px);
   --fs-lede: clamp(16px, 1.3vw, 20px);
@@ -132,16 +133,38 @@ main.page {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+}
+/* Tło headera: pełne (jak w prototypie) albo, nad zdjęciem hero, przezroczyste ze scrimem.
+   `--hbg` (0–1) ustawia components/Hero.tsx; bez niego header ma pełne tło. */
+.site-header::before,
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.site-header::before {
   background: var(--bg);
+  opacity: var(--hbg, 1);
+}
+.site-header::after {
+  bottom: -48px;
+  background: linear-gradient(color-mix(in srgb, var(--bg) 82%, transparent) 55%, transparent);
+  opacity: calc(1 - var(--hbg, 1));
 }
 .site-nav {
   display: flex;
-  gap: 1rem;
-  font-size: var(--fs-nav);
-  color: var(--nav);
-}
-.site-nav a:hover {
+  gap: 1.25rem;
+  font-size: var(--fs-header);
+  font-weight: 500;
   color: var(--fg);
+}
+.site-nav a:hover,
+.header-right a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
 }
 .brand {
   display: block;
@@ -171,11 +194,8 @@ main.page {
   display: flex;
   align-items: center;
   gap: 1.4rem;
-  font-size: var(--fs-nav);
-  color: var(--mute);
-}
-.header-right a:hover,
-.header-right button:hover {
+  font-size: var(--fs-header);
+  font-weight: 500;
   color: var(--fg);
 }
 .search {
@@ -198,13 +218,13 @@ main.page {
   outline-offset: 4px;
 }
 .search input::placeholder {
-  color: var(--mute);
+  color: var(--nav);
 }
 .search button {
   all: unset;
   cursor: pointer;
   display: flex;
-  color: var(--mute);
+  color: var(--nav);
 }
 .search button:focus-visible {
   outline: 2px solid var(--focus);
@@ -213,7 +233,7 @@ main.page {
 .theme-toggle {
   all: unset;
   cursor: pointer;
-  color: var(--mute);
+  color: var(--fg);
   font-size: 18px;
   line-height: 1;
 }
@@ -243,8 +263,9 @@ main.page {
   .menu summary {
     cursor: pointer;
     list-style: none;
-    font-size: var(--fs-nav);
-    color: var(--nav);
+    font-size: var(--fs-header);
+    font-weight: 500;
+    color: var(--fg);
   }
   .menu summary::-webkit-details-marker {
     display: none;

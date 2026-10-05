@@ -41,6 +41,8 @@ export function Hero({
     const fades = [...stageEl.querySelectorAll<HTMLElement>(".cols .txt, .cols .links")];
     const pts = [...stageEl.querySelectorAll<HTMLElement>(".cols .pt")];
     const bgEl = bg.current;
+    // Header jest przezroczysty (ze scrimem) dopóki widać zdjęcie, potem pełne tło jak w prototypie.
+    const header = bgEl ? document.querySelector<HTMLElement>(".site-header") : null;
     let G: { S: number; dy: number; max: number; d: [number, number][] } | null = null;
     let tick = false;
 
@@ -62,6 +64,7 @@ export function Hero({
         x.style.opacity = "";
       });
       if (bgEl) bgEl.style.opacity = "";
+      header?.style.removeProperty("--hbg");
     }
 
     function measure() {
@@ -109,7 +112,11 @@ export function Hero({
         x.style.transform = `translateY(${(1 - f) * 14}px)`;
       });
       // Zdjęcie w tle znika, zanim kolumny staną się w pełni widoczne: po animacji układ jest jak w prototypie.
-      if (bgEl) bgEl.style.opacity = String(1 - ease(clamp((p - 0.25) / 0.5)));
+      if (bgEl) {
+        const o = 1 - ease(clamp((p - 0.25) / 0.5));
+        bgEl.style.opacity = String(o);
+        header?.style.setProperty("--hbg", String(1 - o));
+      }
     }
 
     const req = () => {
