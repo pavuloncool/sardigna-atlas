@@ -11,7 +11,7 @@ export function Feed({
   className?: string;
 }) {
   return (
-    <div className={className}>
+    <div className={className} data-pagefind-ignore>
       {items.map((item, i) => (
         <Fragment key={item.key}>
           {item.node}

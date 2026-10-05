@@ -28,3 +28,17 @@ export function imageSrc(image: SanityImage, ratio?: number): string {
     .url();
   return ratio ? `${url}&ar=${ratio}` : url;
 }
+
+/** Obraz Open Graph: zdjęcie z Sanity przycięte do 1200×630 (kadr z hotspotu), jpg dla robotów społecznościówek. */
+export function ogImageUrl(image: SanityImage | null | undefined): string | null {
+  if (!image?.asset) return null;
+  return builder
+    .image(image as Parameters<typeof builder.image>[0])
+    .width(1200)
+    .height(630)
+    .fit("crop")
+    .crop("focalpoint")
+    .format("jpg")
+    .quality(75)
+    .url();
+}

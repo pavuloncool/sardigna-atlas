@@ -87,6 +87,7 @@ export interface PlacePageData {
   mapId: string | null;
   summary: string | null;
   cover: SanityImage | null;
+  coordinates?: { lat: number; lng: number } | null;
   ancestors: { name: string | null; slug: string; kind: string | null }[] | null;
   children: { _id: string; name: string | null; slug: string; kind: string | null; cover: SanityImage | null; articleCount: number }[] | null;
   articles: ArticleCardData[] | null;
@@ -107,6 +108,10 @@ export interface EntityHubData extends Affiliate {
   protectedStatus?: string | null;
   websiteUrl?: string | null;
   bookingUrl?: string | null;
+  coordinates?: { lat: number; lng: number } | null;
+  priceRange?: string | null;
+  sameAs?: string[] | null;
+  role?: string | null;
   place?: PlaceMini | null;
   articles: ArticleCardData[] | null;
 }

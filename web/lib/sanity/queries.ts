@@ -189,6 +189,7 @@ export const entityHubQuery = groq`*[_type == $type && slug.current == $slug][0]
   "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),
   "image": coalesce(portrait, image)${imageProjection},
   kind, protectedStatus, websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,
+  coordinates, priceRange, "sameAs": links[].url, "role": ${t('role')},
   "place": coalesce(place, origin[0], location[0])->${placeMini},
   "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) ${articleCard}
 }`

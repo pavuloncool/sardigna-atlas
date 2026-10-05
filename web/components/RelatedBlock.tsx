@@ -31,7 +31,7 @@ export function RelatedBlock({
   const dict = getDictionary(locale);
 
   return (
-    <section className="sec" aria-labelledby="related-h">
+    <section className="sec" aria-labelledby="related-h" data-pagefind-ignore>
       <div className="sec-head">
         <h2 id="related-h">{heading ?? dict.article.related}</h2>
       </div>

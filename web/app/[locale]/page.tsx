@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Feed } from "@/components/Feed";
+import { JsonLd } from "@/components/JsonLd";
 import { Figure } from "@/components/Figure";
 import { Hero, type HeroColumn } from "@/components/Hero";
 import { MapSection } from "@/components/MapSection";
@@ -10,6 +11,7 @@ import { PageShell } from "@/components/PageShell";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { isLocale, locales, type Locale } from "@/lib/i18n/locales";
 import { articlePath, homePath, pagePath, type SegmentKey } from "@/lib/i18n/segments";
+import { websiteLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { HERO_IMAGE, HERO_IMAGE_ENABLED } from "@/lib/config";
 import { client } from "@/lib/sanity/client";
@@ -84,11 +86,12 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       alternates={Object.fromEntries(locales.map((l) => [l, homePath(l)]))}
       footerNote={HERO_IMAGE_ENABLED ? `${dict.footer.photo}: ${HERO_IMAGE.credit}` : undefined}
     >
+      <JsonLd data={websiteLd(locale)} />
       <h1 className="sr">{dict.brand}</h1>
       <Hero columns={columns} image={HERO_IMAGE_ENABLED ? HERO_IMAGE : null} />
 
       {latest.length > 0 ? (
-        <section className="voices" id="opowiesci" aria-label={home.voicesAria}>
+        <section className="voices" id="opowiesci" aria-label={home.voicesAria} data-pagefind-ignore>
           {latest.slice(0, 2).map((a, i) => card(a, i === 0 ? 1.93 : 2.27).node)}
         </section>
       ) : (
@@ -96,7 +99,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       )}
 
       {wide ? (
-        <div className="wide">
+        <div className="wide" data-pagefind-ignore>
           <Link href={wide.href} aria-label={wide.label}>
             <Figure image={wide.image} ratio={2.4} sizes="(min-width: 900px) 78vw, 100vw" caption={false} fallback={["var(--granit)", "var(--piasek)"]} />
           </Link>
@@ -112,7 +115,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         if (!group?.articles?.length) return null;
         const href = categoryPath(cats, c.key, locale);
         return (
-          <section className="sec" key={c.key} aria-labelledby={`cat-${c.key}`}>
+          <section className="sec" key={c.key} aria-labelledby={`cat-${c.key}`} data-pagefind-ignore>
             <div className="sec-head">
               <h2 id={`cat-${c.key}`}>
                 <Link href={href}>{categoryName(c, locale)}</Link>
@@ -124,14 +127,16 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         );
       })}
 
-      <section className="sec" aria-labelledby="explore-h">
+      <section className="sec" aria-labelledby="explore-h" data-pagefind-ignore>
         <div className="sec-head">
           <h2 id="explore-h">
             <Link href={pagePath(locale, "atlas")}>{dict.atlas.title}</Link>
           </h2>
         </div>
       </section>
-      <MapSection regions={data?.regions ?? []} locale={locale} />
+      <div data-pagefind-ignore>
+        <MapSection regions={data?.regions ?? []} locale={locale} />
+      </div>
     </PageShell>
   );
 }

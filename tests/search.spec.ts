@@ -55,3 +55,17 @@ test('wersja EN ma angielskie etykiety i filtruje wyniki do EN', async ({page}) 
   await expect(links.first()).toBeVisible()
   expect(await page.locator('.so-results a[href^="/pl/"]').count()).toBe(0)
 })
+
+test('fragmenty wyników nie zawierają tekstu z bloków „Powiązane" ani z kart', async ({page}) => {
+  await page.goto('/pl/atlas/')
+  await page.getByRole('button', {name: 'Otwórz wyszukiwarkę'}).click()
+  await page.getByRole('searchbox', {name: 'Szukaj'}).fill('Pane carasau')
+  await page.keyboard.press('Enter')
+  const results = page.locator('.so-results li')
+  await expect(results.first()).toBeVisible()
+  const texts = await results.allInnerTexts()
+  expect(texts.length).toBeGreaterThan(0)
+  for (const t of texts) {
+    expect(t, 'etykiety bloków „Powiązane"/„Podobne" nie powinny trafiać do indeksu').not.toMatch(/Powiązane|Podobne/)
+  }
+})

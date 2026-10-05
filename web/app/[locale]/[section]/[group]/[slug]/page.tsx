@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/ArticleCard";
 import { Feed } from "@/components/Feed";
 import { Figure } from "@/components/Figure";
+import { JsonLd } from "@/components/JsonLd";
 import { OfferLink } from "@/components/OfferLink";
 import { PageShell } from "@/components/PageShell";
 import { RelatedBlock, type RelatedItem } from "@/components/RelatedBlock";
@@ -16,6 +17,8 @@ import { entityPath, entitySegmentKey, pagePath, segment, type EntityType } from
 import { client } from "@/lib/sanity/client";
 import { entityHubQuery, placeBySlugQuery, relatedQuery } from "@/lib/sanity/queries";
 import type { EntityHubData, PlacePageData } from "@/lib/sanity/types";
+import { ogImageUrl } from "@/lib/sanity/image";
+import { breadcrumbLd, lodgingLd, personLd, placeLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { allLocales, getEntityRoutes, resolveSection } from "@/lib/site";
 
@@ -63,6 +66,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/[section
     locale,
     title: labelOf(data) ?? undefined,
     description: summary,
+    image: ogImageUrl(data.type === "place" ? data.place.cover : data.hub.image),
     path: entityPath(locale, type, slug),
     alternates: allLocales((l) => entityPath(l, type, slug)),
   });
@@ -98,7 +102,7 @@ export default async function EntityPage({ params }: PageProps<"/[locale]/[secti
     const list = items.filter((i) => i.slug && i.title);
     if (!list.length) return null;
     return (
-      <section className="sec" aria-label={heading}>
+      <section className="sec" aria-label={heading} data-pagefind-ignore>
         <div className="sec-head">
           <h2>{heading}</h2>
         </div>
@@ -113,8 +117,22 @@ export default async function EntityPage({ params }: PageProps<"/[locale]/[secti
     );
   };
 
+  const path = entityPath(locale, type, slug);
+  const ogImg = ogImageUrl(hero);
+  const ancestors = data.type === "place" ? (data.place.ancestors ?? []).map((a) => ({ name: a.name, path: entityPath(locale, "place", a.slug) })) : [];
+  const ld =
+    data.type === "place"
+      ? placeLd({ path, name: title ?? "", description: summary, image: ogImg, coordinates: data.place.coordinates, ancestors })
+      : data.type === "person"
+        ? personLd({ locale, path, name: title ?? "", jobTitle: data.hub.role, description: summary, image: ogImg, sameAs: data.hub.sameAs })
+        : data.type === "hotel"
+          ? lodgingLd({ path, name: title ?? "", description: summary, image: ogImg, priceRange: data.hub.priceRange, coordinates: data.hub.coordinates, locality: data.hub.place?.name, website: data.hub.websiteUrl })
+          : null;
+
   return (
     <PageShell locale={locale} alternates={allLocales((x) => entityPath(x, type, slug))}>
+      {ld ? <JsonLd data={ld} /> : null}
+      <JsonLd data={breadcrumbLd([{ name: "Sardigna Atlas", path: `/${locale}/` }, { name: dict.atlas.title, path: atlasHref }, ...ancestors.filter((a) => a.name).map((a) => ({ name: a.name!, path: a.path })), { name: title ?? "", path }])} />
       <header className="pg-head">
         <nav className="crumbs" aria-label="Atlas">
           <Link href={atlasHref}>{dict.atlas.title}</Link>

@@ -12,6 +12,7 @@ import { entityPath, pagePath, type SegmentKey } from "@/lib/i18n/segments";
 import { client } from "@/lib/sanity/client";
 import { atlasIndexQuery, exploreMapQuery } from "@/lib/sanity/queries";
 import type { AtlasIndexData } from "@/lib/sanity/types";
+import { ogImageUrl } from "@/lib/sanity/image";
 import { pageMetadata } from "@/lib/seo";
 import {
   allLocales,
@@ -46,6 +47,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/[section
       locale,
       title: categoryName(c, locale),
       description: localized(c.intro, locale) || undefined,
+      image: ogImageUrl(c.cover),
       path,
       alternates: allLocales((l) => `/${l}/${categorySlug(c, l)}/`),
     });
@@ -134,8 +136,10 @@ async function AtlasPage({
         <h1>{dict.atlas.title}</h1>
         <p className="txt">{dict.atlas.intro}</p>
       </header>
-      <MapSection regions={regions ?? []} locale={locale} />
-      <section className="sec" aria-label={dict.atlas.title}>
+      <div data-pagefind-ignore>
+        <MapSection regions={regions ?? []} locale={locale} />
+      </div>
+      <section className="sec" aria-label={dict.atlas.title} data-pagefind-ignore>
         <div className="cols-3">
           {list(dict.sections.places, (idx?.places ?? []).map((p) => ({ _id: p._id, label: p.name, sub: p.parent?.name, href: entityPath(locale, "place", p.slug) })))}
           {list(dict.sections.people, (idx?.people ?? []).map((p) => ({ _id: p._id, label: p.name, sub: p.role, href: entityPath(locale, "person", p.slug) })))}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CategoryView, fetchCategoryPage } from "@/components/CategoryView";
 import { Figure } from "@/components/Figure";
+import { JsonLd } from "@/components/JsonLd";
 import { OfferLink } from "@/components/OfferLink";
 import { PageShell } from "@/components/PageShell";
 import { Prose } from "@/components/Prose";
@@ -15,6 +16,8 @@ import { entityPath, paginationSlug, parsePaginationSlug } from "@/lib/i18n/segm
 import { client } from "@/lib/sanity/client";
 import { articleBySlugQuery, relatedQuery } from "@/lib/sanity/queries";
 import type { ArticlePageData } from "@/lib/sanity/types";
+import { ogImageUrl } from "@/lib/sanity/image";
+import { articleLd, breadcrumbLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import {
   articleAlternates,
@@ -80,6 +83,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/[section
     locale,
     title: a.seo?.title ?? a.title,
     description: a.seo?.description ?? a.excerpt,
+    image: ogImageUrl(a.seo?.ogImage ?? a.heroImage),
     path: `/${locale}/${section}/${slug}/`,
     alternates: { [locale]: `/${locale}/${section}/${slug}/`, ...articleAlternates(cats, a.category?.key, a.translations) },
     noIndex: a.seo?.noIndex ?? false,
@@ -135,7 +139,7 @@ export default async function ArticleOrPage({ params }: PageProps<"/[locale]/[se
     const list = items.filter((i) => i.slug && i.title);
     if (!list.length) return null;
     return (
-      <section className="sec" aria-label={title}>
+      <section className="sec" aria-label={title} data-pagefind-ignore>
         <div className="sec-head">
           <h2>{title}</h2>
         </div>
@@ -152,6 +156,27 @@ export default async function ArticleOrPage({ params }: PageProps<"/[locale]/[se
 
   return (
     <PageShell locale={locale} alternates={alternates}>
+      <JsonLd
+        data={[
+          articleLd({
+            locale,
+            path: `/${locale}/${section}/${slug}/`,
+            title: a.title,
+            description: a.seo?.description ?? a.excerpt,
+            image: ogImageUrl(a.seo?.ogImage ?? a.heroImage),
+            author: a.author?.name,
+            published: a.publishedAt,
+            modified: a._updatedAt,
+            section: a.category?.name,
+            recipe: a.format === "recipe",
+          }),
+          breadcrumbLd([
+            { name: "Sardigna Atlas", path: `/${locale}/` },
+            ...(a.category?.name ? [{ name: a.category.name, path: catHref }] : []),
+            { name: a.title, path: `/${locale}/${section}/${slug}/` },
+          ]),
+        ]}
+      />
       <article>
         <header className="art-head">
           <p className="meta">
