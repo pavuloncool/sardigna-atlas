@@ -28,3 +28,7 @@ jobs:
           SANITY_DATASET: production
           SANITY_API_VERSION: "2025-02-19"
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+      - name: Martwe linki w web/out
+        run: pnpm test:links
+      - name: Testy układu (Playwright, Chrome z runnera)
+        run: pnpm test:e2e
