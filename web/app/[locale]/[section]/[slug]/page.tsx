@@ -7,6 +7,7 @@ import { Figure } from "@/components/Figure";
 import { JsonLd } from "@/components/JsonLd";
 import { OfferLink } from "@/components/OfferLink";
 import { PageShell } from "@/components/PageShell";
+import { PartnershipNote, effectiveType } from "@/components/PartnershipNote";
 import { Prose } from "@/components/Prose";
 import { RelatedBlock, type RelatedItem } from "@/components/RelatedBlock";
 import { Tile } from "@/components/Tile";
@@ -202,6 +203,7 @@ export default async function ArticleOrPage({ params }: PageProps<"/[locale]/[se
             description: a.seo?.description ?? a.excerpt,
             image: ogImageUrl(a.seo?.ogImage ?? a.heroImage),
             author: a.author?.name,
+            sponsors: effectiveType(a.partnership, false) === "sponsored" ? (a.partnership?.partners ?? []).map((x) => x.name) : [],
             published: a.publishedAt,
             modified: a._updatedAt,
             section: a.category?.name,
@@ -219,16 +221,21 @@ export default async function ArticleOrPage({ params }: PageProps<"/[locale]/[se
           <p className="meta">
             <Link href={catHref}>{a.category?.name}</Link>
             {published ? <> · {published}</> : null}
-            {a.author?.name ? <> · {a.author.name}</> : null}
+            {a.author?.name ? (
+              <>
+                {" · "}
+                {a.author.slug ? <Link href={`/${locale}/${segment("authors", locale)}/${a.author.slug}/`}>{a.author.name}</Link> : a.author.name}
+              </>
+            ) : null}
           </p>
           <h1>{a.title}</h1>
           {a.excerpt ? <p className="txt">{a.excerpt}</p> : null}
         </header>
+        <PartnershipNote locale={locale} partnership={a.partnership} hasAffiliate={hasAffiliate} />
         <div className="art-hero">
           <Figure image={a.heroImage} ratio={2.4} sizes="(min-width: 900px) 78vw, 100vw" priority fallback={["var(--granit)", "var(--piasek)"]} />
         </div>
         <div className="art-body">
-          {hasAffiliate ? <p className="affiliate-note">{dict.article.affiliateNotice}</p> : null}
           {a.body ? <Prose value={a.body} locale={locale} /> : null}
         </div>
       </article>
@@ -247,9 +254,24 @@ export default async function ArticleOrPage({ params }: PageProps<"/[locale]/[se
 
       {tiles(dict.sections.places, (a.location ?? []).map((p) => ({ _id: p._id, type: "place" as const, slug: p.slug, title: p.name, sub: p.parent?.name, image: p.image })))}
       {tiles(dict.sections.people, (a.people ?? []).map((p) => ({ _id: p._id, type: "person" as const, slug: p.slug, title: p.name, sub: p.role, image: p.portrait })))}
-      {tiles(dict.sections.products, (a.products ?? []).map((p) => ({ _id: p._id, type: "product" as const, slug: p.slug, title: p.name, image: p.image, offer: p })))}
+      {tiles(dict.sections.products, (a.products ?? []).filter((p) => p.kind !== "equipment").map((p) => ({ _id: p._id, type: "product" as const, slug: p.slug, title: p.name, sub: p.brand?.name, image: p.image, offer: p })))}
+      {tiles(dict.sections.equipment, (a.products ?? []).filter((p) => p.kind === "equipment").map((p) => ({ _id: p._id, type: "product" as const, slug: p.slug, title: p.name, sub: p.brand?.name, image: p.image, offer: p })))}
       {tiles(dict.sections.stays, (a.hotel ?? []).map((p) => ({ _id: p._id, type: "hotel" as const, slug: p.slug, title: p.name, sub: p.place?.name, image: p.image, offer: p })))}
       {tiles(dict.sections.experiences, (a.experiences ?? []).map((p) => ({ _id: p._id, type: "experience" as const, slug: p.slug, title: p.title, sub: p.place?.name, image: p.image, offer: p })))}
+
+      {a.author?.slug ? (
+        <section className="sec" aria-label={dict.authors.about} data-pagefind-ignore>
+          <div className="sec-head">
+            <h2>{dict.authors.about}</h2>
+          </div>
+          <ul className="tiles">
+            <Tile href={`/${locale}/${segment("authors", locale)}/${a.author.slug}/`} title={a.author.name} sub={[a.author.kind === "guest" ? dict.authors.guest : null, a.author.role].filter(Boolean).join(" · ")} image={a.author.photo} ratio={1.2}>
+              {a.author.bio ? <p className="sub">{a.author.bio}</p> : null}
+              {a.author.disclosure ? <p className="sub">{dict.authors.disclosureLabel}: {a.author.disclosure}</p> : null}
+            </Tile>
+          </ul>
+        </section>
+      ) : null}
 
       <RelatedBlock items={related} locale={locale} />
       <RelatedBlock items={similar} locale={locale} heading={dict.article.similar} />

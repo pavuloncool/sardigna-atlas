@@ -37,6 +37,8 @@ export function articleLd(a: {
   modified?: string | null;
   section?: string | null;
   recipe?: boolean;
+  /** Nazwy sponsorów (tylko dla materiału sponsorowanego). */
+  sponsors?: string[];
 }) {
   const base = clean({
     name: a.title,
@@ -48,6 +50,7 @@ export function articleLd(a: {
     dateModified: a.modified,
     author: a.author ? { "@type": "Person", name: a.author } : { "@type": "Organization", name: "Sardigna Atlas" },
     publisher: { "@type": "Organization", name: "Sardigna Atlas", url: abs("/") },
+    sponsor: a.sponsors?.length ? a.sponsors.map((name) => ({ "@type": "Organization", name })) : null,
     mainEntityOfPage: abs(a.path),
     url: abs(a.path),
   });

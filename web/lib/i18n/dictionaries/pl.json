@@ -136,5 +136,22 @@
     "barter": "Współpraca barterowa"
   },
   "brandProducts": "Produkty i sprzęt marki",
-  "brandOf": "Marka"
+  "brandOf": "Marka",
+  "partnership": {
+    "label": {
+      "affiliate": "Linki afiliacyjne",
+      "sponsored": "Materiał sponsorowany",
+      "collaboration": "Współpraca reklamowa",
+      "gifted": "Produkty od producenta"
+    },
+    "text": {
+      "sponsored": "Materiał powstał na zlecenie i za wynagrodzeniem: {partners}.",
+      "sponsoredAnon": "Materiał powstał na zlecenie i za wynagrodzeniem partnera.",
+      "collaboration": "Tekst powstał we współpracy reklamowej z: {partners}.",
+      "collaborationAnon": "Tekst powstał we współpracy reklamowej z partnerem.",
+      "gifted": "Produkty przekazali nieodpłatnie: {partners}.",
+      "giftedAnon": "Produkty przekazał nieodpłatnie producent.",
+      "affiliate": "Ten materiał zawiera linki afiliacyjne. Jeśli z nich skorzystasz, możemy otrzymać prowizję, bez dodatkowych kosztów dla Ciebie."
+    }
+  }
 }

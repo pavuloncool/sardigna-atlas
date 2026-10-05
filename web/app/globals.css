@@ -1023,3 +1023,13 @@ figure.fig figcaption {
   font-size: 12px;
   color: var(--mute);
 }
+.art-note {
+  padding: 4vh 8.3vw 0;
+}
+.art-note .affiliate-note {
+  max-width: calc(var(--measure) + 8rem);
+  margin: 0;
+}
+.art-note .affiliate-note a {
+  border-bottom: 1px solid var(--rule);
+}
