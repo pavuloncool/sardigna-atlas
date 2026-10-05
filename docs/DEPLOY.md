@@ -56,7 +56,9 @@ Szkice są widoczne wyłącznie w Studio (`pnpm studio` lokalnie albo hostowane 
 
 ## Web Analytics (cookieless)
 
-Włączane w panelu: Workers & Pages → `sardigna-atlas` → **Metrics** → Web Analytics → **Enable**. Cloudflare dopisuje wtedy skrypt (`static.cloudflareinsights.com`) przy następnym wdrożeniu. To jedyna dopuszczona analityka (sekcja 14 briefu, warstwa 1: bez cookies i bez banera); po włączeniu sprawdzamy w przeglądarce, czy nie powstają żadne cookies ani wpisy w pamięci lokalnej. Uwaga z dokumentacji: nagłówek `Cache-Control: public, no-transform` wyłączałby automatyczne wstrzykiwanie skryptu (nie ustawiamy takiego).
+Włączone 2026-10-05 w panelu: Workers & Pages → `sardigna-atlas` → **Metrics** → Web Analytics → **Enable**. Cloudflare wstrzykuje przy wdrożeniu `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=…>`; dane wysyła na `cloudflareinsights.com`. To jedyna dopuszczona analityka (sekcja 14 briefu, warstwa 1: bez cookies i bez banera).
+
+**Sprawdzone na produkcji po włączeniu:** `document.cookie` pusty, `localStorage`/`sessionStorage`/IndexedDB puste, odpowiedzi skryptu i strony bez `Set-Cookie`, żadnych domen Google ani partnerów (hosty: własna domena, `static.cloudflareinsights.com`, `cloudflareinsights.com`, `cdn.sanity.io`). Nie da się z poziomu JS zobaczyć ewentualnych cookies ustawianych przez domenę `cloudflareinsights.com` na odpowiedzi POST beacona; dokumentacja Cloudflare opisuje Web Analytics jako bezcookiesową, a przed uruchomieniem komercyjnym warto to potwierdzić w narzędziach przeglądarki (zakładka Aplikacja → Cookies). Uwaga z dokumentacji: nagłówek `Cache-Control: public, no-transform` wyłączałby automatyczne wstrzykiwanie skryptu (nie ustawiamy takiego).
 
 ## Wariant „Workers static assets” (przenośność)
 
