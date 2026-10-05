@@ -71,3 +71,12 @@ Format: decyzja, powód, alternatywa.
 - **Testy:** `pnpm test:links` (crawler `out/`: 1929 odnośników, brak martwych; sprawdzony na sztucznie zepsutym linku), `pnpm test:e2e` (Playwright na zainstalowanym Chrome, 5 przypadków: gwarancja układu hero dla 1210×420/540/700 i 1600×900 co 20 px + fallback statyczny).
 - **AC dla `de`:** po włączeniu `de` w `web/lib/i18n/locales.ts` build daje 21 stron `/de/…` + encje, 71 stron razem, 2804 odnośniki bez martwych (sprawdzone i cofnięte).
 - **Znane braki fazy 3:** brak własnej strony 404 w języku serwisu (domyślna z Next), JSON-LD i obrazy OG dochodzą w fazie 5, formularz kontaktowy w fazie 4.
+
+## 2026-10-05 — Cloudflare Pages (CP3)
+
+- **Projekt Pages `sardigna-atlas` utworzony przez API** (po autoryzacji aplikacji GitHub „Cloudflare Workers & Pages” przez właściciela): source `pavuloncool/sardigna-atlas`, branch `main`, root `web`, build `pnpm --filter web build`, wyjście `out`. Podgląd: każdy branch/PR dostaje adres `*.sardigna-atlas.pages.dev` (branch deploy, sekcja 6 briefu).
+- **Zmienne build:** `NODE_VERSION=22`, `PNPM_VERSION=10.33.2` (build image v3 ma domyślnie pnpm 10.11.1 i nie wykrywa wersji z lockfile), `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_API_VERSION`, `NEXT_PUBLIC_SITE_URL=https://mysardinia.online` (tylko production), `NEXT_PUBLIC_ADS_ENABLED=false`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY`; `TURNSTILE_SECRET_KEY` jako secret (production i preview).
+- **Turnstile:** widget zarządzany (managed) dla `mysardinia.online`, `sardigna-atlas.pages.dev`, `localhost`.
+- **Domena:** `mysardinia.online` (strefa na koncie Cloudflare) dodana do projektu; wymaga rekordu `CNAME @ → sardigna-atlas.pages.dev` (proxied), bo token OAuth wranglera nie ma zapisu DNS.
+- **`web/public/_redirects`:** `/ → /pl/` (302). Przekierowanie klienckie z `app/(root)` zostaje jako zapasowe.
+- **Funkcje Pages:** katalog `functions` leży w roocie projektu, czyli `web/functions` (dokumentacja Cloudflare: „at the root of your Pages project”, przy ustawionym root dir).

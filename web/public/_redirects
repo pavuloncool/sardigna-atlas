@@ -1,0 +1,2 @@
+# Cloudflare Pages / Workers static assets: prawdziwe przekierowanie HTTP strony głównej na język domyślny.
+/  /pl/  302
