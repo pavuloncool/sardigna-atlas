@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CategoryView } from "@/components/CategoryView";
+import { ContactForm } from "@/components/ContactForm";
 import { MapSection, type MapPlace } from "@/components/MapSection";
 import { PageShell } from "@/components/PageShell";
 import { loadPage, type PageName } from "@/lib/content";
@@ -84,6 +85,14 @@ export default async function SectionPage({ params }: PageProps<"/[locale]/[sect
         <h1>{page.title}</h1>
       </header>
       <div className="prose page-prose" dangerouslySetInnerHTML={{ __html: page.html }} />
+      {resolved.page === "contact" ? (
+        <ContactForm
+          locale={locale}
+          dict={getDictionary(locale).contact}
+          privacyHref={pagePath(locale, "privacy")}
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
+        />
+      ) : null}
     </PageShell>
   );
 }

@@ -10,7 +10,7 @@
 
 Serwis w wersji 1.0 nie ustawia plików cookies i nie korzysta z narzędzi analitycznych opartych na cookies. Statystyki odwiedzin zbieramy narzędziem bezcookiesowym (Cloudflare Web Analytics), które nie śledzi użytkowników między witrynami.
 
-Jeśli napiszesz do nas przez formularz kontaktowy, przetwarzamy podane w nim dane (adres e-mail, treść wiadomości) wyłącznie po to, żeby odpowiedzieć. Wiadomości wysyłamy przez usługę Resend.
+Jeśli napiszesz do nas przez formularz kontaktowy, przetwarzamy podane w nim dane (adres e-mail, treść wiadomości) wyłącznie po to, żeby odpowiedzieć. Wiadomości wysyłamy przez usługę Resend. Formularz chroni przed spamem Cloudflare Turnstile: jego skrypt ładuje się dopiero wtedy, gdy klikniesz w formularz, i przekazuje Cloudflare dane techniczne przeglądarki potrzebne do weryfikacji, że wiadomość wysyła człowiek. [PLACEHOLDER] Do weryfikacji prawnej: podstawa prawna i ewentualne cookies/pamięć lokalna Turnstile.
 
 ## Linki afiliacyjne
 

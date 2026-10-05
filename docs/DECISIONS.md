@@ -80,3 +80,14 @@ Format: decyzja, powód, alternatywa.
 - **Domena:** `mysardinia.online` (strefa na koncie Cloudflare) dodana do projektu; wymaga rekordu `CNAME @ → sardigna-atlas.pages.dev` (proxied), bo token OAuth wranglera nie ma zapisu DNS.
 - **`web/public/_redirects`:** `/ → /pl/` (302). Przekierowanie klienckie z `app/(root)` zostaje jako zapasowe.
 - **Funkcje Pages:** katalog `functions` leży w roocie projektu, czyli `web/functions` (dokumentacja Cloudflare: „at the root of your Pages project”, przy ustawionym root dir).
+
+## 2026-10-05 — Faza 4 (kontakt)
+
+- **Funkcja `web/functions/api/contact.ts` (Pages Function) deleguje do `functions/_lib/contact.ts`**, żeby logikę dało się testować bez środowiska Cloudflare (`fetch` wstrzykiwany). Jeden `onRequest` dla wszystkich metod (inne niż POST → 405).
+- **Warstwy ochrony:** sprawdzenie `Origin` (domena produkcyjna, `*.pages.dev`, localhost), limit ciała 20 kB, honeypot `website` (bot dostaje „sukces”, nic nie jest wysyłane), Turnstile `siteverify` (token jednorazowy, 5 min), walidacja pól (imię 1–100, e-mail, wiadomość 10–5000 znaków), usuwanie znaków nowej linii z tematu (wstrzykiwanie nagłówków).
+- **Limit Resend (100 maili/dzień na Free):** odpowiedź 429 lub błąd `quota`/`rate_limit` → `{ok:false,error:"limit"}` z kodem 429 i czytelnym komunikatem po stronie frontu, nie 500.
+- **Treść maila tylko jako `text`** (bez HTML), `reply_to` = adres nadawcy formularza, brak IP i innych danych technicznych w treści. Konfiguracja przez zmienne Pages: `RESEND_API_KEY` (secret), `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, `TURNSTILE_SECRET_KEY` (secret), `NEXT_PUBLIC_SITE_URL`.
+- **Skrypt Turnstile ładuje się dopiero przy pierwszej interakcji z formularzem**, tylko na stronie Kontakt (zasada nadrzędna sekcji 14: żadnych skryptów third-party bez potrzeby). W fazie 7 trafi do gatekeepera jako kategoria `necessary`; do ustalenia z prawnikiem, czy Turnstile używa cookies lub pamięci lokalnej (sprawdzić w sieci na produkcji).
+- **Brak własnej biblioteki typów Workers:** funkcja używa standardowych typów (`Request`, `Response`, `fetch`, `AbortSignal.timeout`), więc nie dodajemy `@cloudflare/workers-types`.
+- **Testy:** `pnpm test:unit` (Vitest, 14 przypadków funkcji) i `tests/contact-form.spec.ts` (Playwright: Turnstile nie ładuje się przed interakcją, sukces, limit, błędne dane, wersja EN; endpoint i Turnstile podstawione, żadnych prawdziwych maili). W CI klucz Turnstile to testowy `1x00000000000000000000AA`.
+- **Domena nadawcy: `mail.mysardinia.online`** (subdomena, region Resend `eu-west-1`, bez śledzenia kliknięć i otwarć). Domena główna zostaje dla poczty iCloud; rekordy SPF/DKIM Resend leżą na subdomenie, więc nie kolidują z SPF iCloud.

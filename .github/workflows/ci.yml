@@ -28,6 +28,9 @@ jobs:
           SANITY_DATASET: production
           SANITY_API_VERSION: "2025-02-19"
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          # testowy klucz Turnstile (Cloudflare: zawsze przechodzi), tylko na potrzeby testów
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: "1x00000000000000000000AA"
+      - run: pnpm test:unit
       - name: Martwe linki w web/out
         run: pnpm test:links
       - name: Testy układu (Playwright, Chrome z runnera)

@@ -85,5 +85,24 @@
   },
   "page": {
     "updated": "Aktualizacja"
+  },
+  "contact": {
+    "aria": "Formularz kontaktowy",
+    "name": "Imię",
+    "email": "Adres e-mail",
+    "message": "Wiadomość",
+    "submit": "Wyślij wiadomość",
+    "sending": "Wysyłam…",
+    "success": "Dziękujemy, wiadomość została wysłana. Odpowiemy tak szybko, jak to możliwe.",
+    "notice": "Dane z formularza (imię, adres e-mail, treść) posłużą wyłącznie do odpowiedzi na wiadomość i są wysyłane przez usługę Resend. Formularz chroni Cloudflare Turnstile, ładowany dopiero po kliknięciu w formularz. Szczegóły w {privacy}.",
+    "privacyLink": "Polityce prywatności",
+    "errors": {
+      "invalid": "Sprawdź zaznaczone pola: imię, poprawny adres e-mail i wiadomość (co najmniej 10 znaków).",
+      "captcha": "Nie udało się potwierdzić, że nie jesteś robotem. Spróbuj ponownie.",
+      "limit": "Dzisiejszy limit wiadomości został wyczerpany. Spróbuj ponownie jutro albo napisz bezpośrednio na adres podany w sekcji Wydawca.",
+      "unavailable": "Wiadomości nie można teraz wysłać. Spróbuj ponownie za chwilę.",
+      "network": "Brak połączenia z serwerem. Sprawdź internet i spróbuj ponownie.",
+      "captchaWait": "Poczekaj chwilę, aż zakończy się weryfikacja anty-spamowa, i wyślij ponownie."
+    }
   }
 }

@@ -814,3 +814,87 @@ figure.fig figcaption {
 .search input::-webkit-search-cancel-button {
   display: none;
 }
+
+/* ── Formularz kontaktowy (pola jak wyszukiwarka z headera: cienka linia pod spodem, serif 300) ── */
+.contact-form {
+  display: grid;
+  gap: 2rem;
+  max-width: 34rem;
+  padding: 4vh 8.3vw 0;
+  box-sizing: content-box;
+}
+.field label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: var(--fs-nav);
+  color: var(--mute);
+}
+.field input,
+.field textarea {
+  all: unset;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--rule);
+  font: 300 var(--fs-lede) / 1.45 var(--serif);
+  color: var(--fg);
+}
+.field textarea {
+  min-height: 9rem;
+  white-space: pre-wrap;
+}
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+.field-bad input,
+.field-bad textarea {
+  border-bottom-color: var(--terakota);
+}
+.hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.form-note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--mute);
+}
+.form-note a {
+  border-bottom: 1px solid var(--rule);
+}
+.form-submit {
+  all: unset;
+  justify-self: start;
+  cursor: pointer;
+  font-size: clamp(14px, 1.2vw, 18px);
+  border-bottom: 1px solid var(--rule);
+}
+.form-submit:hover {
+  border-bottom-color: var(--fg);
+}
+.form-submit:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+.form-submit[disabled] {
+  color: var(--mute);
+  cursor: progress;
+}
+.form-status {
+  margin: 0;
+  padding: 4vh 8.3vw 0;
+  font: 300 var(--fs-lede) / 1.45 var(--serif);
+}
+.contact-form .form-status {
+  padding: 0;
+}
+.form-error {
+  color: var(--terakota);
+}

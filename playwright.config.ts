@@ -4,6 +4,7 @@ import {defineConfig} from '@playwright/test'
 // (kanał `chrome`), więc nie trzeba pobierać przeglądarek Playwrighta.
 export default defineConfig({
   testDir: 'tests',
+  testMatch: '**/*.spec.ts',
   fullyParallel: true,
   reporter: 'list',
   use: {baseURL: 'http://localhost:4173', channel: 'chrome'},

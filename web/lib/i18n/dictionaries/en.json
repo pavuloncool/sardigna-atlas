@@ -83,5 +83,24 @@
   },
   "page": {
     "updated": "Updated"
+  },
+  "contact": {
+    "aria": "Contact form",
+    "name": "Name",
+    "email": "Email address",
+    "message": "Message",
+    "submit": "Send message",
+    "sending": "Sending…",
+    "success": "Thank you, your message has been sent. We will reply as soon as we can.",
+    "notice": "The form data (name, email address, message) is used only to reply to your message and is sent through the Resend service. The form is protected by Cloudflare Turnstile, loaded only after you click into the form. Details in the {privacy}.",
+    "privacyLink": "Privacy policy",
+    "errors": {
+      "invalid": "Please check the marked fields: name, a valid email address and a message (at least 10 characters).",
+      "captcha": "We could not confirm you are not a robot. Please try again.",
+      "limit": "Today's message limit has been reached. Please try again tomorrow or write directly to the address in the Publisher section.",
+      "unavailable": "The message cannot be sent right now. Please try again shortly.",
+      "network": "Cannot reach the server. Check your connection and try again.",
+      "captchaWait": "Please wait a moment for the anti-spam check to finish, then send again."
+    }
   }
 }

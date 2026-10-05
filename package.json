@@ -14,7 +14,8 @@
     "verify:live": "tsx scripts/verify-live.ts",
     "test:links": "tsx scripts/check-links.ts",
     "test:e2e": "playwright test",
-    "test": "pnpm test:links && pnpm test:e2e"
+    "test": "pnpm test:unit && pnpm test:links && pnpm test:e2e",
+    "test:unit": "vitest run"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
@@ -23,7 +24,8 @@
     "groq": "^6.17.0",
     "groq-js": "^2.0.0",
     "tsx": "^4.23.15",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.3"
   },
   "type": "module"
 }

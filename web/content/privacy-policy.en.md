@@ -10,7 +10,7 @@
 
 Version 1.0 of the site sets no cookies and uses no cookie-based analytics. We measure visits with a cookieless tool (Cloudflare Web Analytics) that does not track users across sites.
 
-If you write to us through the contact form, we process the data you provide (email address, message) only to reply. Messages are sent through the Resend service.
+If you write to us through the contact form, we process the data you provide (email address, message) only to reply. Messages are sent through the Resend service. The form is protected against spam by Cloudflare Turnstile: its script loads only when you click into the form, and it passes Cloudflare the technical browser data needed to verify that a human is sending the message. [PLACEHOLDER] For legal review: legal basis and any cookies/local storage used by Turnstile.
 
 ## Affiliate links
 
