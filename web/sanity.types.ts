@@ -697,7 +697,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../web/lib/sanity/queries.ts
 // Variable: articleBySlugQuery
-// Query: *[_type == "article" && language == $lang && slug.current == $slug][0]{  _id, title, "slug": slug.current, language, excerpt, format, publishedAt, _updatedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "gallery": gallery[]{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  body[]{  ...,  _type == "block" => {    markDefs[]{      ...,      _type == "entityLink" => {        "target": target->{          _type, "slug": slug.current,          "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl)        }      }    }  },  _type == "mediaImage" => {    "lqip": asset->metadata.lqip,    "width": asset->metadata.dimensions.width,    "height": asset->metadata.dimensions.height  }},  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "author": author->{ name, "slug": slug.current, "bio": coalesce(bio[$lang], bio.en, bio.pl), "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  "location": location[]->{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,  "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current }},  "people": people[]->{  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "products": products[]->{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "experiences": experiences[]->{  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "hotel": hotel[]->{  _id, name, "slug": slug.current, type, priceRange,  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "related": related[]->{  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "similar": *[    _type == "article" && language == $lang && _id != ^._id &&    references(      coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) +      coalesce(^.products[]._ref, []) + coalesce(^.experiences[]._ref, []) +      coalesce(^.hotel[]._ref, [])    )  ] | order(publishedAt desc)[0...4] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  seo{ title, description, noIndex, "ogImage": ogImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  "translations": (  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language })[defined(slug)]}
+// Query: *[_type == "article" && language == $lang && slug.current == $slug][0]{  _id, title, "slug": slug.current, language, excerpt, format, publishedAt, _updatedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "gallery": gallery[]{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  body[]{  ...,  _type == "block" => {    markDefs[]{      ...,      _type == "entityLink" => {        "target": target->{          _type, "slug": slug.current,          "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl)        }      }    }  },  _type == "mediaImage" => {    "lqip": asset->metadata.lqip,    "width": asset->metadata.dimensions.width,    "height": asset->metadata.dimensions.height  }},  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "author": author->{    name, "slug": slug.current, kind, website, "role": coalesce(role[$lang], role.en, role.pl), "bio": coalesce(bio[$lang], bio.en, bio.pl),    "disclosure": coalesce(disclosure[$lang], disclosure.en, disclosure.pl), "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }  },  "partnership": partnership{ type, note, "partners": partners[]->{ _type, name, "slug": slug.current } },  "location": location[]->{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,  "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current }},  "people": people[]->{  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "products": products[]->{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,  affiliateUrl, isAffiliate, isSponsored,  "brand": brand->{ name, "slug": slug.current },  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "experiences": experiences[]->{  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "hotel": hotel[]->{  _id, name, "slug": slug.current, type, priceRange,  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "related": related[]->{  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "similar": *[    _type == "article" && language == $lang && _id != ^._id &&    references(      coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) +      coalesce(^.products[]._ref, []) + coalesce(^.experiences[]._ref, []) +      coalesce(^.hotel[]._ref, [])    )  ] | order(publishedAt desc)[0...4] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  seo{ title, description, noIndex, "ogImage": ogImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  "translations": (  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language })[defined(slug)]}
 export type ArticleBySlugQueryResult = {
   _id: string;
   title: string | null;
@@ -850,7 +850,25 @@ export type ArticleBySlugQueryResult = {
   author: {
     name: string | null;
     slug: string | null;
+    kind: "guest" | "staff" | null;
+    website: string | null;
+    role:
+      | Array<{
+          _type: "localizedString";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
     bio:
+      | Array<{
+          _type: "localizedText";
+          pl?: string;
+          en?: string;
+        }>
+      | string
+      | null;
+    disclosure:
       | Array<{
           _type: "localizedText";
           pl?: string;
@@ -871,6 +889,23 @@ export type ArticleBySlugQueryResult = {
       width: number | null;
       height: number | null;
     } | null;
+  } | null;
+  partnership: {
+    type:
+      "affiliate" | "collaboration" | "gifted" | "none" | "sponsored" | null;
+    note: string | null;
+    partners: Array<
+      | {
+          _type: "author";
+          name: string | null;
+          slug: string | null;
+        }
+      | {
+          _type: "brand";
+          name: string | null;
+          slug: string | null;
+        }
+    > | null;
   } | null;
   location: Array<{
     _id: string;
@@ -939,6 +974,10 @@ export type ArticleBySlugQueryResult = {
     affiliateUrl: string | null;
     isAffiliate: boolean | null;
     isSponsored: boolean | null;
+    brand: {
+      name: string | null;
+      slug: string | null;
+    } | null;
     image: {
       _type: "mediaImage";
       asset?: SanityImageAssetReference;
@@ -1179,7 +1218,7 @@ export type ArticleParamsQueryResult = Array<{
 
 // Source: ../web/lib/sanity/queries.ts
 // Variable: placeBySlugQuery
-// Query: *[_type == "place" && slug.current == $slug][0]{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, mapId, coordinates,  "summary": coalesce(summary[$lang], summary.en, summary.pl),  "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "ancestors": [    parent->parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },    parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }  ][defined(slug)],  "children": *[_type == "place" && parent._ref == ^._id] | order(name.pl asc){    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "articleCount": count(*[_type == "article" && language == $lang && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))])  },  "siblings": *[_type == "place" && defined(parent._ref) && parent._ref == ^.parent._ref && _id != ^._id][0...6]{    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }  },  "articles": *[_type == "article" && language == $lang && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(publishedAt desc)[0...$limit] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "people": *[_type == "person" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name asc) {  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "products": *[_type == "product" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name.pl asc) {  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "experiences": *[_type == "experience" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] {  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "hotels": *[_type == "hotel" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name asc) {  _id, name, "slug": slug.current, type, priceRange,  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }}}
+// Query: *[_type == "place" && slug.current == $slug][0]{  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, mapId, coordinates,  "summary": coalesce(summary[$lang], summary.en, summary.pl),  "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "ancestors": [    parent->parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },    parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }  ][defined(slug)],  "children": *[_type == "place" && parent._ref == ^._id] | order(name.pl asc){    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "articleCount": count(*[_type == "article" && language == $lang && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))])  },  "siblings": *[_type == "place" && defined(parent._ref) && parent._ref == ^.parent._ref && _id != ^._id][0...6]{    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }  },  "articles": *[_type == "article" && language == $lang && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(publishedAt desc)[0...$limit] {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "people": *[_type == "person" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name asc) {  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "products": *[_type == "product" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name.pl asc) {  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,  affiliateUrl, isAffiliate, isSponsored,  "brand": brand->{ name, "slug": slug.current },  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }},  "experiences": *[_type == "experience" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] {  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,  affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }},  "hotels": *[_type == "hotel" && (  references(^._id) ||  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id))] | order(name asc) {  _id, name, "slug": slug.current, type, priceRange,  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }}}
 export type PlaceBySlugQueryResult = {
   _id: string;
   name:
@@ -1374,6 +1413,10 @@ export type PlaceBySlugQueryResult = {
     affiliateUrl: string | null;
     isAffiliate: boolean | null;
     isSponsored: boolean | null;
+    brand: {
+      name: string | null;
+      slug: string | null;
+    } | null;
     image: {
       _type: "mediaImage";
       asset?: SanityImageAssetReference;
@@ -1492,7 +1535,7 @@ export type PlaceParamsQueryResult = Array<{
 
 // Source: ../web/lib/sanity/queries.ts
 // Variable: entityHubQuery
-// Query: *[_type == $type && slug.current == $slug][0]{  _type, _id, "slug": slug.current,  "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl),  "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),  "image": coalesce(portrait, image){ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  kind, protectedStatus, websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,  coordinates, priceRange, "sameAs": links[].url, "role": coalesce(role[$lang], role.en, role.pl),  "place": coalesce(place, origin[0], location[0])->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }}}
+// Query: *[_type == $type && slug.current == $slug][0]{  _type, _id, "slug": slug.current,  "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl),  "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),  "image": coalesce(portrait, image, logo){ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  kind, protectedStatus, websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,  partnership, "brand": brand->{ name, "slug": slug.current },  "brandProducts": select(_type == "brand" => *[_type == "product" && references(^._id)] | order(name.pl asc){    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, affiliateUrl, isSponsored  }),  coordinates, priceRange, "sameAs": links[].url, "role": coalesce(role[$lang], role.en, role.pl),  "place": coalesce(place, origin[0], location[0])->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }}}
 export type EntityHubQueryResult =
   | {
       _type: "article";
@@ -1508,6 +1551,13 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: {
+        type?: "affiliate" | "collaboration" | "gifted" | "none" | "sponsored";
+        partners?: ArrayOf<AuthorReference | BrandReference>;
+        note?: string;
+      } | null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -1603,6 +1653,9 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: Array<string | null> | null;
@@ -1686,7 +1739,19 @@ export type EntityHubQueryResult =
           }>
         | string
         | null;
-      image: null;
+      image: {
+        _type: "mediaImage";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        credit?: string;
+        lqip: string | null;
+        width: number | null;
+        height: number | null;
+      } | null;
       kind: null;
       protectedStatus: null;
       websiteUrl: string | null;
@@ -1694,6 +1759,23 @@ export type EntityHubQueryResult =
       affiliateUrl: string | null;
       isAffiliate: boolean | null;
       isSponsored: boolean | null;
+      partnership: "affiliate" | "barter" | "none" | "sponsor" | null;
+      brand: null;
+      brandProducts: Array<{
+        _id: string;
+        name:
+          | Array<{
+              _type: "localizedString";
+              pl?: string;
+              en?: string;
+            }>
+          | string
+          | null;
+        slug: string | null;
+        kind: "craft" | "drink" | "equipment" | "food" | null;
+        affiliateUrl: string | null;
+        isSponsored: boolean | null;
+      }>;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -1779,6 +1861,9 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -1889,6 +1974,9 @@ export type EntityHubQueryResult =
       affiliateUrl: string | null;
       isAffiliate: boolean | null;
       isSponsored: boolean | null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -1996,6 +2084,9 @@ export type EntityHubQueryResult =
       affiliateUrl: string | null;
       isAffiliate: boolean | null;
       isSponsored: boolean | null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: Geopoint | null;
       priceRange:
         | "\u20AC"
@@ -2108,6 +2199,9 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: Array<string | null> | null;
@@ -2218,6 +2312,9 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: Geopoint | null;
       priceRange: null;
       sameAs: null;
@@ -2323,6 +2420,12 @@ export type EntityHubQueryResult =
       affiliateUrl: string | null;
       isAffiliate: boolean | null;
       isSponsored: boolean | null;
+      partnership: null;
+      brand: {
+        name: string | null;
+        slug: string | null;
+      } | null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -2430,6 +2533,9 @@ export type EntityHubQueryResult =
       affiliateUrl: string | null;
       isAffiliate: boolean | null;
       isSponsored: boolean | null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: Geopoint | null;
       priceRange: null;
       sameAs: null;
@@ -2518,6 +2624,9 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -2595,6 +2704,9 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -2680,6 +2792,9 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -2757,6 +2872,9 @@ export type EntityHubQueryResult =
       affiliateUrl: null;
       isAffiliate: null;
       isSponsored: null;
+      partnership: null;
+      brand: null;
+      brandProducts: null;
       coordinates: null;
       priceRange: null;
       sameAs: null;
@@ -3158,7 +3276,7 @@ export type CategoryPageQueryResult = {
 
 // Source: ../web/lib/sanity/queries.ts
 // Variable: sitemapQuery
-// Query: {  "articles": *[_type == "article" && defined(slug.current) && defined(language)]{    "slug": slug.current, language, _updatedAt,    "alternates": (  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language })[defined(slug)]  },  "categories": *[_type == "category"]{ slugs, _updatedAt },  "places": *[_type == "place" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "people": *[_type == "person" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "products": *[_type == "product" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "experiences": *[_type == "experience" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt }}
+// Query: {  "articles": *[_type == "article" && defined(slug.current) && defined(language)]{    "slug": slug.current, language, _updatedAt,    "alternates": (  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language })[defined(slug)]  },  "categories": *[_type == "category"]{ slugs, _updatedAt },  "places": *[_type == "place" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "people": *[_type == "person" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "products": *[_type == "product" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "experiences": *[_type == "experience" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "brands": *[_type == "brand" && defined(slug.current)]{ "slug": slug.current, _updatedAt },  "authors": *[_type == "author" && defined(slug.current)]{ "slug": slug.current, _updatedAt }}
 export type SitemapQueryResult = {
   articles: Array<{
     slug: string | null;
@@ -3193,11 +3311,19 @@ export type SitemapQueryResult = {
     slug: string | null;
     _updatedAt: string;
   }>;
+  brands: Array<{
+    slug: string | null;
+    _updatedAt: string;
+  }>;
+  authors: Array<{
+    slug: string | null;
+    _updatedAt: string;
+  }>;
 };
 
 // Source: ../web/lib/sanity/queries.ts
 // Variable: relatedQuery
-// Query: *[_id == $id][0]{  "items": (    *[      _type == "article" && language == $lang &&      _id in coalesce(^.pinnedRelated[]._ref, [])    ] | order(coalesce(publishedAt, _createdAt) desc) {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }}    +    *[      _type in ["article", "place", "person", "product", "hotel", "experience"] &&      _id != ^._id &&      !(_id in coalesce(^.pinnedRelated[]._ref, [])) &&      (_type != "article" || language == $lang) &&      (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&      references(array::compact(  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref]  + coalesce(^.tags[]._ref, []) + coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) + coalesce(^.products[]._ref, [])  + coalesce(^.experiences[]._ref, []) + coalesce(^.hotel[]._ref, []) + coalesce(^.origin[]._ref, []) + coalesce(^.makers[]._ref, [])))    ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }}  )[0...$limit]}.items
+// Query: *[_id == $id][0]{  "items": (    *[      _type == "article" && language == $lang &&      _id in coalesce(^.pinnedRelated[]._ref, [])    ] | order(coalesce(publishedAt, _createdAt) desc) {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "brand" => { "title": name, "image": logo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }}    +    *[      _type in ["article", "place", "person", "product", "hotel", "experience", "brand"] &&      _id != ^._id &&      !(_id in coalesce(^.pinnedRelated[]._ref, [])) &&      (_type != "article" || language == $lang) &&      (_type in ["article", "person", "hotel", "brand"] || defined(coalesce(name[$lang], title[$lang]))) &&      references(array::compact(  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref, ^.brand._ref]  + coalesce(^.partnership.partners[]._ref, []) + coalesce(^.tags[]._ref, []) + coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) + coalesce(^.products[]._ref, [])  + coalesce(^.experiences[]._ref, []) + coalesce(^.hotel[]._ref, []) + coalesce(^.origin[]._ref, []) + coalesce(^.makers[]._ref, [])))    ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),  _type == "article" => {    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }  },  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },  _type == "brand" => { "title": name, "image": logo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }}  )[0...$limit]}.items
 export type RelatedQueryResult =
   | Array<
       | {
@@ -3243,6 +3369,26 @@ export type RelatedQueryResult =
               pl?: string;
               en?: string;
             }> | null;
+          } | null;
+        }
+      | {
+          _id: string;
+          _type: "brand";
+          slug: string | null;
+          date: string;
+          title: string | null;
+          image: {
+            _type: "mediaImage";
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            alt?: string;
+            caption?: string;
+            credit?: string;
+            lqip: string | null;
+            width: number | null;
+            height: number | null;
           } | null;
         }
       | {
@@ -3417,8 +3563,12 @@ export type ArticleRoutesQueryResult = Array<{
 
 // Source: ../web/lib/sanity/queries.ts
 // Variable: entityRoutesQuery
-// Query: *[_type in ["place", "person", "product", "hotel", "experience"] && defined(slug.current)]{  _type, "slug": slug.current}
+// Query: *[_type in ["place", "person", "product", "hotel", "experience", "brand"] && defined(slug.current)]{  _type, "slug": slug.current}
 export type EntityRoutesQueryResult = Array<
+  | {
+      _type: "brand";
+      slug: string | null;
+    }
   | {
       _type: "experience";
       slug: string | null;
@@ -3501,7 +3651,7 @@ export type CategoryArticlesQueryResult = {
 
 // Source: ../web/lib/sanity/queries.ts
 // Variable: atlasIndexQuery
-// Query: {  "places": *[_type == "place"] | order(name.pl asc){ _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl) } },  "people": *[_type == "person"] | order(name asc){ _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl) },  "products": *[_type == "product"] | order(name.pl asc){ _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },  "hotels": *[_type == "hotel"] | order(name asc){ _id, name, "slug": slug.current, type },  "experiences": *[_type == "experience"] | order(title.pl asc){ _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind }}
+// Query: {  "places": *[_type == "place"] | order(name.pl asc){ _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl) } },  "people": *[_type == "person"] | order(name asc){ _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl) },  "products": *[_type == "product"] | order(name.pl asc){ _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },  "hotels": *[_type == "hotel"] | order(name asc){ _id, name, "slug": slug.current, type },  "experiences": *[_type == "experience"] | order(title.pl asc){ _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind },  "brands": *[_type == "brand"] | order(name asc){ _id, name, "slug": slug.current, kinds }}
 export type AtlasIndexQueryResult = {
   places: Array<{
     _id: string;
@@ -3578,26 +3728,177 @@ export type AtlasIndexQueryResult = {
       | "workshop"
       | null;
   }>;
+  brands: Array<{
+    _id: string;
+    name: string | null;
+    slug: string | null;
+    kinds: Array<string> | null;
+  }>;
 };
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: authorBySlugQuery
+// Query: *[_type == "author" && slug.current == $slug][0]{  _id, name, "slug": slug.current, kind, website,  "role": coalesce(role[$lang], role.en, role.pl), "bio": coalesce(bio[$lang], bio.en, bio.pl), "disclosure": coalesce(disclosure[$lang], disclosure.en, disclosure.pl),  "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "links": links[]{ label, url },  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) {  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }}}
+export type AuthorBySlugQueryResult = {
+  _id: string;
+  name: string | null;
+  slug: string | null;
+  kind: "guest" | "staff" | null;
+  website: string | null;
+  role:
+    | Array<{
+        _type: "localizedString";
+        pl?: string;
+        en?: string;
+      }>
+    | string
+    | null;
+  bio:
+    | Array<{
+        _type: "localizedText";
+        pl?: string;
+        en?: string;
+      }>
+    | string
+    | null;
+  disclosure:
+    | Array<{
+        _type: "localizedText";
+        pl?: string;
+        en?: string;
+      }>
+    | string
+    | null;
+  photo: {
+    _type: "mediaImage";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    credit?: string;
+    lqip: string | null;
+    width: number | null;
+    height: number | null;
+  } | null;
+  links: Array<{
+    label: string | null;
+    url: string | null;
+  }> | null;
+  articles: Array<{
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    language: string | null;
+    excerpt: string | null;
+    format: "guide" | "profile" | "recipe" | "story" | null;
+    publishedAt: string | null;
+    heroImage: {
+      _type: "mediaImage";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      credit?: string;
+      lqip: string | null;
+      width: number | null;
+      height: number | null;
+    } | null;
+    category: {
+      key:
+        "craft" | "experiences" | "food" | "history" | "people" | "stay" | null;
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: Array<{
+        _type: "localizedSlug";
+        pl?: string;
+        en?: string;
+      }> | null;
+    } | null;
+    place: {
+      name:
+        | Array<{
+            _type: "localizedString";
+            pl?: string;
+            en?: string;
+          }>
+        | string
+        | null;
+      slug: string | null;
+      kind: "city" | "coast" | "landmark" | "region" | "village" | null;
+    } | null;
+  }>;
+} | null;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: authorRoutesQuery
+// Query: *[_type == "author" && defined(slug.current)]{ "slug": slug.current }
+export type AuthorRoutesQueryResult = Array<{
+  slug: string | null;
+}>;
+
+// Source: ../web/lib/sanity/queries.ts
+// Variable: authorsIndexQuery
+// Query: *[_type == "author" && defined(slug.current)] | order(coalesce(featured, false) desc, name asc){  _id, name, "slug": slug.current, kind, "role": coalesce(role[$lang], role.en, role.pl), "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },  "articleCount": count(*[_type == "article" && language == $lang && references(^._id)])}
+export type AuthorsIndexQueryResult = Array<{
+  _id: string;
+  name: string | null;
+  slug: string | null;
+  kind: "guest" | "staff" | null;
+  role:
+    | Array<{
+        _type: "localizedString";
+        pl?: string;
+        en?: string;
+      }>
+    | string
+    | null;
+  photo: {
+    _type: "mediaImage";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    credit?: string;
+    lqip: string | null;
+    width: number | null;
+    height: number | null;
+  } | null;
+  articleCount: number;
+}>;
 
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_type == "article" && language == $lang && slug.current == $slug][0]{\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt, _updatedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "gallery": gallery[]{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  body[]{\n  ...,\n  _type == "block" => {\n    markDefs[]{\n      ...,\n      _type == "entityLink" => {\n        "target": target->{\n          _type, "slug": slug.current,\n          "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl)\n        }\n      }\n    }\n  },\n  _type == "mediaImage" => {\n    "lqip": asset->metadata.lqip,\n    "width": asset->metadata.dimensions.width,\n    "height": asset->metadata.dimensions.height\n  }\n},\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "author": author->{ name, "slug": slug.current, "bio": coalesce(bio[$lang], bio.en, bio.pl), "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  "location": location[]->{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,\n  "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current }\n},\n  "people": people[]->{\n  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),\n  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "products": products[]->{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "experiences": experiences[]->{\n  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "hotel": hotel[]->{\n  _id, name, "slug": slug.current, type, priceRange,\n  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "related": related[]->{\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "similar": *[\n    _type == "article" && language == $lang && _id != ^._id &&\n    references(\n      coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) +\n      coalesce(^.products[]._ref, []) + coalesce(^.experiences[]._ref, []) +\n      coalesce(^.hotel[]._ref, [])\n    )\n  ] | order(publishedAt desc)[0...4] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  seo{ title, description, noIndex, "ogImage": ogImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  "translations": (\n  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language }\n)[defined(slug)]\n}': ArticleBySlugQueryResult;
+    '*[_type == "article" && language == $lang && slug.current == $slug][0]{\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt, _updatedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "gallery": gallery[]{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  body[]{\n  ...,\n  _type == "block" => {\n    markDefs[]{\n      ...,\n      _type == "entityLink" => {\n        "target": target->{\n          _type, "slug": slug.current,\n          "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl)\n        }\n      }\n    }\n  },\n  _type == "mediaImage" => {\n    "lqip": asset->metadata.lqip,\n    "width": asset->metadata.dimensions.width,\n    "height": asset->metadata.dimensions.height\n  }\n},\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "author": author->{\n    name, "slug": slug.current, kind, website, "role": coalesce(role[$lang], role.en, role.pl), "bio": coalesce(bio[$lang], bio.en, bio.pl),\n    "disclosure": coalesce(disclosure[$lang], disclosure.en, disclosure.pl), "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n  },\n  "partnership": partnership{ type, note, "partners": partners[]->{ _type, name, "slug": slug.current } },\n  "location": location[]->{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,\n  "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current }\n},\n  "people": people[]->{\n  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),\n  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "products": products[]->{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,\n  affiliateUrl, isAffiliate, isSponsored,\n  "brand": brand->{ name, "slug": slug.current },\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "experiences": experiences[]->{\n  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "hotel": hotel[]->{\n  _id, name, "slug": slug.current, type, priceRange,\n  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "related": related[]->{\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "similar": *[\n    _type == "article" && language == $lang && _id != ^._id &&\n    references(\n      coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) +\n      coalesce(^.products[]._ref, []) + coalesce(^.experiences[]._ref, []) +\n      coalesce(^.hotel[]._ref, [])\n    )\n  ] | order(publishedAt desc)[0...4] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  seo{ title, description, noIndex, "ogImage": ogImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  "translations": (\n  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language }\n)[defined(slug)]\n}': ArticleBySlugQueryResult;
     '*[_type == "article" && defined(slug.current) && defined(language)]{\n  "slug": slug.current, language\n}': ArticleParamsQueryResult;
-    '*[_type == "place" && slug.current == $slug][0]{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, mapId, coordinates,\n  "summary": coalesce(summary[$lang], summary.en, summary.pl),\n  "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "ancestors": [\n    parent->parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },\n    parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n  ][defined(slug)],\n  "children": *[_type == "place" && parent._ref == ^._id] | order(name.pl asc){\n    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "articleCount": count(*[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)])\n  },\n  "siblings": *[_type == "place" && defined(parent._ref) && parent._ref == ^.parent._ref && _id != ^._id][0...6]{\n    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n  },\n  "articles": *[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(publishedAt desc)[0...$limit] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "people": *[_type == "person" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name asc) {\n  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),\n  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "products": *[_type == "product" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name.pl asc) {\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "experiences": *[_type == "experience" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] {\n  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "hotels": *[_type == "hotel" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name asc) {\n  _id, name, "slug": slug.current, type, priceRange,\n  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n}': PlaceBySlugQueryResult;
+    '*[_type == "place" && slug.current == $slug][0]{\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, mapId, coordinates,\n  "summary": coalesce(summary[$lang], summary.en, summary.pl),\n  "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "ancestors": [\n    parent->parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },\n    parent->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n  ][defined(slug)],\n  "children": *[_type == "place" && parent._ref == ^._id] | order(name.pl asc){\n    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind,\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "articleCount": count(*[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)])\n  },\n  "siblings": *[_type == "place" && defined(parent._ref) && parent._ref == ^.parent._ref && _id != ^._id][0...6]{\n    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n  },\n  "articles": *[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(publishedAt desc)[0...$limit] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "people": *[_type == "person" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name asc) {\n  _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl),\n  "portrait": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "products": *[_type == "product" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name.pl asc) {\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, protectedStatus,\n  affiliateUrl, isAffiliate, isSponsored,\n  "brand": brand->{ name, "slug": slug.current },\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n},\n  "experiences": *[_type == "experience" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] {\n  _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind, durationMinutes, seasons, bookingUrl,\n  affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "hotels": *[_type == "hotel" && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)] | order(name asc) {\n  _id, name, "slug": slug.current, type, priceRange,\n  websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,\n  "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "place": place->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n}': PlaceBySlugQueryResult;
     '*[_type == "place" && defined(slug.current)]{ "slug": slug.current }': PlaceParamsQueryResult;
-    '*[_type == $type && slug.current == $slug][0]{\n  _type, _id, "slug": slug.current,\n  "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl),\n  "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),\n  "image": coalesce(portrait, image){ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  kind, protectedStatus, websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,\n  coordinates, priceRange, "sameAs": links[].url, "role": coalesce(role[$lang], role.en, role.pl),\n  "place": coalesce(place, origin[0], location[0])->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },\n  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n}': EntityHubQueryResult;
+    '*[_type == $type && slug.current == $slug][0]{\n  _type, _id, "slug": slug.current,\n  "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl),\n  "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),\n  "image": coalesce(portrait, image, logo){ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  kind, protectedStatus, websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,\n  partnership, "brand": brand->{ name, "slug": slug.current },\n  "brandProducts": select(_type == "brand" => *[_type == "product" && references(^._id)] | order(name.pl asc){\n    _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, affiliateUrl, isSponsored\n  }),\n  coordinates, priceRange, "sameAs": links[].url, "role": coalesce(role[$lang], role.en, role.pl),\n  "place": coalesce(place, origin[0], location[0])->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },\n  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n}': EntityHubQueryResult;
     '*[_type == "place" && kind == "region" && defined(mapId)] | order(name.pl asc){\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, mapId,\n  "articleCount": count(*[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)])\n}': ExploreMapQueryResult;
     '{\n  "featured": *[_type == "article" && language == $lang && featured == true] | order(publishedAt desc)[0] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "latest": *[_type == "article" && language == $lang] | order(publishedAt desc)[0...6] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "categories": *[_type == "category"] | order(order asc){\n    _id, key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang], "intro": coalesce(intro[$lang], intro.en, intro.pl),\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc)[0...3] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n  },\n  "regions": *[_type == "place" && kind == "region" && defined(mapId)] | order(name.pl asc){\n  _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, mapId,\n  "articleCount": count(*[_type == "article" && language == $lang && (\n  references(^._id) ||\n  references(*[_type == "place" && (parent._ref == ^.^._id || parent->parent._ref == ^.^._id)]._id)\n)])\n}\n}': HomeQueryResult;
     '{\n  "category": *[_type == "category" && slugs[$lang] == $slug][0]{\n    _id, key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang], "intro": coalesce(intro[$lang], intro.en, intro.pl),\n    "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }, "alternates": slugs\n  },\n  "articles": *[\n    _type == "article" && language == $lang &&\n    category._ref == *[_type == "category" && slugs[$lang] == $slug][0]._id\n  ] | order(publishedAt desc)[$start...$end] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "total": count(*[\n    _type == "article" && language == $lang &&\n    category._ref == *[_type == "category" && slugs[$lang] == $slug][0]._id\n  ])\n}': CategoryPageQueryResult;
-    '{\n  "articles": *[_type == "article" && defined(slug.current) && defined(language)]{\n    "slug": slug.current, language, _updatedAt,\n    "alternates": (\n  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language }\n)[defined(slug)]\n  },\n  "categories": *[_type == "category"]{ slugs, _updatedAt },\n  "places": *[_type == "place" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "people": *[_type == "person" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "products": *[_type == "product" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "experiences": *[_type == "experience" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SitemapQueryResult;
-    '*[_id == $id][0]{\n  "items": (\n    *[\n      _type == "article" && language == $lang &&\n      _id in coalesce(^.pinnedRelated[]._ref, [])\n    ] | order(coalesce(publishedAt, _createdAt) desc) {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n    +\n    *[\n      _type in ["article", "place", "person", "product", "hotel", "experience"] &&\n      _id != ^._id &&\n      !(_id in coalesce(^.pinnedRelated[]._ref, [])) &&\n      (_type != "article" || language == $lang) &&\n      (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&\n      references(array::compact(\n  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref]\n  + coalesce(^.tags[]._ref, []) + coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) + coalesce(^.products[]._ref, [])\n  + coalesce(^.experiences[]._ref, []) + coalesce(^.hotel[]._ref, []) + coalesce(^.origin[]._ref, []) + coalesce(^.makers[]._ref, [])\n))\n    ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n  )[0...$limit]\n}.items': RelatedQueryResult;
+    '{\n  "articles": *[_type == "article" && defined(slug.current) && defined(language)]{\n    "slug": slug.current, language, _updatedAt,\n    "alternates": (\n  *[_type == "translation.metadata" && references(^._id)][0].translations[].value->{ "slug": slug.current, language }\n)[defined(slug)]\n  },\n  "categories": *[_type == "category"]{ slugs, _updatedAt },\n  "places": *[_type == "place" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "people": *[_type == "person" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "products": *[_type == "product" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "experiences": *[_type == "experience" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "brands": *[_type == "brand" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "authors": *[_type == "author" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SitemapQueryResult;
+    '*[_id == $id][0]{\n  "items": (\n    *[\n      _type == "article" && language == $lang &&\n      _id in coalesce(^.pinnedRelated[]._ref, [])\n    ] | order(coalesce(publishedAt, _createdAt) desc) {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "brand" => { "title": name, "image": logo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n    +\n    *[\n      _type in ["article", "place", "person", "product", "hotel", "experience", "brand"] &&\n      _id != ^._id &&\n      !(_id in coalesce(^.pinnedRelated[]._ref, [])) &&\n      (_type != "article" || language == $lang) &&\n      (_type in ["article", "person", "hotel", "brand"] || defined(coalesce(name[$lang], title[$lang]))) &&\n      references(array::compact(\n  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref, ^.brand._ref]\n  + coalesce(^.partnership.partners[]._ref, []) + coalesce(^.tags[]._ref, []) + coalesce(^.location[]._ref, []) + coalesce(^.people[]._ref, []) + coalesce(^.products[]._ref, [])\n  + coalesce(^.experiences[]._ref, []) + coalesce(^.hotel[]._ref, []) + coalesce(^.origin[]._ref, []) + coalesce(^.makers[]._ref, [])\n))\n    ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] {\n  _id, _type, "slug": slug.current, "date": coalesce(publishedAt, _createdAt),\n  _type == "article" => {\n    "title": title, language, excerpt, "image": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n    "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] }\n  },\n  _type == "place" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "person" => { "title": name, "image": portrait{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "product" => { "title": coalesce(name[$lang], name.en, name.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "hotel" => { "title": name, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "experience" => { "title": coalesce(title[$lang], title.en, title.pl), kind, "image": image{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } },\n  _type == "brand" => { "title": name, "image": logo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height } }\n}\n  )[0...$limit]\n}.items': RelatedQueryResult;
     '*[_type == "category"] | order(order asc){\n  _id, key, name, slugs, intro, order, "cover": cover{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }\n}': CategoriesQueryResult;
     '*[_type == "article" && defined(slug.current) && defined(language) && defined(category)]{\n  "slug": slug.current, language, "categoryKey": category->key\n}': ArticleRoutesQueryResult;
-    '*[_type in ["place", "person", "product", "hotel", "experience"] && defined(slug.current)]{\n  _type, "slug": slug.current\n}': EntityRoutesQueryResult;
+    '*[_type in ["place", "person", "product", "hotel", "experience", "brand"] && defined(slug.current)]{\n  _type, "slug": slug.current\n}': EntityRoutesQueryResult;
     '{\n  "articles": *[_type == "article" && language == $lang && category->key == $key]\n    | order(publishedAt desc)[$start...$end] {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n},\n  "total": count(*[_type == "article" && language == $lang && category->key == $key])\n}': CategoryArticlesQueryResult;
-    '{\n  "places": *[_type == "place"] | order(name.pl asc){ _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl) } },\n  "people": *[_type == "person"] | order(name asc){ _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl) },\n  "products": *[_type == "product"] | order(name.pl asc){ _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },\n  "hotels": *[_type == "hotel"] | order(name asc){ _id, name, "slug": slug.current, type },\n  "experiences": *[_type == "experience"] | order(title.pl asc){ _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind }\n}': AtlasIndexQueryResult;
+    '{\n  "places": *[_type == "place"] | order(name.pl asc){ _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind, "parent": parent->{ "name": coalesce(name[$lang], name.en, name.pl) } },\n  "people": *[_type == "person"] | order(name asc){ _id, name, "slug": slug.current, "role": coalesce(role[$lang], role.en, role.pl) },\n  "products": *[_type == "product"] | order(name.pl asc){ _id, "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind },\n  "hotels": *[_type == "hotel"] | order(name asc){ _id, name, "slug": slug.current, type },\n  "experiences": *[_type == "experience"] | order(title.pl asc){ _id, "title": coalesce(title[$lang], title.en, title.pl), "slug": slug.current, kind },\n  "brands": *[_type == "brand"] | order(name asc){ _id, name, "slug": slug.current, kinds }\n}': AtlasIndexQueryResult;
+    '*[_type == "author" && slug.current == $slug][0]{\n  _id, name, "slug": slug.current, kind, website,\n  "role": coalesce(role[$lang], role.en, role.pl), "bio": coalesce(bio[$lang], bio.en, bio.pl), "disclosure": coalesce(disclosure[$lang], disclosure.en, disclosure.pl),\n  "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "links": links[]{ label, url },\n  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) {\n  _id, title, "slug": slug.current, language, excerpt, format, publishedAt,\n  "heroImage": heroImage{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "category": category->{ "key": key, "name": coalesce(name[$lang], name.en, name.pl), "slug": slugs[$lang] },\n  "place": location[0]->{ "name": coalesce(name[$lang], name.en, name.pl), "slug": slug.current, kind }\n}\n}': AuthorBySlugQueryResult;
+    '*[_type == "author" && defined(slug.current)]{ "slug": slug.current }': AuthorRoutesQueryResult;
+    '*[_type == "author" && defined(slug.current)] | order(coalesce(featured, false) desc, name asc){\n  _id, name, "slug": slug.current, kind, "role": coalesce(role[$lang], role.en, role.pl), "photo": photo{ ..., "lqip": asset->metadata.lqip, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height },\n  "articleCount": count(*[_type == "article" && language == $lang && references(^._id)])\n}': AuthorsIndexQueryResult;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

@@ -44,6 +44,7 @@ export interface PlaceRef {
 export interface PersonRef { _id: string; name: string; slug: string | null; role: string | null; portrait?: SanityImage | null }
 export interface ProductRef extends Affiliate {
   _id: string; name: string | null; slug: string | null; kind: string | null; protectedStatus?: string | null; image?: SanityImage | null;
+  brand?: { name: string; slug: string | null } | null;
 }
 export interface HotelRef extends Affiliate {
   _id: string; name: string; slug: string | null; type?: string | null; priceRange?: string | null;
@@ -52,6 +53,17 @@ export interface HotelRef extends Affiliate {
 export interface ExperienceRef extends Affiliate {
   _id: string; title: string | null; slug: string | null; kind: string | null; durationMinutes?: number | null;
   bookingUrl?: string | null; image?: SanityImage | null; place?: PlaceMini | null;
+}
+
+export type PartnershipType = "none" | "affiliate" | "sponsored" | "collaboration" | "gifted";
+export interface Partnership {
+  type?: PartnershipType | null;
+  note?: string | null;
+  partners?: { _type: string; name: string; slug: string | null }[] | null;
+}
+export interface AuthorMini {
+  name: string; slug: string | null; kind?: "staff" | "guest" | null; website?: string | null;
+  role: string | null; bio: string | null; disclosure?: string | null; photo: SanityImage | null;
 }
 
 export interface ArticlePageData {
@@ -67,7 +79,8 @@ export interface ArticlePageData {
   gallery: SanityImage[] | null;
   body: never[] | null;
   category: CategoryMini | null;
-  author: { name: string; slug: string | null; bio: string | null; photo: SanityImage | null } | null;
+  author: AuthorMini | null;
+  partnership: Partnership | null;
   location: (PlaceRef & { cover?: SanityImage | null })[] | null;
   people: PersonRef[] | null;
   products: ProductRef[] | null;
@@ -98,7 +111,7 @@ export interface PlacePageData {
 }
 
 export interface EntityHubData extends Affiliate {
-  _type: "person" | "product" | "experience" | "hotel";
+  _type: "person" | "product" | "experience" | "hotel" | "brand";
   _id: string;
   slug: string;
   label: string | null;
@@ -112,6 +125,9 @@ export interface EntityHubData extends Affiliate {
   priceRange?: string | null;
   sameAs?: string[] | null;
   role?: string | null;
+  partnership?: string | null;
+  brand?: { name: string; slug: string | null } | null;
+  brandProducts?: { _id: string; name: string | null; slug: string | null; kind: string | null; affiliateUrl?: string | null; isSponsored?: boolean | null }[] | null;
   place?: PlaceMini | null;
   articles: ArticleCardData[] | null;
 }
@@ -127,4 +143,17 @@ export interface AtlasIndexData {
   products: { _id: string; name: string | null; slug: string; kind: string | null }[];
   hotels: { _id: string; name: string; slug: string; type: string | null }[];
   experiences: { _id: string; title: string | null; slug: string; kind: string | null }[];
+  brands: { _id: string; name: string; slug: string; kinds: string[] | null }[];
+}
+
+export interface AuthorPageData extends Omit<AuthorMini, "slug"> {
+  _id: string;
+  slug: string;
+  links: { label: string | null; url: string | null }[] | null;
+  articles: ArticleCardData[] | null;
+}
+
+export interface AuthorsIndexItem {
+  _id: string; name: string; slug: string; kind: "staff" | "guest" | null;
+  role: string | null; photo: SanityImage | null; articleCount: number;
 }

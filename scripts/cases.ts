@@ -15,4 +15,9 @@ export const cases: [name: string, query: string, params: Record<string, unknown
   ['categoryPageQuery', Q.categoryPageQuery, {lang: 'pl', slug: 'kulinaria', start: 0, end: 12}],
   ['sitemapQuery', Q.sitemapQuery, {}],
   ['relatedQuery', Q.relatedQuery, {lang: 'pl', id: 'seed-article-pane-pl', limit: 6}],
+  ['authorBySlugQuery', Q.authorBySlugQuery, {lang: 'pl', slug: 'tworca-a'}],
+  ['authorRoutesQuery', Q.authorRoutesQuery, {}],
+  ['authorsIndexQuery', Q.authorsIndexQuery, {lang: 'pl'}],
+  ['entityHubQuery brand', Q.entityHubQuery, {lang: 'pl', type: 'brand', slug: 'marka-a'}],
+  ['entityHubQuery equipment', Q.entityHubQuery, {lang: 'en', type: 'product', slug: 'sprzet-kuchenny'}],
 ]

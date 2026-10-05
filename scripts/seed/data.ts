@@ -145,7 +145,55 @@ export function buildDocuments(asset: AssetResolver): Doc[] {
     _type: 'author',
     name: `${PH} Redakcja`,
     slug: {_type: 'slug', current: 'redakcja'},
+    kind: 'staff',
     bio: loc(`${PH} Bio autora.`, `${PH} Author bio.`),
+  })
+  add({
+    _id: 'seed-author-tworca-a',
+    _type: 'author',
+    name: `${PH} Twórca A`,
+    slug: {_type: 'slug', current: 'tworca-a'},
+    kind: 'guest',
+    role: loc(`${PH} twórca kulinarny`, `${PH} food creator`),
+    bio: loc(`${PH} Bio twórcy.`, `${PH} Creator bio.`),
+    photo: img('mirt', 'Portret twórcy A'),
+    website: 'https://example.com/tworca-a',
+    disclosure: loc(`${PH} Informacja o współpracach autora.`, `${PH} Disclosure about the author's collaborations.`),
+    featured: true,
+    links: [{_key: 'l1', label: 'Instagram', url: 'https://example.com/tworca-a/instagram'}],
+    tags: tag('tradycja'),
+  })
+  add({
+    _id: 'seed-brand-a',
+    _type: 'brand',
+    name: `${PH} Marka A`,
+    slug: {_type: 'slug', current: 'marka-a'},
+    kinds: ['food', 'equipment'],
+    logo: img('granit', 'Logo marki A'),
+    description: loc(`${PH} Opis marki.`, `${PH} Brand description.`),
+    websiteUrl: 'https://example.com/marka-a',
+    partnership: 'affiliate',
+    affiliateUrl: 'https://example.com/placeholder-brand',
+    affiliateNetwork: PH,
+    isAffiliate: true,
+    isSponsored: false,
+    tags: tag('tradycja'),
+  })
+  add({
+    _id: 'seed-product-sprzet',
+    _type: 'product',
+    name: loc(`${PH} Sprzęt kuchenny`, `${PH} Kitchen equipment`),
+    slug: {_type: 'slug', current: 'sprzet-kuchenny'},
+    kind: 'equipment',
+    protectedStatus: 'none',
+    brand: ref('seed-brand-a'),
+    description: loc(`${PH} Opis sprzętu.`, `${PH} Equipment description.`),
+    image: img('cannonau', 'Sprzęt kuchenny'),
+    affiliateUrl: 'https://example.com/placeholder-equipment',
+    affiliateNetwork: PH,
+    isAffiliate: true,
+    isSponsored: false,
+    tags: tag('tradycja'),
   })
   add({
     _id: 'seed-person-a',
@@ -239,6 +287,8 @@ export function buildDocuments(asset: AssetResolver): Doc[] {
     publishedAt: string
     products: string[]
     people: string[]
+    author?: string
+    partnership?: 'collaboration'
     tags: string[]
     hero: ImageKey
     pl: {title: string; slug: string; excerpt: string}
@@ -249,8 +299,10 @@ export function buildDocuments(asset: AssetResolver): Doc[] {
       key: 'pane',
       category: 'food',
       publishedAt: '2026-09-10T08:00:00Z',
-      products: ['seed-product-pane-carasau'],
+      products: ['seed-product-pane-carasau', 'seed-product-sprzet'],
       people: [],
+      author: 'seed-author-tworca-a',
+      partnership: 'collaboration',
       tags: ['tradycja', 'barbagia'],
       hero: 'terakota',
       pl: {title: 'Pane carasau: chleb, który powstał z potrzeby', slug: 'pane-carasau-chleb-z-potrzeby', excerpt: `${PH} Zajawka artykułu w dwóch zdaniach.`},
@@ -286,7 +338,16 @@ export function buildDocuments(asset: AssetResolver): Doc[] {
         location: refs('seed-place-orgosolo'),
         people: refs(...s.people),
         products: refs(...s.products),
-        author: ref('seed-author-redakcja'),
+        author: ref(s.author ?? 'seed-author-redakcja'),
+        ...(s.partnership
+          ? {
+              partnership: {
+                type: s.partnership,
+                partners: refs('seed-brand-a', 'seed-author-tworca-a'),
+                note: lang === 'pl' ? `${PH} Informacja o współpracy.` : `${PH} Collaboration note.`,
+              },
+            }
+          : {}),
         publishedAt: s.publishedAt,
         tags: tag(...s.tags),
         seo: {_type: 'seo'},

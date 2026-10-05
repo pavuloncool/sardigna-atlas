@@ -49,6 +49,7 @@ const personRef = `{
 const productRef = `{
   _id, "name": ${t('name')}, "slug": slug.current, kind, protectedStatus,
   affiliateUrl, isAffiliate, isSponsored,
+  "brand": brand->{ name, "slug": slug.current },
   "image": image${imageProjection}
 }`
 
@@ -121,7 +122,11 @@ export const articleBySlugQuery = groq`*[_type == "article" && language == $lang
   "gallery": gallery[]${imageProjection},
   ${bodyProjection},
   "category": category->${categoryMini},
-  "author": author->{ name, "slug": slug.current, "bio": ${t('bio')}, "photo": photo${imageProjection} },
+  "author": author->{
+    name, "slug": slug.current, kind, website, "role": ${t('role')}, "bio": ${t('bio')},
+    "disclosure": ${t('disclosure')}, "photo": photo${imageProjection}
+  },
+  "partnership": partnership{ type, note, "partners": partners[]->{ _type, name, "slug": slug.current } },
   "location": location[]->${placeRef},
   "people": people[]->${personRef},
   "products": products[]->${productRef},
@@ -187,8 +192,12 @@ export const entityHubQuery = groq`*[_type == $type && slug.current == $slug][0]
   _type, _id, "slug": slug.current,
   "label": coalesce(name[$lang], name.en, name.pl, name, title[$lang], title.en, title.pl),
   "summary": coalesce(bio[$lang], description[$lang], summary[$lang], bio.en, description.en, summary.en, bio.pl, description.pl, summary.pl),
-  "image": coalesce(portrait, image)${imageProjection},
+  "image": coalesce(portrait, image, logo)${imageProjection},
   kind, protectedStatus, websiteUrl, bookingUrl, affiliateUrl, isAffiliate, isSponsored,
+  partnership, "brand": brand->{ name, "slug": slug.current },
+  "brandProducts": select(_type == "brand" => *[_type == "product" && references(^._id)] | order(name.pl asc){
+    _id, "name": ${t('name')}, "slug": slug.current, kind, affiliateUrl, isSponsored
+  }),
   coordinates, priceRange, "sameAs": links[].url, "role": ${t('role')},
   "place": coalesce(place, origin[0], location[0])->${placeMini},
   "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) ${articleCard}
@@ -245,7 +254,9 @@ export const sitemapQuery = groq`{
   "people": *[_type == "person" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
   "products": *[_type == "product" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
   "experiences": *[_type == "experience" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
-  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt }
+  "hotels": *[_type == "hotel" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
+  "brands": *[_type == "brand" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
+  "authors": *[_type == "author" && defined(slug.current)]{ "slug": slug.current, _updatedAt }
 }`
 
 // ─── Polecane / Powiązane (sekcja 5a briefu) ─────────────────────────────────
@@ -259,8 +270,8 @@ export const sitemapQuery = groq`{
  */
 const refIds = (path: string) => `coalesce(^.${path}[]._ref, [])`
 const relatedKeys = `array::compact(
-  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref]
-  + ${refIds('tags')} + ${refIds('location')} + ${refIds('people')} + ${refIds('products')}
+  [^._id, ^.category._ref, ^.place._ref, ^.parent._ref, ^.brand._ref]
+  + ${refIds('partnership.partners')} + ${refIds('tags')} + ${refIds('location')} + ${refIds('people')} + ${refIds('products')}
   + ${refIds('experiences')} + ${refIds('hotel')} + ${refIds('origin')} + ${refIds('makers')}
 )`
 
@@ -275,7 +286,8 @@ const relatedCard = `{
   _type == "person" => { "title": name, "image": portrait${imageProjection} },
   _type == "product" => { "title": ${t('name')}, kind, "image": image${imageProjection} },
   _type == "hotel" => { "title": name, "image": image${imageProjection} },
-  _type == "experience" => { "title": ${t('title')}, kind, "image": image${imageProjection} }
+  _type == "experience" => { "title": ${t('title')}, kind, "image": image${imageProjection} },
+  _type == "brand" => { "title": name, "image": logo${imageProjection} }
 }`
 
 /**
@@ -296,11 +308,11 @@ export const relatedQuery = groq`*[_id == $id][0]{
     ] | order(coalesce(publishedAt, _createdAt) desc) ${relatedCard}
     +
     *[
-      _type in ["article", "place", "person", "product", "hotel", "experience"] &&
+      _type in ["article", "place", "person", "product", "hotel", "experience", "brand"] &&
       _id != ^._id &&
       !(_id in coalesce(^.pinnedRelated[]._ref, [])) &&
       (_type != "article" || language == $lang) &&
-      (_type in ["article", "person", "hotel"] || defined(coalesce(name[$lang], title[$lang]))) &&
+      (_type in ["article", "person", "hotel", "brand"] || defined(coalesce(name[$lang], title[$lang]))) &&
       references(${relatedKeys})
     ] | order(coalesce(publishedAt, _createdAt) desc)[0...$limit] ${relatedCard}
   )[0...$limit]
@@ -319,7 +331,7 @@ export const articleRoutesQuery = groq`*[_type == "article" && defined(slug.curr
 }`
 
 /** Trasy encji Atlasu (slug wspólny dla języków). */
-export const entityRoutesQuery = groq`*[_type in ["place", "person", "product", "hotel", "experience"] && defined(slug.current)]{
+export const entityRoutesQuery = groq`*[_type in ["place", "person", "product", "hotel", "experience", "brand"] && defined(slug.current)]{
   _type, "slug": slug.current
 }`
 
@@ -336,5 +348,25 @@ export const atlasIndexQuery = groq`{
   "people": *[_type == "person"] | order(name asc){ _id, name, "slug": slug.current, "role": ${t('role')} },
   "products": *[_type == "product"] | order(name.pl asc){ _id, "name": ${t('name')}, "slug": slug.current, kind },
   "hotels": *[_type == "hotel"] | order(name asc){ _id, name, "slug": slug.current, type },
-  "experiences": *[_type == "experience"] | order(title.pl asc){ _id, "title": ${t('title')}, "slug": slug.current, kind }
+  "experiences": *[_type == "experience"] | order(title.pl asc){ _id, "title": ${t('title')}, "slug": slug.current, kind },
+  "brands": *[_type == "brand"] | order(name asc){ _id, name, "slug": slug.current, kinds }
+}`
+
+// ─── Autorzy / twórcy (współpraca) ───────────────────────────────────────────
+
+/** Profil autora (redakcja albo autor gościnny) z jego artykułami w języku strony. */
+export const authorBySlugQuery = groq`*[_type == "author" && slug.current == $slug][0]{
+  _id, name, "slug": slug.current, kind, website,
+  "role": ${t('role')}, "bio": ${t('bio')}, "disclosure": ${t('disclosure')},
+  "photo": photo${imageProjection},
+  "links": links[]{ label, url },
+  "articles": *[_type == "article" && language == $lang && references(^._id)] | order(publishedAt desc) ${articleCard}
+}`
+
+export const authorRoutesQuery = groq`*[_type == "author" && defined(slug.current)]{ "slug": slug.current }`
+
+/** Lista autorów (wyróżnieni pierwsi) z liczbą artykułów w języku strony. */
+export const authorsIndexQuery = groq`*[_type == "author" && defined(slug.current)] | order(coalesce(featured, false) desc, name asc){
+  _id, name, "slug": slug.current, kind, "role": ${t('role')}, "photo": photo${imageProjection},
+  "articleCount": count(*[_type == "article" && language == $lang && references(^._id)])
 }`

@@ -45,6 +45,21 @@ const main = async () => {
   check('region agreguje artykuły z całego drzewa (3 poziomy)', place.articles?.length === 2, place.articles)
   check('region ma dziecko Nuoro', place.children?.some((c: any) => c.slug === 'nuoro'), place.children)
 
+  // 2b) współpraca: autor gościnny, oznaczenie, marka i sprzęt
+  const art2: any = await run(Q.articleBySlugQuery, ds, {lang: 'pl', slug: 'pane-carasau-chleb-z-potrzeby'})
+  check('artykuł: autor gościnny z rolą i informacją o współpracach', art2.author?.kind === 'guest' && !!art2.author?.role && !!art2.author?.disclosure, art2.author)
+  check('artykuł: partnership = collaboration z partnerami', art2.partnership?.type === 'collaboration' && art2.partnership?.partners?.length === 2, art2.partnership)
+  check('artykuł: sprzęt ma markę', art2.products?.some((p: any) => p.kind === 'equipment' && p.brand?.slug === 'marka-a'), art2.products)
+  const auth: any = await run(Q.authorBySlugQuery, ds, {lang: 'pl', slug: 'tworca-a'})
+  check('profil autora: artykuły w języku strony', auth?.articles?.length === 1 && auth.articles[0].slug === 'pane-carasau-chleb-z-potrzeby', auth?.articles)
+  const authEn: any = await run(Q.authorBySlugQuery, ds, {lang: 'en', slug: 'tworca-a'})
+  check('profil autora EN: rola po angielsku, artykuł EN', authEn?.role?.includes('food creator') && authEn.articles?.[0]?.language === 'en', authEn)
+  const idx: any[] = (await run(Q.authorsIndexQuery, ds, {lang: 'pl'})) as any[]
+  check('lista autorów: wyróżniony pierwszy, liczba artykułów', idx[0]?.slug === 'tworca-a' && idx[0]?.articleCount === 1 && idx.length === 2, idx.map((a) => [a.slug, a.articleCount]))
+  const brand: any = await run(Q.entityHubQuery, ds, {lang: 'pl', type: 'brand', slug: 'marka-a'})
+  check('marka: hub z logo, afiliacją i produktami', !!brand?.image && brand.affiliateUrl?.startsWith('https://') && brand.brandProducts?.some((p: any) => p.slug === 'sprzet-kuchenny'), brand)
+  check('marka: artykuły powiązane przez partnerstwo', brand?.articles?.some((a: any) => a.slug === 'pane-carasau-chleb-z-potrzeby'), brand?.articles)
+
   // 3) relatedQuery (sekcja 5a)
   const related = async (id: string, lang = 'pl', limit = 6, data = ds): Promise<any[]> =>
     ((await run(Q.relatedQuery, data, {id, lang, limit})) as any[] | null) ?? []
@@ -67,6 +82,9 @@ const main = async () => {
   const pinned = base().map((d) => (d._id === 'seed-article-pane-pl' ? {...d, pinnedRelated: [{_type: 'reference', _ref: 'seed-article-tkactwo-pl'}]} : d))
   const rp = await related('seed-article-pane-pl', 'pl', 6, pinned)
   check('related: przypięte na górze, bez duplikatów', rp[0]?._id === 'seed-article-tkactwo-pl' && rp.filter((x) => x._id === 'seed-article-tkactwo-pl').length === 1, rp.map((x) => x._id))
+
+  const rAll = await related('seed-article-pane-pl', 'pl', 30)
+  check('related: marka partnerska jest kandydatem', rAll.some((x) => x._type === 'brand'), rAll.map((x) => x._type))
 
   // encja: strona miejsca zbiera artykuły, które do niej prowadzą
   const rPlace = await related('seed-place-orgosolo')

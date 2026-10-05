@@ -38,6 +38,12 @@ check('region agreguje 2 artykuły z drzewa potomków', place?.articles?.length 
 const rel: any[] = (await client.fetch(Q.relatedQuery, {lang: 'pl', id: 'seed-article-pane-pl', limit: 6})) ?? []
 const d = rel.map((x) => x.date as string)
 check('related: najnowsze najpierw, bez bieżącego, niepusty', d.length > 1 && d.every((v, i) => i === 0 || d[i - 1] >= v) && !rel.some((x) => x._id === 'seed-article-pane-pl'), rel.map((x) => x._id))
+const live: any = await client.fetch(Q.articleBySlugQuery, {lang: 'pl', slug: 'pane-carasau-chleb-z-potrzeby'})
+check('live: autor gościnny i oznaczenie współpracy', live?.author?.kind === 'guest' && live?.partnership?.type === 'collaboration', {a: live?.author?.kind, p: live?.partnership?.type})
+const liveAuthor: any = await client.fetch(Q.authorBySlugQuery, {lang: 'pl', slug: 'tworca-a'})
+check('live: profil autora ma artykuł', liveAuthor?.articles?.length >= 1, liveAuthor?.articles?.length)
+const liveBrand: any = await client.fetch(Q.entityHubQuery, {lang: 'pl', type: 'brand', slug: 'marka-a'})
+check('live: marka ma produkty', liveBrand?.brandProducts?.length >= 1, liveBrand?.brandProducts)
 const hotel: any = (await client.fetch(Q.placeBySlugQuery, {lang: 'pl', slug: 'nuoro', limit: 12}))?.hotels?.[0]
 check('hotel: pola afiliacyjne w projekcji', hotel?.affiliateUrl?.startsWith('https://') && hotel?.isAffiliate === true, hotel)
 
