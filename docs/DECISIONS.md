@@ -91,3 +91,12 @@ Format: decyzja, powód, alternatywa.
 - **Brak własnej biblioteki typów Workers:** funkcja używa standardowych typów (`Request`, `Response`, `fetch`, `AbortSignal.timeout`), więc nie dodajemy `@cloudflare/workers-types`.
 - **Testy:** `pnpm test:unit` (Vitest, 14 przypadków funkcji) i `tests/contact-form.spec.ts` (Playwright: Turnstile nie ładuje się przed interakcją, sukces, limit, błędne dane, wersja EN; endpoint i Turnstile podstawione, żadnych prawdziwych maili). W CI klucz Turnstile to testowy `1x00000000000000000000AA`.
 - **Domena nadawcy: `mail.mysardinia.online`** (subdomena, region Resend `eu-west-1`, bez śledzenia kliknięć i otwarć). Domena główna zostaje dla poczty iCloud; rekordy SPF/DKIM Resend leżą na subdomenie, więc nie kolidują z SPF iCloud.
+
+## 2026-10-05 — Zdjęcie w tle hero (zmiana na życzenie właściciela)
+
+- **Świadome odstępstwo od prototypu i punktu 7.3.5 briefu („zero obrazów w hero”).** Właściciel zażądał zdjęcia w tle sceny hero za napisem SARDIGNA. Punkt powrotu: tag git `pre-hero-image` (komenda: `git revert <commit>` albo `git checkout pre-hero-image`).
+- **Flaga:** `NEXT_PUBLIC_HERO_IMAGE=false` (zmienna Pages, wymaga rebuildu) przywraca białe hero z prototypu bez zmian w kodzie. Domyślnie włączone. Konfiguracja zdjęcia w `lib/config.ts` (`HERO_IMAGE`).
+- **Pliki:** `web/public/hero/sardigna-hero.jpg` (1920×1440, 650 KB, od właściciela) plus warianty `-1280` (325 KB) i `-768` (127 KB) wygenerowane `sips`; `<img srcset sizes="100vw" fetchpriority="high">`, dekoracyjne (`aria-hidden`, `alt=""`).
+- **Overlay:** warstwa w kolorze tła motywu (`color-mix(in srgb, var(--bg) X%, transparent)`), więc działa w jasnym i ciemnym motywie. `--hero-wash`: 66% w trybie animowanym, 88% w statycznym fallbacku (mobile, reduced motion, bez JS), gdzie tekst leży na zdjęciu.
+- **Animacja:** zdjęcie ma `opacity` sterowane scrollem (1 → 0 między p = 0,25 a 0,75), więc po animacji układ jest identyczny z prototypem. Pomiary `getBoundingClientRect` znaku, słów i zdjęć pozostały identyczne z wzorcem (0/150/336/673). Header zostaje z pełnym tłem jak w prototypie.
+- **Autor zdjęcia:** Christopher Politano / Unsplash, widoczny w stopce strony głównej (`footer-note`). Do potwierdzenia, że to właściwa informacja o licencji (Unsplash License).

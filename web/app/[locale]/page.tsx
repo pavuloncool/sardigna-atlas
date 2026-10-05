@@ -11,6 +11,7 @@ import { getDictionary } from "@/lib/i18n/dictionary";
 import { isLocale, locales, type Locale } from "@/lib/i18n/locales";
 import { articlePath, homePath, pagePath, type SegmentKey } from "@/lib/i18n/segments";
 import { pageMetadata } from "@/lib/seo";
+import { HERO_IMAGE, HERO_IMAGE_ENABLED } from "@/lib/config";
 import { client } from "@/lib/sanity/client";
 import { homeQuery } from "@/lib/sanity/queries";
 import { categoryName, categoryPath, getCategories } from "@/lib/site";
@@ -77,9 +78,14 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   });
 
   return (
-    <PageShell locale={locale} flush alternates={Object.fromEntries(locales.map((l) => [l, homePath(l)]))}>
+    <PageShell
+      locale={locale}
+      flush
+      alternates={Object.fromEntries(locales.map((l) => [l, homePath(l)]))}
+      footerNote={HERO_IMAGE_ENABLED ? `${dict.footer.photo}: ${HERO_IMAGE.credit}` : undefined}
+    >
       <h1 className="sr">{dict.brand}</h1>
-      <Hero columns={columns} />
+      <Hero columns={columns} image={HERO_IMAGE_ENABLED ? HERO_IMAGE : null} />
 
       {latest.length > 0 ? (
         <section className="voices" id="opowiesci" aria-label={home.voicesAria}>

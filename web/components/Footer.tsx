@@ -4,7 +4,7 @@ import type { Locale } from "@/lib/i18n/locales";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { homePath, pagePath } from "@/lib/i18n/segments";
 
-export function Footer({ locale }: { locale: Locale }) {
+export function Footer({ locale, note }: { locale: Locale; note?: string }) {
   const dict = getDictionary(locale);
   return (
     <footer className="site-footer" aria-label={dict.footer.aria}>
@@ -20,6 +20,7 @@ export function Footer({ locale }: { locale: Locale }) {
         <Link href={pagePath(locale, "cookies")}>{dict.footer.cookies}</Link>
         <BackToTop>{dict.footer.top}</BackToTop>
       </nav>
+      {note ? <p className="footer-note">{note}</p> : null}
     </footer>
   );
 }

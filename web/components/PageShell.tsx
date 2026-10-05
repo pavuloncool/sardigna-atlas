@@ -14,12 +14,15 @@ export async function PageShell({
   locale,
   alternates,
   flush = false,
+  footerNote,
   children,
 }: {
   locale: Locale;
   alternates?: Partial<Record<Locale, string>>;
   /** Home: treść startuje od góry okna (hero pod stałym headerem). */
   flush?: boolean;
+  /** Dyskretna linia pod linkami stopki (np. autor zdjęcia). */
+  footerNote?: string;
   children: ReactNode;
 }) {
   const dict = getDictionary(locale);
@@ -33,7 +36,7 @@ export async function PageShell({
       <main id="main" className={flush ? undefined : "page"} data-pagefind-body>
         {children}
       </main>
-      <Footer locale={locale} />
+      <Footer locale={locale} note={footerNote} />
     </>
   );
 }

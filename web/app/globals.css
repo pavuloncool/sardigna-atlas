@@ -898,3 +898,53 @@ figure.fig figcaption {
 .form-error {
   color: var(--terakota);
 }
+
+/* ── Zdjęcie w tle hero ─────────────────────────────────────────────────────
+   Świadome odstępstwo od prototypu (docs/DECISIONS.md). Overlay w kolorze tła motywu
+   (`--bg`) wyszarza zdjęcie, żeby nie dominowało nad znakiem SARDIGNA i hasłem.
+   Siłę reguluje `--hero-wash`: w trybie animowanym zdjęcie i tak znika przed pojawieniem
+   się kolumn, w statycznym fallbacku (mobile, reduced motion, bez JS) tekst leży na zdjęciu,
+   więc overlay jest mocniejszy. */
+.stage {
+  position: relative;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  --hero-wash: 88%;
+}
+.anim .hero-bg {
+  --hero-wash: 66%;
+}
+.hero-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 62%;
+}
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) var(--hero-wash), transparent);
+}
+.stage > .cols,
+.stage > .ghost {
+  z-index: 1;
+}
+.stage > .cols {
+  position: relative;
+}
+.anim .stage > .cols {
+  position: absolute;
+}
+.footer-note {
+  margin: 1.6rem 0 0;
+  font-size: 12px;
+  color: var(--mute);
+}

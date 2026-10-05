@@ -16,9 +16,17 @@ export type HeroColumn = {
  * Logika `measure()` / `frame()` jest przeniesiona z prototypu bez zmian.
  * Bez JS, przy prefers-reduced-motion i poniżej 900 px zostaje statyczny fallback.
  */
-export function Hero({ columns }: { columns: HeroColumn[] }) {
+export function Hero({
+  columns,
+  image,
+}: {
+  columns: HeroColumn[];
+  /** Zdjęcie w tle (opcjonalne; wyłączane flagą `HERO_IMAGE_ENABLED`). Dekoracyjne, `aria-hidden`. */
+  image?: { src: string; srcSet: string; width: number; height: number } | null;
+}) {
   const hero = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
+  const bg = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const heroEl = hero.current!;
@@ -32,6 +40,7 @@ export function Hero({ columns }: { columns: HeroColumn[] }) {
     const ghosts = [...stageEl.querySelectorAll<HTMLElement>(".ghost .w")];
     const fades = [...stageEl.querySelectorAll<HTMLElement>(".cols .txt, .cols .links")];
     const pts = [...stageEl.querySelectorAll<HTMLElement>(".cols .pt")];
+    const bgEl = bg.current;
     let G: { S: number; dy: number; max: number; d: [number, number][] } | null = null;
     let tick = false;
 
@@ -52,6 +61,7 @@ export function Hero({ columns }: { columns: HeroColumn[] }) {
         x.style.maxWidth = "";
         x.style.opacity = "";
       });
+      if (bgEl) bgEl.style.opacity = "";
     }
 
     function measure() {
@@ -98,6 +108,8 @@ export function Hero({ columns }: { columns: HeroColumn[] }) {
         x.style.opacity = String(f);
         x.style.transform = `translateY(${(1 - f) * 14}px)`;
       });
+      // Zdjęcie w tle znika, zanim kolumny staną się w pełni widoczne: po animacji układ jest jak w prototypie.
+      if (bgEl) bgEl.style.opacity = String(1 - ease(clamp((p - 0.25) / 0.5)));
     }
 
     const req = () => {
@@ -131,6 +143,21 @@ export function Hero({ columns }: { columns: HeroColumn[] }) {
   return (
     <div className="hero" id="hero" ref={hero}>
       <div className="stage" id="stage" ref={stage}>
+        {image ? (
+          <div className="hero-bg" ref={bg} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element -- statyczny eksport, własne warianty w public/ */}
+            <img
+              src={image.src}
+              srcSet={image.srcSet}
+              sizes="100vw"
+              width={image.width}
+              height={image.height}
+              alt=""
+              fetchPriority="high"
+              decoding="async"
+            />
+          </div>
+        ) : null}
         <div className="ghost" aria-hidden="true">
           {columns.map((c) => (
             <span className="w" key={c.word}>

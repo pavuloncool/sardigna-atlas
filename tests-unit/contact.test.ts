@@ -27,7 +27,7 @@ const post = (body: unknown, headers: Record<string, string> = {}) =>
 
 /** Fałszywy fetch: Turnstile i Resend z konfigurowalnymi odpowiedziami. */
 const fakeFetch = (turnstile: {success: boolean} | 'down', resend: {status: number; body?: unknown}) => {
-  const fn = vi.fn(async (url: string) => {
+  const fn = vi.fn(async (url: string, _init?: RequestInit) => {
     if (url.includes('turnstile')) {
       if (turnstile === 'down') throw new Error('network')
       return new Response(JSON.stringify(turnstile))
