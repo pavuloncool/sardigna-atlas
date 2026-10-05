@@ -1056,3 +1056,7 @@ figure.fig figcaption {
 .field select option {
   color: initial;
 }
+.affiliate-note strong {
+  color: var(--fg);
+  font-weight: 500;
+}

@@ -2,16 +2,8 @@ import Link from "@/components/Link";
 import type { Locale } from "@/lib/i18n/locales";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { entityPath, segment } from "@/lib/i18n/segments";
-import type { Partnership, PartnershipType } from "@/lib/sanity/types";
-
-/** Siła oznaczenia: przy kilku źródłach (pole artykułu + automatyczna afiliacja) wygrywa silniejsze. */
-const RANK: Record<PartnershipType, number> = { none: 0, affiliate: 1, gifted: 2, collaboration: 3, sponsored: 4 };
-
-export function effectiveType(partnership: Partnership | null | undefined, hasAffiliate: boolean): PartnershipType {
-  const explicit = partnership?.type ?? "none";
-  const auto: PartnershipType = hasAffiliate ? "affiliate" : "none";
-  return RANK[explicit] >= RANK[auto] ? explicit : auto;
-}
+import { effectiveType } from "@/lib/partnership";
+import type { Partnership } from "@/lib/sanity/types";
 
 /**
  * Oznaczenie współpracy na początku artykułu (sekcje 12 i 14 briefu): afiliacja wykrywana

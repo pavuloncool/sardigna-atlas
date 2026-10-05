@@ -16,7 +16,8 @@
     "test:e2e": "playwright test",
     "test": "pnpm test:unit && pnpm test:links && pnpm test:e2e",
     "test:unit": "vitest run",
-    "test:budget": "tsx scripts/check-budget.ts"
+    "test:budget": "tsx scripts/check-budget.ts",
+    "seed:collab": "pnpm seed:build && pnpm --filter sardigna-atlas-studio exec sanity datasets import --missing -d production \"$PWD/scripts/seed/out/seed.ndjson\" && pnpm --filter sardigna-atlas-studio exec sanity exec scripts/patch-collab.ts --with-user-token"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
