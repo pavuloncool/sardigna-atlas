@@ -123,3 +123,9 @@ Format: decyzja, powód, alternatywa.
 - **LCP:** symulowane przez Lighthouse 4,9–5,4 s, ale z zastosowanym ograniczeniem (4G + 4× CPU) 2,1–2,4 s, czyli w budżecie (< 2,5 s). Zapas na stronie głównej (zdjęcie hero 127 kB na mobile) jest mały. CLS = 0.
 - **Dostępność:** miniatury obok linków o tej samej nazwie (karty, kafelki) mają `alt=""` (`Figure decorative`), bo powielały tekst linku (audyt `image-redundant-alt`). Zdjęcia główne i galerie zachowują alt.
 - **Artefakty testowe:** `docs/lighthouse/phase5-*.json` to skróty (`scripts/lh-summary.py`) zamiast pełnych raportów; stare `phase1-*.json` usunięte.
+
+## 2026-10-05 — Zdjęcie hero wyłączone
+
+- **Na życzenie właściciela zdjęcie w tle hero zostało wyłączone flagą** `NEXT_PUBLIC_HERO_IMAGE=false` (ustawioną w Cloudflare Pages dla production i preview, w `web/.env.local`, w CI i opisaną w `.env.example`). Kod, pliki `public/hero/*` oraz przezroczysty header ze scrimem **zostają**: gdy flaga nie jest `false`, zdjęcie wraca (do włączenia: usunąć zmienną w Pages i przebudować). Bez zdjęcia header ma pełne tło (`--hbg` nie jest ustawiane), a podpis autora w stopce znika.
+- **Zmiana nawigacji (16 px / 500) zostaje**, bo dotyczyła czytelności ogólnie i nie była częścią cofanego kroku.
+- Alternatywny powrót do stanu sprzed zdjęcia: tag `pre-hero-image` (cofnąłby także późniejsze zmiany, więc nie jest zalecany).

@@ -30,6 +30,8 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
           # testowy klucz Turnstile (Cloudflare: zawsze przechodzi), tylko na potrzeby testów
           NEXT_PUBLIC_TURNSTILE_SITE_KEY: "1x00000000000000000000AA"
+          # zdjęcie w tle hero wyłączone (flaga), tak jak na produkcji
+          NEXT_PUBLIC_HERO_IMAGE: "false"
       - run: pnpm test:unit
       - name: Budżet JS (brotli < 120 kB)
         run: pnpm test:budget
