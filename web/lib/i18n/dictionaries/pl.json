@@ -1,0 +1,30 @@
+{
+  "brand": "SARDIGNA. Su Mari. S'Isula. Sa Bida.",
+  "homeAria": "SARDIGNA, strona główna",
+  "skipToContent": "Przejdź do treści",
+  "nav": {
+    "aria": "Główna",
+    "journal": "Journal",
+    "atlas": "Atlas",
+    "people": "Ludzie",
+    "about": "O projekcie",
+    "menu": "Menu"
+  },
+  "search": { "label": "Szukaj", "placeholder": "Szukaj na wyspie" },
+  "theme": { "toggle": "Przełącz motyw jasny/ciemny" },
+  "language": { "aria": "Język", "switchTo": "Przełącz na: {language}" },
+  "footer": {
+    "aria": "Stopka",
+    "contact": "Kontakt",
+    "privacy": "Polityka prywatności",
+    "cookies": "Polityka cookies",
+    "top": "Do góry ↑"
+  },
+  "article": {
+    "related": "Powiązane",
+    "similar": "Podobne",
+    "affiliateNotice": "Ten materiał zawiera linki afiliacyjne. Jeśli z nich skorzystasz, możemy otrzymać prowizję, bez dodatkowych kosztów dla Ciebie.",
+    "affiliateLabel": "link afiliacyjny",
+    "sponsoredLabel": "treść sponsorowana"
+  }
+}

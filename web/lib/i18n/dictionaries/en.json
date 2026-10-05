@@ -1,0 +1,30 @@
+{
+  "brand": "SARDIGNA. Su Mari. S'Isula. Sa Bida.",
+  "homeAria": "SARDIGNA, home",
+  "skipToContent": "Skip to content",
+  "nav": {
+    "aria": "Main",
+    "journal": "Journal",
+    "atlas": "Atlas",
+    "people": "People",
+    "about": "About",
+    "menu": "Menu"
+  },
+  "search": { "label": "Search", "placeholder": "Search the island" },
+  "theme": { "toggle": "Switch light/dark theme" },
+  "language": { "aria": "Language", "switchTo": "Switch to: {language}" },
+  "footer": {
+    "aria": "Footer",
+    "contact": "Contact",
+    "privacy": "Privacy policy",
+    "cookies": "Cookie policy",
+    "top": "Back to top ↑"
+  },
+  "article": {
+    "related": "Related",
+    "similar": "Similar",
+    "affiliateNotice": "This piece contains affiliate links. If you use them we may earn a commission, at no extra cost to you.",
+    "affiliateLabel": "affiliate link",
+    "sponsoredLabel": "sponsored"
+  }
+}

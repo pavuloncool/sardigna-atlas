@@ -12,3 +12,15 @@ Format: decyzja, powód, alternatywa.
 - **`typegen.path` obejmuje `web/{app,lib,components}`.** Zapytania żyją w `web/lib`.
 - **Wersja pnpm przypięta w `packageManager`** (10.33.2).
 - **`images.unoptimized: true`** dla statycznego eksportu; docelowo własny loader Sanity (faza 1).
+
+## 2026-10-05 — Faza 1
+
+- **Kolor szarego tekstu: `#757575` zamiast `#9a9a9a` w trybie jasnym.** `#9a9a9a` na `#fff` daje kontrast 2,8:1, poniżej AA (4,5:1), a brief wymaga AA (sekcja 8, AC fazy 1). `#757575` = 4,6:1. Tryb ciemny bez zmian (`#8a8a8a` na `#121212`). Alternatywa: zostawić `#9a9a9a` (odrzucone: łamie AC).
+- **Dwa root layouty.** `app/(root)` (przekierowanie `/` → `/pl/`) i `app/[locale]` (właściwa strona z `<html lang={locale}>`). Jeden wspólny root layout nie może ustawić poprawnego `lang` per język bez middleware.
+- **Header i Footer renderuje `PageShell` per strona, nie layout.** Tylko strona zna adresy tłumaczeń (`alternates`), więc przełącznik języka jest zwykłym linkiem i działa bez JS.
+- **Menu mobilne to `<details>`** (działa bez JS). Prototyp ukrywał nawigację poniżej 900 px bez zastępnika.
+- **Loader obrazów:** `images.loader: 'custom'` + `lib/sanity/imageLoader.ts`; szerokości 480/768/1200/1800 (`deviceSizes`), `imageSizes: [240]`, jakość 75. Proporcje kadru niesie parametr `ar` w URL (usuwany przez loader, który dodaje `w` i `h`).
+- **Fonty przez `next/font/google`** (Hanken Grotesk 400/500/700, Newsreader 300): pobierane i hostowane w buildzie, brak żądań do domen Google w runtime.
+- **Słowniki UI z fallbackiem na język domyślny** (`lib/i18n/dictionary.ts`) oraz mapa segmentów URL z fallbackiem `lang → en → pl` (`lib/i18n/segments.ts`): dodanie `de` nie wymaga zmian w komponentach.
+- **Nawigacja: „Ludzie" dochodzi w fazie 3** (slug działu `people` pochodzi z Sanity). Pole wyszukiwania to na razie sam markup; Pagefind w fazie 3.
+- **Typy obrazów ręczne** (`SanityImage`, `ArticleCardData`) do czasu fazy 2, kiedy pojawią się zapytania i typegen.
