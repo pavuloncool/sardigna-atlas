@@ -15,6 +15,7 @@ export default defineCliConfig({
     overloadClientMethods: true,
   },
   deployment: {
+    appId: 'wi3ca19uimqiio7rtpp9btne',
     autoUpdates: true,
   },
 })
