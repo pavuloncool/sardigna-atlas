@@ -74,6 +74,9 @@
     "title": "Atlas",
     "intro": "The island read region by region, down to the village. [PLACEHOLDER] Atlas introduction.",
     "mapLabel": "Map of Sardinia's regions",
+    "mapSoon": "coming soon",
+    "mapOther": "other area",
+    "mapSource": "Indicative division: municipalities assigned to historical areas. Municipal boundaries: ISTAT (CC BY 4.0).",
     "noArticles": "No articles",
     "all": "All"
   },

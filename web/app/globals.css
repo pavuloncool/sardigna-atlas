@@ -738,28 +738,68 @@ figure.fig figcaption {
 .atlas-map svg {
   display: block;
   width: 100%;
-  max-width: 22rem;
+  max-width: 34rem;
   height: auto;
 }
 .atlas-map .region {
-  fill: var(--rule);
   stroke: var(--bg);
   stroke-width: 0.6;
+  stroke-linejoin: round;
+  transition: fill 0.15s;
 }
-.atlas-map a.region-link .region {
+.atlas-map .region.other {
+  fill: var(--rule);
+}
+.atlas-map .region.soon {
+  fill: var(--rule);
+  fill-opacity: 0.55;
+}
+.atlas-map .region.lv1,
+.atlas-map .region.lv2,
+.atlas-map .region.lv3 {
   fill: var(--piasek);
   cursor: pointer;
 }
-.atlas-map a.region-link:hover .region,
-.atlas-map a.region-link:focus-visible .region {
-  fill: var(--terakota);
+.atlas-map .region.lv1 {
+  fill-opacity: 0.5;
 }
-.atlas-map a.region-link:focus-visible {
+.atlas-map .region.lv2 {
+  fill-opacity: 0.75;
+}
+.atlas-map .is-active .region {
+  fill: var(--terakota);
+  fill-opacity: 1;
+}
+.atlas-map .is-active .region.other,
+.atlas-map .is-active .region.soon {
+  fill: var(--mute);
+  fill-opacity: 0.5;
+}
+.atlas-map a.region-link,
+.atlas-map g.region-static {
   outline: none;
 }
-.atlas-map a.region-link:focus-visible .region {
+.atlas-map a.region-link:focus-visible .region,
+.atlas-map g.region-static:focus-visible .region {
   stroke: var(--focus);
   stroke-width: 1.6;
+}
+.atlas-map .region-names text {
+  display: none;
+  font-size: 4.4px;
+  fill: var(--fg);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
+.atlas-map .region-names text.is-active {
+  fill: var(--bg);
+}
+@media (min-width: 640px) {
+  .atlas-map .region-names text {
+    display: block;
+  }
 }
 .map-tip {
   position: absolute;
@@ -770,6 +810,9 @@ figure.fig figcaption {
   font-size: 13px;
   pointer-events: none;
   white-space: nowrap;
+}
+.map-tip.flip {
+  transform: translateX(calc(-100% - 28px));
 }
 .map-legend {
   margin: 1.4rem 0 0;
@@ -783,10 +826,20 @@ figure.fig figcaption {
 .map-legend a {
   border-bottom: 1px solid var(--rule);
 }
-.map-legend a:hover {
+.map-legend a:hover,
+.map-legend li.is-active a {
   border-bottom-color: var(--fg);
 }
+.map-legend li.soon {
+  color: var(--mute);
+}
 .map-legend span {
+  color: var(--mute);
+}
+.map-source {
+  margin: 1.2rem 0 0;
+  max-width: 34rem;
+  font-size: 12px;
   color: var(--mute);
 }
 

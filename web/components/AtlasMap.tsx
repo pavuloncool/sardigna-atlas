@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "@/components/Link";
-import { useRef, useState } from "react";
-import { MAP_COAST_PATH, MAP_REGIONS, MAP_VIEWBOX, mapRegionPath } from "@/lib/atlasMap";
+import { MAP_OTHERS, MAP_REGIONS, MAP_VIEWBOX, type MapUnit } from "@/lib/atlasMap";
+import { MapInteraction } from "./MapInteraction";
 
 export type MapRegion = {
   mapId: string;
@@ -10,65 +8,79 @@ export type MapRegion = {
   href: string;
   /** Gotowy opis („2 artykuły”), liczony po stronie serwera dla danego języka. */
   countLabel: string;
+  articleCount: number;
 };
 
 /**
- * Klikalna mapa regionów (inline SVG, bez Mapbox/Leaflet). Regiony z `place.mapId` w Sanity
- * są linkami (hover i fokus klawiatury pokazują tooltip z liczbą artykułów). Wersją zastępczą
- * bez JS jest lista pod mapą (`map-legend`), renderowana przez stronę Atlasu.
+ * Klikalna mapa regionów (inline SVG, bez Mapbox/Leaflet), komponent serwerowy: geometria
+ * jest w HTML, nie w paczce JS. Wszystkie 10 regionów jest zawsze narysowanych: te z `place.mapId`
+ * w Sanity są linkami z tooltipem (nazwa i liczba artykułów), pozostałe wygaszone („wkrótce”).
+ * Szare „inne krainy” (Marmilla, Gerrei…) mają tylko tooltip. Interakcję (hover, fokus, dotyk,
+ * Escape) dodaje `MapInteraction`; bez JS zostaje mapa z linkami i lista regionów pod nią.
  */
-export function AtlasMap({ regions, label }: { regions: MapRegion[]; label: string }) {
-  const box = useRef<HTMLDivElement>(null);
-  const [tip, setTip] = useState<{ text: string; x: number; y: number } | null>(null);
+export function AtlasMap({
+  regions,
+  label,
+  soon,
+  other,
+  source,
+}: {
+  regions: MapRegion[];
+  label: string;
+  soon: string;
+  other: string;
+  source: string;
+}) {
   const linked = new Map(regions.map((r) => [r.mapId, r]));
 
-  function show(e: { clientX: number; clientY: number }, text: string) {
-    const b = box.current!.getBoundingClientRect();
-    setTip({ text, x: e.clientX - b.left + 14, y: e.clientY - b.top + 14 });
-  }
-  function showAtElement(el: Element, text: string) {
-    const r = el.getBoundingClientRect();
-    const b = box.current!.getBoundingClientRect();
-    setTip({ text, x: r.left - b.left + r.width / 2, y: r.top - b.top + r.height / 2 });
+  function unit(u: MapUnit) {
+    const hit = u.kind === "region" ? linked.get(u.id) : undefined;
+    const tip =
+      u.kind === "other" ? `${u.name} · ${other}` : hit ? `${hit.name} · ${hit.countLabel}` : `${u.name} · ${soon}`;
+    const level = hit ? (hit.articleCount >= 3 ? 3 : hit.articleCount >= 1 ? 2 : 1) : 0;
+    const path = (
+      <path d={u.d} fillRule="evenodd" className={`region ${hit ? `lv${level}` : u.kind === "other" ? "other" : "soon"}`} />
+    );
+    const common = { "data-unit": "", "data-id": u.id, "data-tip": tip, "aria-label": tip };
+    return hit ? (
+      <Link key={u.id} href={hit.href} className="region-link" {...common}>
+        {path}
+      </Link>
+    ) : (
+      <g key={u.id} tabIndex={0} role="img" className="region-static" {...common}>
+        {path}
+      </g>
+    );
   }
 
   return (
-    <div className="atlas-map" ref={box}>
+    <MapInteraction>
       <svg viewBox={MAP_VIEWBOX} role="group" aria-label={label}>
-        <defs>
-          <clipPath id="sardinia-clip">
-            <path d={MAP_COAST_PATH} />
-          </clipPath>
-        </defs>
-        <path d={MAP_COAST_PATH} className="region" />
-        <g clipPath="url(#sardinia-clip)">
-          {MAP_REGIONS.map((r) => {
-            const hit = linked.get(r.id);
-            const path = <path d={mapRegionPath(r.id)} className="region" />;
-            if (!hit) return <g key={r.id}>{path}</g>;
-            const text = `${hit.name} · ${hit.countLabel}`;
-            return (
-              <Link
-                key={r.id}
-                href={hit.href}
-                className="region-link"
-                aria-label={text}
-                onMouseMove={(e) => show(e, text)}
-                onMouseLeave={() => setTip(null)}
-                onFocus={(e) => showAtElement(e.currentTarget, text)}
-                onBlur={() => setTip(null)}
-              >
-                {path}
-              </Link>
-            );
-          })}
+        <g>{MAP_OTHERS.map(unit)}</g>
+        <g>{MAP_REGIONS.map(unit)}</g>
+        <g aria-hidden="true" className="region-names">
+          {MAP_REGIONS.map((u) => (
+            <text key={u.id} x={u.label[0]} y={u.label[1]} data-id={u.id}>
+              {u.name}
+            </text>
+          ))}
         </g>
       </svg>
-      {tip ? (
-        <div className="map-tip" style={{ left: tip.x, top: tip.y }} role="status">
-          {tip.text}
-        </div>
-      ) : null}
-    </div>
+      <ul className="map-legend">
+        {MAP_REGIONS.map((u) => {
+          const hit = linked.get(u.id);
+          return hit ? (
+            <li key={u.id} data-legend data-id={u.id}>
+              <Link href={hit.href}>{hit.name}</Link> <span>{hit.countLabel}</span>
+            </li>
+          ) : (
+            <li key={u.id} data-legend data-id={u.id} className="soon">
+              {u.name} <span>{soon}</span>
+            </li>
+          );
+        })}
+      </ul>
+      <p className="map-source">{source}</p>
+    </MapInteraction>
   );
 }

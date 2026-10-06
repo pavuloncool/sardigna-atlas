@@ -15,3 +15,4 @@ test-results
 scripts/seed/out
 backups
 web/out-ads
+scripts/map/.cache
