@@ -48,3 +48,45 @@ test('fallback statyczny poniżej 900 px: bez klasy anim, akapity widoczne od ra
   await expect(page.locator('html')).not.toHaveClass(/anim/)
   for (const t of await page.locator('.cols .txt').all()) await expect(t).toHaveCSS('opacity', '1')
 })
+
+/** Adres artykułu z sitemap (testy nie zakładają konkretnych slugów). */
+async function anyArticle(page: import('@playwright/test').Page) {
+  const xml = await (await page.request.get('/sitemap.xml')).text()
+  return [...xml.matchAll(/<loc>[^<]*?(\/pl\/[^/<]+\/[^/<]+\/)<\/loc>/g)].map((m) => m[1]).find((u) => !u.startsWith('/pl/atlas/'))!
+}
+const colsOpacity = (page: import('@playwright/test').Page) =>
+  page.evaluate(() => [...document.querySelectorAll<HTMLElement>('.cols .txt, .cols .links')].map((e) => +getComputedStyle(e).opacity))
+
+for (const label of ['Home', 'Journal']) {
+  test(`„${label}” z innej strony: kolumny hero w pełni widoczne, nie biała strona`, async ({page}) => {
+    await page.setViewportSize({width: 1440, height: 860})
+    await page.goto(await anyArticle(page))
+    await page.locator('header nav a:visible', {hasText: new RegExp(`^${label}$`)}).first().click()
+    await expect(page).toHaveURL(/\/pl\/#opowiesci$/)
+    await expect(page.locator('html')).toHaveClass(/anim/)
+    await expect.poll(() => colsOpacity(page)).toEqual(expect.arrayContaining([1]))
+    expect((await colsOpacity(page)).every((o) => o === 1)).toBe(true)
+    // po ustaleniu układu (fonty, load) pozycja się nie cofa
+    await page.evaluate(() => document.fonts.ready)
+    await page.waitForTimeout(300)
+    expect((await colsOpacity(page)).every((o) => o === 1)).toBe(true)
+  })
+}
+
+test('„Home” na stronie głównej: animacja odgrywa się w drodze do końca, kolumny widoczne', async ({page}) => {
+  await page.setViewportSize({width: 1440, height: 860})
+  await page.goto('/pl/')
+  await page.evaluate(() => document.fonts.ready)
+  await expect(page.locator('html')).toHaveClass(/anim/)
+  expect((await colsOpacity(page)).every((o) => o === 0)).toBe(true) // start animacji
+  await page.locator('header nav a:visible', {hasText: /^Home$/}).first().click()
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(860)
+  await expect.poll(async () => (await colsOpacity(page)).every((o) => o === 1)).toBe(true)
+  await expect(page).toHaveURL(/#opowiesci$/)
+})
+
+test('nawigacja: tekst „Home” zamiast ikony oliwki', async ({page}) => {
+  await page.goto('/pl/')
+  await expect(page.locator('header nav a', {hasText: /^Home$/}).first()).toHaveAttribute('href', '/pl/#opowiesci')
+  await expect(page.locator('header')).not.toContainText('🫒')
+})

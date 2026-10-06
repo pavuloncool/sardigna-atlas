@@ -15,7 +15,7 @@ export function Header({
 }: {
   locale: Locale;
   alternates?: Partial<Record<Locale, string>>;
-  /** Budowane przez PageShell (lib/nav.ts): Journal, Atlas, Ludzie, O projekcie + ikona „Nowość”. */
+  /** Budowane przez PageShell (lib/nav.ts): Journal, Atlas, Ludzie, O projekcie, Home. */
   nav: NavItem[];
 }) {
   const dict = getDictionary(locale);

@@ -15,7 +15,15 @@ export type HeroColumn = {
  * rozsuwają się na trzy kolumny (FLIP, pomiar z elementu-widma `.ghost`).
  * Logika `measure()` / `frame()` jest przeniesiona z prototypu bez zmian.
  * Bez JS, przy prefers-reduced-motion i poniżej 900 px zostaje statyczny fallback.
+ *
+ * Link do `#opowiesci` (Journal, Home): w trybie animowanym kotwica nie może prowadzić do
+ * pozycji z układu sprzed pomiaru (przeglądarka przewija, zanim hero się wydłuży, i strona
+ * staje w połowie animacji z niewidocznymi kolumnami). Cel to koniec animacji (`G.max`):
+ * kolumny w pełni widoczne, Opowieści tuż pod nimi. Z innej strony skok jest natychmiastowy,
+ * na stronie głównej płynny (animacja odgrywa się po drodze).
  */
+const JUMP_HASH = "#opowiesci";
+
 export function Hero({
   columns,
   image,
@@ -45,6 +53,9 @@ export function Hero({
     const header = bgEl ? document.querySelector<HTMLElement>(".site-header") : null;
     let G: { S: number; dy: number; max: number; d: [number, number][] } | null = null;
     let tick = false;
+    // wejście z kotwicą: trzymamy cel, dopóki układ się ustala (fonty, load) albo do pierwszego ruchu użytkownika
+    let pendingJump = location.hash === JUMP_HASH;
+    const jump = (behavior: ScrollBehavior) => G && scrollTo({ top: G.max, behavior });
 
     const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
     const clamp = (v: number) => Math.min(1, Math.max(0, v));
@@ -91,6 +102,7 @@ export function Hero({
         }),
       };
       frame();
+      if (pendingJump) jump("instant");
     }
 
     function frame() {
@@ -130,6 +142,22 @@ export function Hero({
       scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    const userMoved = () => (pendingJump = false);
+    const onLoad = () => pendingJump && jump("instant");
+    // klik w link do #opowiesci na stronie głównej: płynny przejazd przez animację do jej końca
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element).closest?.<HTMLAnchorElement>("a[href]");
+      if (!a || !G || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (a.hash !== JUMP_HASH || a.pathname !== location.pathname || a.origin !== location.origin) return;
+      e.preventDefault();
+      if (location.hash !== JUMP_HASH) history.pushState(null, "", JUMP_HASH);
+      jump("smooth");
+    };
+    const userEvents = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
+    userEvents.forEach((t) => addEventListener(t, userMoved, { passive: true, capture: true }));
+    addEventListener("load", onLoad);
+    document.addEventListener("click", onClick);
+
     addEventListener("scroll", req, { passive: true });
     addEventListener("resize", measure);
     mq.addEventListener("change", measure);
@@ -138,6 +166,9 @@ export function Hero({
     measure();
 
     return () => {
+      userEvents.forEach((t) => removeEventListener(t, userMoved, { capture: true }));
+      removeEventListener("load", onLoad);
+      document.removeEventListener("click", onClick);
       removeEventListener("scroll", req);
       removeEventListener("resize", measure);
       mq.removeEventListener("change", measure);
