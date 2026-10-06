@@ -3,5 +3,6 @@ declare module "mapshaper" {
   export default mapshaper;
 }
 declare module "polylabel" {
-  export default function polylabel(polygon: number[][][], precision?: number): number[];
+  /** Zwraca [x, y] z polem `distance` (promień największego koła wpisanego). */
+  export default function polylabel(polygon: number[][][], precision?: number): number[] & { distance: number };
 }

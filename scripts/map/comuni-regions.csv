@@ -1,378 +1,389 @@
-pro_com,comune,subregion
-95001,Abbasanta,Guilcer
-90001,Aggius,Gallura
-90062,Aglientu,Gallura
-95002,Aidomaggiore,Guilcer
-90002,Alà dei Sardi,Monte Acuto
-95003,Albagiara,Marmilla
-95004,Ales,Marmilla
-90003,Alghero,Nurra
-95005,Allai,Barigadu
-90004,Anela,Goceano
-95006,Arborea,Campidano di Terralba
-111001,Arbus,Arburese-Guspinese
-90005,Ardara,Monte Acuto
-95007,Ardauli,Barigadu
-91001,Aritzo,Mandrolisai
-111002,Armungia,Gerrei
-90006,Arzachena,Gallura
-91002,Arzana,Ogliastra
-92003,Assemini,Campidano di Cagliari
-95008,Assolo,Marmilla
-95009,Asuni,Marmilla
-91003,Atzara,Mandrolisai
-91004,Austis,Mandrolisai
-90081,Badesi,Anglona
-111003,Ballao,Gerrei
-90007,Banari,Coros
-95010,Baradili,Marmilla
-95011,Baratili San Pietro,Campidano di Oristano
-95012,Baressa,Marmilla
-91005,Bari Sardo,Ogliastra
-111004,Barrali,Parteolla
-111005,Barumini,Marmilla
-95013,Bauladu,Sinis
-91006,Baunei,Ogliastra
-91007,Belvì,Mandrolisai
-90008,Benetutti,Goceano
-90009,Berchidda,Monte Acuto
-90010,Bessude,Coros
-95014,Bidonì,Guilcer
-91008,Birori,Marghine
-91009,Bitti,Barbagia di Nuoro
-91010,Bolotana,Marghine
-95015,Bonarcado,Montiferru
-90011,Bonnanaro,Meilogu
-90012,Bono,Goceano
-90013,Bonorva,Meilogu
-95016,Boroneddu,Guilcer
-91011,Borore,Marghine
-91012,Bortigali,Marghine
-90014,Bortigiadas,Gallura
-90015,Borutta,Meilogu
-95079,Bosa,Planargia
-90016,Bottidda,Goceano
-90017,Buddusò,Monte Acuto
-90091,Budoni,Gallura
-111006,Buggerru,Sulcis-Iglesiente
-90018,Bultei,Goceano
-90019,Bulzi,Anglona
-111007,Burcei,Sarrabus
-90020,Burgos,Goceano
-95017,Busachi,Barigadu
-95018,Cabras,Sinis
-92009,Cagliari,Campidano di Cagliari
-90021,Calangianus,Gallura
-111008,Calasetta,Sulcis-Iglesiente
-92011,Capoterra,Campidano di Cagliari
-111009,Carbonia,Sulcis-Iglesiente
-91103,Cardedu,Ogliastra
-90022,Cargeghe,Coros
-111010,Carloforte,Sulcis-Iglesiente
-90023,Castelsardo,Anglona
-111011,Castiadas,Sarrabus
-90024,Cheremule,Meilogu
-90025,Chiaramonti,Anglona
-90026,Codrongianos,Coros
-111012,Collinas,Marmilla
-90027,Cossoine,Meilogu
-95019,Cuglieri,Montiferru
-95077,Curcuris,Marmilla
-92015,Decimomannu,Campidano di Cagliari
-111013,Decimoputzu,Campidano di Sanluri
-91016,Desulo,Mandrolisai
-111014,Dolianova,Parteolla
-111015,Domus de Maria,Sulcis-Iglesiente
-111016,Domusnovas,Sulcis-Iglesiente
-111017,Donori,Parteolla
-91017,Dorgali,Barbagia di Nuoro
-91018,Dualchi,Marghine
-91019,Elini,Ogliastra
-92108,Elmas,Campidano di Cagliari
-90088,Erula,Anglona
-111018,Escalaplano,Sarcidano
-111019,Escolca,Sarcidano
-90028,Esporlatu,Goceano
-111020,Esterzili,Barbagia di Seulo
-90029,Florinas,Coros
-111021,Fluminimaggiore,Sulcis-Iglesiente
-95080,Flussio,Planargia
-91024,Fonni,Barbagia di Nuoro
-95020,Fordongianus,Barigadu
-111022,Furtei,Marmilla
-91025,Gadoni,Mandrolisai
-91026,Gairo,Ogliastra
-91027,Galtellì,Baronìa
-91028,Gavoi,Barbagia di Nuoro
-111023,Genoni,Sarcidano
-111024,Genuri,Marmilla
-111025,Gergei,Sarcidano
-111026,Gesico,Trexenta
-111027,Gesturi,Marmilla
-95021,Ghilarza,Guilcer
-90030,Giave,Meilogu
-111028,Giba,Sulcis-Iglesiente
-91031,Girasole,Ogliastra
-90083,Golfo Aranci,Gallura
-111029,Goni,Gerrei
-111030,Gonnesa,Sulcis-Iglesiente
-95022,Gonnoscodina,Marmilla
-111031,Gonnosfanadiga,Campidano di Sanluri
-95023,Gonnosnò,Marmilla
-95024,Gonnostramatza,Marmilla
-111032,Guamaggiore,Trexenta
-111033,Guasila,Trexenta
-111034,Guspini,Arburese-Guspinese
-111035,Iglesias,Sulcis-Iglesiente
-91032,Ilbono,Ogliastra
-90031,Illorai,Goceano
-91033,Irgoli,Baronìa
-111036,Isili,Sarcidano
-90032,Ittireddu,Meilogu
-90033,Ittiri,Coros
-91035,Jerzu,Ogliastra
-90035,La Maddalena,Gallura
-95082,Laconi,Sarcidano
-90034,Laerru,Anglona
-91037,Lanusei,Ogliastra
-111037,Las Plassas,Marmilla
-91038,Lei,Marghine
-91039,Loceri,Ogliastra
-91040,Loculi,Baronìa
-91041,Lodè,Baronìa
-91104,Lodine,Barbagia di Nuoro
-90084,Loiri Porto San Paolo,Gallura
-91042,Lotzorai,Ogliastra
-91043,Lula,Baronìa
-111038,Lunamatrona,Marmilla
-90036,Luogosanto,Gallura
-90037,Luras,Gallura
-91044,Macomer,Marghine
-95083,Magomadas,Planargia
-91046,Mamoiada,Barbagia di Nuoro
-111039,Mandas,Trexenta
-90038,Mara,Meilogu
-92037,Maracalagonis,Campidano di Cagliari
-95025,Marrubiu,Campidano di Terralba
-90039,Martis,Anglona
-111040,Masainas,Sulcis-Iglesiente
-95026,Masullas,Marmilla
-91047,Meana Sardo,Mandrolisai
-95027,Milis,Sinis
-95084,Modolo,Planargia
-95028,Mogorella,Marmilla
-95029,Mogoro,Marmilla
-111041,Monastir,Campidano di Cagliari
-92109,Monserrato,Campidano di Cagliari
-90040,Monteleone Rocca Doria,Meilogu
-90041,Monti,Gallura
-95085,Montresta,Planargia
-90042,Mores,Meilogu
-95030,Morgongiori,Marmilla
-111042,Muravera,Sarrabus
-90043,Muros,Coros
-111043,Musei,Sulcis-Iglesiente
-95031,Narbolia,Sinis
-111044,Narcao,Sulcis-Iglesiente
-95032,Neoneli,Barigadu
-91050,Noragugume,Marghine
-95033,Norbello,Guilcer
-90044,Nughedu San Nicolò,Monte Acuto
-95034,Nughedu Santa Vittoria,Barigadu
-90045,Nule,Goceano
-90046,Nulvi,Anglona
-91051,Nuoro,Barbagia di Nuoro
-95035,Nurachi,Campidano di Oristano
-111045,Nuragus,Sarcidano
-111046,Nurallao,Sarcidano
-111047,Nuraminis,Campidano di Sanluri
-95036,Nureci,Marmilla
-111048,Nurri,Sarcidano
-111049,Nuxis,Sulcis-Iglesiente
-90047,Olbia,Gallura
-91055,Oliena,Barbagia di Nuoro
-95037,Ollastra,Campidano di Oristano
-91056,Ollolai,Barbagia di Nuoro
-90048,Olmedo,Nurra
-91057,Olzai,Barbagia di Nuoro
-91058,Onanì,Barbagia di Nuoro
-91059,Onifai,Baronìa
-91060,Oniferi,Barbagia di Nuoro
-91061,Orani,Barbagia di Nuoro
-91062,Orgosolo,Barbagia di Nuoro
-95038,Oristano,Campidano di Oristano
-91063,Orosei,Baronìa
-91064,Orotelli,Barbagia di Nuoro
-111050,Orroli,Sarcidano
-111051,Ortacesus,Trexenta
-91066,Ortueri,Mandrolisai
-91067,Orune,Barbagia di Nuoro
-90049,Oschiri,Monte Acuto
-91068,Osidda,Barbagia di Nuoro
-90050,Osilo,Anglona
-91069,Osini,Ogliastra
-90051,Ossi,Coros
-91070,Ottana,Barbagia di Nuoro
-91071,Ovodda,Barbagia di Nuoro
-90052,Ozieri,Monte Acuto
-111052,Pabillonis,Campidano di Sanluri
-90053,Padria,Meilogu
-90090,Padru,Gallura
-90054,Palau,Gallura
-95039,Palmas Arborea,Campidano di Oristano
-90055,Pattada,Monte Acuto
-95040,Pau,Marmilla
-111053,Pauli Arbarei,Marmilla
-95041,Paulilatino,Guilcer
-91072,Perdasdefogu,Ogliastra
-111054,Perdaxius,Sulcis-Iglesiente
-90056,Perfugas,Anglona
-111055,Pimentel,Trexenta
-111056,Piscinas,Sulcis-Iglesiente
-90057,Ploaghe,Coros
-95042,Pompu,Marmilla
-90058,Porto Torres,Nurra
-111057,Portoscuso,Sulcis-Iglesiente
-91073,Posada,Baronìa
-90059,Pozzomaggiore,Meilogu
-92050,Pula,Campidano di Cagliari
-90060,Putifigari,Nurra
-92051,Quartu Sant'Elena,Campidano di Cagliari
-92105,Quartucciu,Campidano di Cagliari
-95043,Riola Sardo,Sinis
-90061,Romana,Meilogu
-95044,Ruinas,Marmilla
-111058,Sadali,Barbagia di Seulo
-95086,Sagama,Planargia
-111059,Samassi,Campidano di Sanluri
-111060,Samatzai,Trexenta
-95045,Samugheo,Marmilla
-111061,San Basilio,Gerrei
-111062,San Gavino Monreale,Campidano di Sanluri
-111063,San Giovanni Suergiu,Sulcis-Iglesiente
-95046,San Nicolò d'Arcidano,Campidano di Terralba
-111064,San Nicolò Gerrei,Gerrei
-111065,San Sperate,Campidano di Cagliari
-90092,San Teodoro,Gallura
-95050,San Vero Milis,Sinis
-111066,San Vito,Sarrabus
-111067,Sanluri,Campidano di Sanluri
-111069,Sant'Andrea Frius,Trexenta
-111070,Sant'Anna Arresi,Sulcis-Iglesiente
-111071,Sant'Antioco,Sulcis-Iglesiente
-90085,Sant'Antonio di Gallura,Gallura
-95047,Santa Giusta,Campidano di Oristano
-90087,Santa Maria Coghinas,Anglona
-90063,Santa Teresa Gallura,Gallura
-111068,Santadi,Sulcis-Iglesiente
-95049,Santu Lussurgiu,Montiferru
-111072,Sardara,Campidano di Sanluri
-92066,Sarroch,Campidano di Cagliari
-91077,Sarule,Barbagia di Nuoro
-90064,Sassari,Nurra
-95051,Scano di Montiferro,Montiferru
-95052,Sedilo,Guilcer
-90065,Sedini,Anglona
-111073,Segariu,Marmilla
-92068,Selargius,Campidano di Cagliari
-111074,Selegas,Trexenta
-90066,Semestene,Meilogu
-95053,Seneghe,Montiferru
-95054,Senis,Marmilla
-95055,Sennariolo,Planargia
-90067,Sennori,Romangia
-111075,Senorbì,Trexenta
-111076,Serdiana,Parteolla
-111077,Serramanna,Campidano di Sanluri
-111078,Serrenti,Campidano di Sanluri
-111079,Serri,Sarcidano
-92074,Sestu,Campidano di Cagliari
-92075,Settimo San Pietro,Campidano di Cagliari
-111080,Setzu,Marmilla
-111081,Seui,Barbagia di Seulo
-111082,Seulo,Barbagia di Seulo
-95056,Siamaggiore,Campidano di Oristano
-95057,Siamanna,Campidano di Oristano
-95076,Siapiccia,Campidano di Oristano
-111083,Siddi,Marmilla
-91083,Silanus,Marghine
-90068,Siligo,Coros
-111084,Siliqua,Sulcis-Iglesiente
-111085,Silius,Gerrei
-95058,Simala,Marmilla
-95059,Simaxis,Campidano di Oristano
-91084,Sindia,Marghine
-95060,Sini,Marmilla
-91085,Siniscola,Baronìa
-92080,Sinnai,Campidano di Cagliari
-95061,Siris,Marmilla
-111086,Siurgus Donigala,Trexenta
-95078,Soddì,Guilcer
-95062,Solarussa,Campidano di Oristano
-111087,Soleminis,Parteolla
-91086,Sorgono,Mandrolisai
-95063,Sorradile,Barigadu
-90069,Sorso,Romangia
-90089,Stintino,Nurra
-111088,Suelli,Trexenta
-95087,Suni,Planargia
-95064,Tadasuni,Guilcer
-91088,Talana,Ogliastra
-90080,Telti,Gallura
-90070,Tempio Pausania,Gallura
-90086,Tergu,Anglona
-95065,Terralba,Campidano di Terralba
-91089,Tertenia,Ogliastra
-91090,Teti,Mandrolisai
-111089,Teulada,Sulcis-Iglesiente
-90071,Thiesi,Coros
-91091,Tiana,Mandrolisai
-95088,Tinnura,Planargia
-90072,Tissi,Coros
-91093,Tonara,Mandrolisai
-91094,Torpè,Baronìa
-90073,Torralba,Meilogu
-91095,Tortolì,Ogliastra
-95066,Tramatza,Campidano di Oristano
-111090,Tratalias,Sulcis-Iglesiente
-95067,Tresnuraghes,Planargia
-91097,Triei,Ogliastra
-90074,Trinità d'Agultu e Vignola,Gallura
-111091,Tuili,Marmilla
-90075,Tula,Monte Acuto
-111092,Turri,Marmilla
-95068,Ulà Tirso,Barigadu
-91098,Ulassai,Ogliastra
-95069,Uras,Campidano di Terralba
-90076,Uri,Nurra
-91099,Urzulei,Ogliastra
-95070,Usellus,Marmilla
-90077,Usini,Coros
-111093,Ussana,Campidano di Cagliari
-111094,Ussaramanna,Marmilla
-91100,Ussassai,Ogliastra
-92090,Uta,Campidano di Cagliari
-90079,Valledoria,Anglona
-111095,Vallermosa,Campidano di Sanluri
-90082,Viddalba,Anglona
-92099,Villa San Pietro,Campidano di Cagliari
-95048,Villa Sant'Antonio,Marmilla
-95073,Villa Verde,Marmilla
-111096,Villacidro,Campidano di Sanluri
-91101,Villagrande Strisaili,Ogliastra
-111097,Villamar,Marmilla
-111098,Villamassargia,Sulcis-Iglesiente
-90078,Villanova Monteleone,Meilogu
-95071,Villanova Truschedu,Campidano di Oristano
-111099,Villanova Tulo,Sarcidano
-111100,Villanovaforru,Marmilla
-111101,Villanovafranca,Marmilla
-111102,Villaperuccio,Sulcis-Iglesiente
-111103,Villaputzu,Sarrabus
-111104,Villasalto,Gerrei
-111105,Villasimius,Sarrabus
-111106,Villasor,Campidano di Sanluri
-111107,Villaspeciosa,Campidano di Cagliari
-95072,Villaurbana,Marmilla
-95074,Zeddiani,Campidano di Oristano
-95075,Zerfaliu,Campidano di Oristano
+pro_com,part,comune,subregion,share,note
+95001,,Abbasanta,marghine,0.97,
+90001,,Aggius,gallura,1.00,
+90062,,Aglientu,gallura,1.00,
+95002,,Aidomaggiore,marghine,1.00,
+90002,,Alà dei Sardi,monte-acuto,0.95,
+95003,,Albagiara,marmilla,1.00,
+95004,,Ales,marmilla,0.96,
+90003,,Alghero,sassarese,0.99,
+95005,,Allai,barigadu,0.80,
+90004,,Anela,goceano,1.00,
+95006,,Arborea,campidano-di-oristano,1.00,
+111001,,Arbus,monreale,0.99,
+90005,,Ardara,monte-acuto,0.95,
+95007,,Ardauli,barigadu,1.00,
+91001,,Aritzo,barbagia-di-belvi,0.94,
+111002,,Armungia,sarrabus-gerrei,1.00,
+90006,,Arzachena,gallura,1.00,
+91002,,Arzana,ogliastra,0.78,
+91002,0,Arzana,quirra,0.80,eksklawa
+92003,,Assemini,sulcis-iglesiente,0.53,sporne; drugi: campidano-di-cagliari 47%
+95008,,Assolo,marmilla,1.00,
+95009,,Asuni,marmilla,1.00,
+91003,,Atzara,mandrolisai,0.62,sporne; drugi: barbagia-di-belvi 31%
+91004,,Austis,barbagia-di-ollolai,0.89,
+90081,,Badesi,anglona,0.61,sporne; drugi: gallura 39%
+111003,,Ballao,sarrabus-gerrei,1.00,
+90007,,Banari,meilogu,0.97,
+95010,,Baradili,marmilla,1.00,
+95011,,Baratili San Pietro,campidano-di-oristano,1.00,
+95012,,Baressa,marmilla,1.00,
+91005,,Bari Sardo,ogliastra,1.00,
+111004,,Barrali,trexenta,0.67,sporne; drugi: parteolla 27%
+111005,,Barumini,marmilla,0.97,
+95013,,Bauladu,campidano-di-oristano,1.00,
+91006,,Baunei,ogliastra,1.00,
+91007,,Belvì,barbagia-di-belvi,1.00,
+90008,,Benetutti,goceano,0.79,
+90009,,Berchidda,monte-acuto,1.00,
+90010,,Bessude,meilogu,0.98,
+95014,,Bidonì,barigadu,1.00,
+91008,,Birori,marghine,1.00,
+91009,,Bitti,baronie,0.94,
+91010,,Bolotana,marghine,0.96,
+95015,,Bonarcado,campidano-di-oristano,0.99,
+90011,,Bonnanaro,meilogu,1.00,
+90012,,Bono,goceano,0.96,
+90013,,Bonorva,meilogu,0.79,
+95016,,Boroneddu,marghine,1.00,
+91011,,Borore,marghine,0.88,
+91012,,Bortigali,marghine,1.00,
+90014,,Bortigiadas,gallura,0.88,
+90015,,Borutta,meilogu,1.00,
+95079,,Bosa,planargia,1.00,
+90016,,Bottidda,goceano,0.90,
+90017,,Buddusò,monte-acuto,0.88,
+90091,,Budoni,baronie,1.00,
+111006,,Buggerru,sulcis-iglesiente,1.00,
+90018,,Bultei,goceano,0.99,
+90019,,Bulzi,anglona,1.00,
+111007,,Burcei,sarrabus-gerrei,0.86,
+90020,,Burgos,goceano,1.00,
+95017,,Busachi,barigadu,1.00,
+95018,,Cabras,campidano-di-oristano,1.00,
+92009,,Cagliari,campidano-di-cagliari,0.98,
+90021,,Calangianus,gallura,0.87,
+111008,,Calasetta,sulcis-iglesiente,1.00,
+92011,,Capoterra,sulcis-iglesiente,0.99,
+111009,,Carbonia,sulcis-iglesiente,1.00,
+91103,,Cardedu,ogliastra,1.00,
+90022,,Cargeghe,sassarese,1.00,
+111010,,Carloforte,sulcis-iglesiente,1.00,
+90023,,Castelsardo,anglona,0.95,
+111011,,Castiadas,sarrabus-gerrei,0.90,
+90024,,Cheremule,meilogu,1.00,
+90025,,Chiaramonti,anglona,0.81,
+90026,,Codrongianos,sassarese,0.96,
+111012,,Collinas,marmilla,0.79,
+90027,,Cossoine,meilogu,1.00,
+95019,,Cuglieri,montiferru,0.97,
+95077,,Curcuris,marmilla,1.00,
+92015,,Decimomannu,campidano-di-cagliari,0.51,sporne; drugi: sulcis-iglesiente 49%
+92015,0,Decimomannu,sulcis-iglesiente,1.00,eksklawa
+111013,,Decimoputzu,campidano-di-cagliari,0.72,
+91016,,Desulo,mandrolisai,0.71,
+111014,,Dolianova,parteolla,0.83,
+111015,,Domus de Maria,sulcis-iglesiente,1.00,
+111016,,Domusnovas,sulcis-iglesiente,1.00,
+111017,,Donori,parteolla,1.00,
+91017,,Dorgali,barbagia-di-nuoro,0.91,
+91018,,Dualchi,marghine,1.00,
+91019,,Elini,ogliastra,1.00,
+92108,,Elmas,campidano-di-cagliari,1.00,
+90088,,Erula,anglona,0.62,sporne; drugi: monte-acuto 38%
+111018,,Escalaplano,trexenta,0.90,
+111019,,Escolca,trexenta,1.00,
+90028,,Esporlatu,goceano,0.95,
+111020,,Esterzili,barbagia-di-seulo,0.86,
+90029,,Florinas,sassarese,0.89,
+111021,,Fluminimaggiore,sulcis-iglesiente,0.97,
+95080,,Flussio,planargia,0.95,
+91024,,Fonni,barbagia-di-ollolai,0.86,
+95020,,Fordongianus,barigadu,0.90,
+111022,,Furtei,campidano-di-cagliari,1.00,
+91025,,Gadoni,barbagia-di-belvi,0.89,
+91026,,Gairo,ogliastra,0.96,
+91027,,Galtellì,baronie,0.70,sporne; drugi: barbagia-di-nuoro 30%
+91028,,Gavoi,barbagia-di-ollolai,1.00,
+111023,,Genoni,sarcidano,0.60,sporne; drugi: marmilla 40%
+111024,,Genuri,marmilla,1.00,
+111025,,Gergei,trexenta,0.98,
+111026,,Gesico,trexenta,1.00,
+111027,,Gesturi,marmilla,0.90,
+95021,,Ghilarza,marghine,0.90,
+95021,1,Ghilarza,barigadu,0.58,eksklawa; sporne; drugi: marghine 42%
+90030,,Giave,meilogu,1.00,
+111028,,Giba,sulcis-iglesiente,1.00,
+91031,,Girasole,ogliastra,1.00,
+90083,,Golfo Aranci,gallura,1.00,
+111029,,Goni,sarrabus-gerrei,0.97,
+111030,,Gonnesa,sulcis-iglesiente,1.00,
+95022,,Gonnoscodina,marmilla,1.00,
+111031,,Gonnosfanadiga,monreale,0.94,
+95023,,Gonnosnò,marmilla,1.00,
+95024,,Gonnostramatza,marmilla,1.00,
+111032,,Guamaggiore,trexenta,1.00,
+111033,,Guasila,trexenta,0.70,sporne; drugi: campidano-di-cagliari 30%
+111034,,Guspini,monreale,1.00,
+111035,,Iglesias,sulcis-iglesiente,1.00,
+91032,,Ilbono,ogliastra,1.00,
+90031,,Illorai,goceano,0.58,sporne; drugi: marghine 34%
+91033,,Irgoli,baronie,1.00,
+111036,,Isili,sarcidano,0.84,
+90032,,Ittireddu,monte-acuto,0.93,
+90033,,Ittiri,sassarese,0.98,
+91035,,Jerzu,ogliastra,0.81,
+91035,0,Jerzu,sarrabus-gerrei,0.87,eksklawa
+90035,,La Maddalena,gallura,1.00,
+95082,,Laconi,sarcidano,0.96,
+90034,,Laerru,anglona,1.00,
+91037,,Lanusei,ogliastra,0.78,
+91037,0,Lanusei,quirra,1.00,eksklawa
+111037,,Las Plassas,marmilla,1.00,
+91038,,Lei,marghine,1.00,
+91039,,Loceri,ogliastra,0.81,
+91039,0,Loceri,quirra,1.00,eksklawa
+91039,1,Loceri,quirra,1.00,eksklawa
+91040,,Loculi,baronie,1.00,
+91041,,Lodè,baronie,1.00,
+91104,,Lodine,barbagia-di-ollolai,1.00,
+90084,,Loiri Porto San Paolo,gallura,0.65,sporne; drugi: baronie 25%
+91042,,Lotzorai,ogliastra,1.00,
+91043,,Lula,baronie,0.92,
+111038,,Lunamatrona,marmilla,0.92,
+90036,,Luogosanto,gallura,1.00,
+90037,,Luras,gallura,1.00,
+91044,,Macomer,marghine,0.93,
+95083,,Magomadas,planargia,1.00,
+91046,,Mamoiada,barbagia-di-ollolai,0.84,
+111039,,Mandas,trexenta,1.00,
+90038,,Mara,meilogu,1.00,
+92037,,Maracalagonis,campidano-di-cagliari,1.00,
+95025,,Marrubiu,campidano-di-oristano,0.97,
+90039,,Martis,anglona,1.00,
+111040,,Masainas,sulcis-iglesiente,1.00,
+95026,,Masullas,marmilla,1.00,
+91047,,Meana Sardo,barbagia-di-belvi,0.90,
+95027,,Milis,campidano-di-oristano,1.00,
+95084,,Modolo,planargia,1.00,
+95028,,Mogorella,marmilla,0.99,
+95029,,Mogoro,marmilla,0.91,
+111041,,Monastir,campidano-di-cagliari,1.00,
+92109,,Monserrato,campidano-di-cagliari,1.00,
+90040,,Monteleone Rocca Doria,sassarese,0.98,
+90041,,Monti,monte-acuto,0.89,
+95085,,Montresta,planargia,0.98,
+90042,,Mores,monte-acuto,0.82,
+95030,,Morgongiori,marmilla,0.97,
+111042,,Muravera,sarrabus-gerrei,1.00,
+90043,,Muros,sassarese,1.00,
+111043,,Musei,sulcis-iglesiente,1.00,
+95031,,Narbolia,campidano-di-oristano,1.00,
+111044,,Narcao,sulcis-iglesiente,1.00,
+95032,,Neoneli,barigadu,0.84,
+91050,,Noragugume,marghine,0.96,
+95033,,Norbello,marghine,1.00,
+90044,,Nughedu San Nicolò,monte-acuto,0.76,
+95034,,Nughedu Santa Vittoria,barigadu,0.98,
+90045,,Nule,monte-acuto,0.71,
+90046,,Nulvi,anglona,0.87,
+91051,,Nuoro,barbagia-di-nuoro,1.00,
+95035,,Nurachi,campidano-di-oristano,1.00,
+111045,,Nuragus,sarcidano,0.85,
+111046,,Nurallao,sarcidano,1.00,
+111047,,Nuraminis,campidano-di-cagliari,1.00,
+95036,,Nureci,marmilla,0.97,
+111048,,Nurri,trexenta,1.00,
+111049,,Nuxis,sulcis-iglesiente,1.00,
+90047,,Olbia,gallura,0.93,
+90047,3,Olbia,baronie,1.00,eksklawa
+90047,21,Olbia,baronie,0.87,eksklawa
+91055,,Oliena,barbagia-di-nuoro,1.00,
+95037,,Ollastra,barigadu,0.76,
+91056,,Ollolai,barbagia-di-ollolai,1.00,
+90048,,Olmedo,sassarese,0.91,
+91057,,Olzai,barbagia-di-ollolai,0.92,
+91058,,Onanì,baronie,1.00,
+91059,,Onifai,baronie,1.00,
+91060,,Oniferi,barbagia-di-nuoro,1.00,
+91061,,Orani,barbagia-di-nuoro,0.94,
+91062,,Orgosolo,barbagia-di-nuoro,0.87,
+95038,,Oristano,campidano-di-oristano,1.00,
+91063,,Orosei,baronie,0.94,
+91064,,Orotelli,barbagia-di-nuoro,1.00,
+111050,,Orroli,trexenta,1.00,
+111051,,Ortacesus,trexenta,0.98,
+91066,,Ortueri,mandrolisai,0.70,
+91067,,Orune,barbagia-di-nuoro,0.99,
+90049,,Oschiri,monte-acuto,1.00,
+91068,,Osidda,monte-acuto,0.91,
+90050,,Osilo,sassarese,1.00,
+91069,,Osini,ogliastra,0.80,
+91069,0,Osini,quirra,1.00,eksklawa
+90051,,Ossi,sassarese,1.00,
+91070,,Ottana,barbagia-di-nuoro,0.95,
+91071,,Ovodda,barbagia-di-ollolai,0.99,
+90052,,Ozieri,monte-acuto,1.00,
+111052,,Pabillonis,monreale,0.94,
+90053,,Padria,meilogu,0.83,
+90090,,Padru,monte-acuto,0.76,
+90054,,Palau,gallura,1.00,
+95039,,Palmas Arborea,campidano-di-oristano,1.00,
+90055,,Pattada,monte-acuto,0.93,
+95040,,Pau,marmilla,0.92,
+111053,,Pauli Arbarei,marmilla,1.00,
+95041,,Paulilatino,marghine,0.89,
+91072,,Perdasdefogu,ogliastra,0.78,
+111054,,Perdaxius,sulcis-iglesiente,1.00,
+90056,,Perfugas,anglona,0.95,
+111055,,Pimentel,trexenta,0.55,sporne; drugi: campidano-di-cagliari 45%
+111056,,Piscinas,sulcis-iglesiente,1.00,
+90057,,Ploaghe,sassarese,0.86,
+95042,,Pompu,marmilla,1.00,
+90058,,Porto Torres,nurra,0.53,sporne; drugi: sassarese 47%
+111057,,Portoscuso,sulcis-iglesiente,1.00,
+91073,,Posada,baronie,1.00,
+90059,,Pozzomaggiore,meilogu,0.84,
+92050,,Pula,sulcis-iglesiente,1.00,
+90060,,Putifigari,sassarese,1.00,
+92051,,Quartu Sant'Elena,campidano-di-cagliari,1.00,
+92105,,Quartucciu,campidano-di-cagliari,1.00,
+95043,,Riola Sardo,campidano-di-oristano,1.00,
+90061,,Romana,sassarese,0.94,
+95044,,Ruinas,marmilla,0.99,
+111058,,Sadali,barbagia-di-seulo,0.85,
+95086,,Sagama,planargia,0.93,
+111059,,Samassi,campidano-di-cagliari,1.00,
+111060,,Samatzai,campidano-di-cagliari,0.98,
+95045,,Samugheo,barigadu,0.92,
+111061,,San Basilio,sarrabus-gerrei,1.00,
+111062,,San Gavino Monreale,monreale,0.98,
+111063,,San Giovanni Suergiu,sulcis-iglesiente,1.00,
+95046,,San Nicolò d'Arcidano,campidano-di-oristano,0.70,
+111064,,San Nicolò Gerrei,sarrabus-gerrei,0.98,
+111065,,San Sperate,campidano-di-cagliari,1.00,
+90092,,San Teodoro,baronie,1.00,
+95050,,San Vero Milis,campidano-di-oristano,1.00,
+111066,,San Vito,sarrabus-gerrei,0.99,
+111067,,Sanluri,campidano-di-cagliari,0.98,
+111069,,Sant'Andrea Frius,sarrabus-gerrei,0.83,
+111070,,Sant'Anna Arresi,sulcis-iglesiente,1.00,
+111071,,Sant'Antioco,sulcis-iglesiente,1.00,
+90085,,Sant'Antonio di Gallura,gallura,1.00,
+95047,,Santa Giusta,campidano-di-oristano,1.00,
+90087,,Santa Maria Coghinas,anglona,0.98,
+90063,,Santa Teresa Gallura,gallura,1.00,
+111068,,Santadi,sulcis-iglesiente,1.00,
+95049,,Santu Lussurgiu,montiferru,0.92,
+111072,,Sardara,monreale,0.96,
+92066,,Sarroch,sulcis-iglesiente,1.00,
+91077,,Sarule,barbagia-di-nuoro,0.78,
+90064,,Sassari,nurra,0.76,
+95051,,Scano di Montiferro,montiferru,0.99,
+95052,,Sedilo,marghine,0.86,
+90065,,Sedini,anglona,1.00,
+111073,,Segariu,campidano-di-cagliari,1.00,
+92068,,Selargius,campidano-di-cagliari,1.00,
+111074,,Selegas,trexenta,1.00,
+90066,,Semestene,meilogu,0.90,
+95053,,Seneghe,campidano-di-oristano,0.96,
+95054,,Senis,marmilla,0.99,
+95055,,Sennariolo,montiferru,0.87,
+90067,,Sennori,romangia,0.66,sporne; drugi: sassarese 34%
+111075,,Senorbì,trexenta,0.72,
+111076,,Serdiana,parteolla,0.90,
+111077,,Serramanna,campidano-di-cagliari,0.98,
+111078,,Serrenti,campidano-di-cagliari,1.00,
+111079,,Serri,trexenta,1.00,
+92074,,Sestu,campidano-di-cagliari,1.00,
+92075,,Settimo San Pietro,campidano-di-cagliari,1.00,
+111080,,Setzu,marmilla,1.00,
+111081,,Seui,barbagia-di-seulo,0.94,
+111081,0,Seui,trexenta,0.85,eksklawa
+111082,,Seulo,barbagia-di-seulo,0.87,
+95056,,Siamaggiore,campidano-di-oristano,1.00,
+95057,,Siamanna,campidano-di-oristano,1.00,
+95076,,Siapiccia,campidano-di-oristano,0.99,
+111083,,Siddi,marmilla,1.00,
+91083,,Silanus,marghine,1.00,
+90068,,Siligo,meilogu,1.00,
+111084,,Siliqua,sulcis-iglesiente,1.00,
+111085,,Silius,sarrabus-gerrei,1.00,
+95058,,Simala,marmilla,1.00,
+95059,,Simaxis,campidano-di-oristano,1.00,
+91084,,Sindia,planargia,0.88,
+95060,,Sini,marmilla,1.00,
+91085,,Siniscola,baronie,1.00,
+92080,,Sinnai,campidano-di-cagliari,0.97,
+95061,,Siris,marmilla,1.00,
+111086,,Siurgus Donigala,trexenta,0.72,
+95078,,Soddì,marghine,1.00,
+95062,,Solarussa,campidano-di-oristano,1.00,
+111087,,Soleminis,campidano-di-cagliari,0.57,sporne; drugi: parteolla 43%
+91086,,Sorgono,mandrolisai,0.87,
+95063,,Sorradile,barigadu,1.00,
+90069,,Sorso,romangia,0.89,
+90089,,Stintino,nurra,1.00,
+111088,,Suelli,trexenta,1.00,
+95087,,Suni,planargia,1.00,
+95064,,Tadasuni,marghine,0.59,sporne; drugi: barigadu 41%
+91088,,Talana,ogliastra,1.00,
+90080,,Telti,gallura,0.75,
+90070,,Tempio Pausania,gallura,0.87,
+90086,,Tergu,sassarese,0.64,sporne; drugi: anglona 36%
+95065,,Terralba,campidano-di-oristano,0.91,
+91089,,Tertenia,ogliastra,0.84,
+91090,,Teti,barbagia-di-ollolai,1.00,
+111089,,Teulada,sulcis-iglesiente,1.00,
+90071,,Thiesi,meilogu,0.92,
+91091,,Tiana,barbagia-di-ollolai,0.66,sporne; drugi: mandrolisai 34%
+95088,,Tinnura,planargia,1.00,
+90072,,Tissi,sassarese,1.00,
+91093,,Tonara,mandrolisai,0.79,
+91094,,Torpè,baronie,1.00,
+90073,,Torralba,meilogu,1.00,
+91095,,Tortolì,ogliastra,1.00,
+95066,,Tramatza,campidano-di-oristano,1.00,
+111090,,Tratalias,sulcis-iglesiente,1.00,
+95067,,Tresnuraghes,planargia,1.00,
+91097,,Triei,ogliastra,1.00,
+90074,,Trinità d'Agultu e Vignola,gallura,0.96,
+111091,,Tuili,marmilla,1.00,
+90075,,Tula,monte-acuto,1.00,
+111092,,Turri,marmilla,1.00,
+95068,,Ulà Tirso,barigadu,0.99,
+91098,,Ulassai,ogliastra,0.88,
+95069,,Uras,campidano-di-oristano,0.88,
+90076,,Uri,sassarese,0.99,
+91099,,Urzulei,ogliastra,1.00,
+95070,,Usellus,marmilla,0.99,
+90077,,Usini,sassarese,1.00,
+111093,,Ussana,parteolla,0.85,
+111094,,Ussaramanna,marmilla,1.00,
+91100,,Ussassai,barbagia-di-seulo,0.77,
+92090,,Uta,sulcis-iglesiente,0.99,
+90079,,Valledoria,anglona,1.00,
+111095,,Vallermosa,monreale,0.75,
+90082,,Viddalba,gallura,0.95,
+92099,,Villa San Pietro,sulcis-iglesiente,1.00,
+95048,,Villa Sant'Antonio,marmilla,1.00,
+95073,,Villa Verde,marmilla,0.95,
+111096,,Villacidro,monreale,0.93,
+91101,,Villagrande Strisaili,ogliastra,1.00,
+111097,,Villamar,marmilla,0.82,
+111098,,Villamassargia,sulcis-iglesiente,1.00,
+90078,,Villanova Monteleone,sassarese,0.93,
+95071,,Villanova Truschedu,barigadu,0.83,
+111099,,Villanova Tulo,trexenta,0.95,
+111100,,Villanovaforru,marmilla,0.85,
+111101,,Villanovafranca,marmilla,0.93,
+111102,,Villaperuccio,sulcis-iglesiente,1.00,
+111103,,Villaputzu,sarrabus-gerrei,1.00,
+111104,,Villasalto,sarrabus-gerrei,0.96,
+111105,,Villasimius,campidano-di-cagliari,1.00,
+111106,,Villasor,campidano-di-cagliari,0.92,
+111107,,Villaspeciosa,sulcis-iglesiente,1.00,
+95072,,Villaurbana,campidano-di-oristano,0.96,
+95074,,Zeddiani,campidano-di-oristano,1.00,
+95075,,Zerfaliu,campidano-di-oristano,0.97,

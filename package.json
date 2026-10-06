@@ -18,7 +18,8 @@
     "test:unit": "vitest run",
     "test:budget": "tsx scripts/check-budget.ts",
     "seed:collab": "pnpm seed:build && pnpm --filter sardigna-atlas-studio exec sanity datasets import --missing -d production \"$PWD/scripts/seed/out/seed.ndjson\" && pnpm --filter sardigna-atlas-studio exec sanity exec scripts/patch-collab.ts --with-user-token",
-    "map:build": "tsx scripts/map/build-atlas-map.ts"
+    "map:build": "tsx scripts/map/build-atlas-map.ts",
+    "map:assign": "tsx scripts/map/assign-from-image.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
@@ -26,6 +27,7 @@
     "@types/node": "^22.20.5",
     "groq": "^6.17.0",
     "groq-js": "^2.0.0",
+    "jpeg-js": "^0.4.4",
     "mapshaper": "^0.7.78",
     "polylabel": "^2.1.0",
     "tsx": "^4.23.15",

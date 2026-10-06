@@ -23,6 +23,9 @@ importers:
       groq-js:
         specifier: ^2.0.0
         version: 2.0.0
+      jpeg-js:
+        specifier: ^0.4.4
+        version: 0.4.4
       mapshaper:
         specifier: ^0.7.78
         version: 0.7.78(@types/geojson@7946.0.8)(@types/node@22.20.5)

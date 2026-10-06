@@ -33,7 +33,7 @@ const art = await client.fetch(Q.articleBySlugQuery, {lang: 'pl', slug: 'pane-ca
 check('artykuł PL: translations zawiera en', art?.translations?.some((t: any) => t.language === 'en'), art?.translations)
 check('artykuł: hero ma LQIP i wymiary', Boolean(art?.heroImage?.lqip && art?.heroImage?.width), art?.heroImage)
 check('artykuł: entityLink rozwinięty w treści', JSON.stringify(art?.body).includes('"target":{"_type":"place"'), art?.body?.[1])
-const place = await client.fetch(Q.placeBySlugQuery, {lang: 'pl', slug: 'barbagia', limit: 12})
+const place = await client.fetch(Q.placeBySlugQuery, {lang: 'pl', slug: 'barbagia-di-nuoro', limit: 12})
 check('region agreguje 2 artykuły z drzewa potomków', place?.articles?.length === 2, place?.articles?.length)
 const rel: any[] = (await client.fetch(Q.relatedQuery, {lang: 'pl', id: 'seed-article-pane-pl', limit: 6})) ?? []
 const d = rel.map((x) => x.date as string)

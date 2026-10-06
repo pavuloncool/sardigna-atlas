@@ -1,6 +1,9 @@
 import Link from "@/components/Link";
-import { MAP_OTHERS, MAP_REGIONS, MAP_VIEWBOX, type MapUnit } from "@/lib/atlasMap";
+import { MAP_REGIONS, MAP_VIEWBOX, type MapUnit } from "@/lib/atlasMap";
 import { MapInteraction } from "./MapInteraction";
+
+/** Wysokość linii etykiety w jednostkach viewBox (font 3,2 w globals.css; zgodnie z generatorem). */
+const LINE = 3.6;
 
 export type MapRegion = {
   mapId: string;
@@ -12,35 +15,30 @@ export type MapRegion = {
 };
 
 /**
- * Klikalna mapa regionów (inline SVG, bez Mapbox/Leaflet), komponent serwerowy: geometria
- * jest w HTML, nie w paczce JS. Wszystkie 10 regionów jest zawsze narysowanych: te z `place.mapId`
- * w Sanity są linkami z tooltipem (nazwa i liczba artykułów), pozostałe wygaszone („wkrótce”).
- * Szare „inne krainy” (Marmilla, Gerrei…) mają tylko tooltip. Interakcję (hover, fokus, dotyk,
- * Escape) dodaje `MapInteraction`; bez JS zostaje mapa z linkami i lista regionów pod nią.
+ * Klikalna mapa 29 subregionów (inline SVG, bez Mapbox/Leaflet), komponent serwerowy: geometria
+ * jest w HTML, nie w paczce JS. Subregion z `place.mapId` w Sanity jest linkiem z tooltipem (pełna
+ * nazwa i liczba artykułów); bez dokumentu w Sanity jest wygaszony („wkrótce”). Etykieta na mapie
+ * tylko tam, gdzie się mieści (`lines`), tooltip zawsze. Interakcję (hover, fokus, dotyk, Escape)
+ * dodaje `MapInteraction`; bez JS zostaje mapa z linkami i lista subregionów pod nią.
  */
 export function AtlasMap({
   regions,
   label,
   soon,
-  other,
   source,
 }: {
   regions: MapRegion[];
   label: string;
   soon: string;
-  other: string;
   source: string;
 }) {
   const linked = new Map(regions.map((r) => [r.mapId, r]));
 
   function unit(u: MapUnit) {
-    const hit = u.kind === "region" ? linked.get(u.id) : undefined;
-    const tip =
-      u.kind === "other" ? `${u.name} · ${other}` : hit ? `${hit.name} · ${hit.countLabel}` : `${u.name} · ${soon}`;
+    const hit = linked.get(u.id);
+    const tip = hit ? `${hit.name} · ${hit.countLabel}` : `${u.name} · ${soon}`;
     const level = hit ? (hit.articleCount >= 3 ? 3 : hit.articleCount >= 1 ? 2 : 1) : 0;
-    const path = (
-      <path d={u.d} fillRule="evenodd" className={`region ${hit ? `lv${level}` : u.kind === "other" ? "other" : "soon"}`} />
-    );
+    const path = <path d={u.d} fillRule="evenodd" className={`region ${hit ? `lv${level}` : "soon"}`} />;
     const common = { "data-unit": "", "data-id": u.id, "data-tip": tip, "aria-label": tip };
     return hit ? (
       <Link key={u.id} href={hit.href} className="region-link" {...common}>
@@ -56,12 +54,15 @@ export function AtlasMap({
   return (
     <MapInteraction>
       <svg viewBox={MAP_VIEWBOX} role="group" aria-label={label}>
-        <g>{MAP_OTHERS.map(unit)}</g>
         <g>{MAP_REGIONS.map(unit)}</g>
         <g aria-hidden="true" className="region-names">
-          {MAP_REGIONS.map((u) => (
-            <text key={u.id} x={u.label[0]} y={u.label[1]} data-id={u.id}>
-              {u.name}
+          {MAP_REGIONS.filter((u) => u.lines).map((u) => (
+            <text key={u.id} x={u.at[0]} y={u.at[1] - ((u.lines!.length - 1) * LINE) / 2} data-id={u.id}>
+              {u.lines!.map((l, i) => (
+                <tspan key={i} x={u.at[0]} dy={i ? LINE : 0}>
+                  {l}
+                </tspan>
+              ))}
             </text>
           ))}
         </g>

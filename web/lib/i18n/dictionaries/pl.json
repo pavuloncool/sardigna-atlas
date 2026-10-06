@@ -75,8 +75,7 @@
     "intro": "Wyspa czytana region po regionie, aż po wieś. [PLACEHOLDER] Wstęp do Atlasu.",
     "mapLabel": "Mapa regionów Sardynii",
     "mapSoon": "wkrótce",
-    "mapOther": "inna kraina",
-    "mapSource": "Podział orientacyjny: gminy przypisane do krain historycznych. Granice gmin: ISTAT (CC BY 4.0).",
+    "mapSource": "Podział na subregiony historyczne; granice poprowadzone po granicach gmin, więc orientacyjne. Granice gmin: ISTAT (CC BY 4.0).",
     "noArticles": "Brak artykułów",
     "all": "Wszystkie"
   },

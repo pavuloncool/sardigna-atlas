@@ -100,12 +100,12 @@ export function buildDocuments(asset: AssetResolver): Doc[] {
   add({
     _id: 'seed-place-barbagia',
     _type: 'place',
-    name: loc('Barbagia'),
-    slug: {_type: 'slug', current: 'barbagia'},
+    name: loc('Barbagia di Nuoro'),
+    slug: {_type: 'slug', current: 'barbagia-di-nuoro'},
     kind: 'region',
-    mapId: 'barbagia',
+    mapId: 'barbagia-di-nuoro',
     summary: loc(`${PH} Opis regionu.`, `${PH} Region description.`),
-    cover: img('granit', 'Zdjęcie regionu Barbagia'),
+    cover: img('granit', 'Zdjęcie regionu Barbagia di Nuoro'),
     tags: tag('barbagia'),
   })
   add({

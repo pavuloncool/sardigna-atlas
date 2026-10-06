@@ -1,32 +1,30 @@
-subregion,region
-Gallura,gallura
-Nurra,nurra
-Romangia,inne
-Anglona,logudoro
-Coros,logudoro
-Meilogu,logudoro
-Monte Acuto,logudoro
-Goceano,logudoro
-Marghine,logudoro
-Baronìa,baronia
-Barbagia di Nuoro,barbagia
-Mandrolisai,barbagia
-Barbagia di Seulo,barbagia
-Ogliastra,ogliastra
-Sarcidano,inne
-Gerrei,inne
-Sarrabus,sarrabus
-Trexenta,inne
-Parteolla,inne
-Marmilla,inne
-Arburese-Guspinese,inne
-Campidano di Terralba,campidano
-Campidano di Sanluri,campidano
-Campidano di Cagliari,campidano
-Campidano di Oristano,oristano
-Sinis,oristano
-Montiferru,oristano
-Planargia,oristano
-Guilcer,oristano
-Barigadu,oristano
-Sulcis-Iglesiente,sulcis
+id,short,name
+gallura,Gallura,Gallura
+nurra,Nurra,Nurra
+romangia,Romangia,Romangia
+anglona,Anglona,Anglona
+sassarese,Sassarese,Sassarese
+monte-acuto,Monte Acuto,Monte Acuto (Montacuto)
+baronie,Baronie,Baronie
+meilogu,Meilogu,Meilogu
+goceano,Gocèano,Gocèano
+planargia,Planargia,Planargia
+marghine,Marghine,Marghine
+montiferru,Montiferru,Montiferru
+barbagia-di-nuoro,Barbagia di Nuoro,Barbagia di Nuoro
+barbagia-di-ollolai,Barbagia di Ollolai,Barbagia di Ollolai
+mandrolisai,Mandrolisai,Mandrolisai
+barbagia-di-belvi,Barbagia di Belvì,Barbagia di Belvì
+barbagia-di-seulo,Barbagia di Seùlo,Barbagia di Seùlo
+campidano-di-oristano,Campidano di Oristano,Campidano di Oristano
+barigadu,Barigadu,Barigadu
+ogliastra,Ogliastra,Ogliastra
+sarcidano,Sarcidano,Sarcidano
+marmilla,Marmilla,Marmilla
+trexenta,Trexenta,Trexenta
+quirra,Quirra,Quirra
+monreale,Monreale,Monreale (Campidano di Sanluri)
+sarrabus-gerrei,Sarrabus-Gerrei,Sarrabus-Gerrei
+parteolla,Partèolla,Partèolla
+campidano-di-cagliari,Campidano di Cagliari,Campidano di Cagliari
+sulcis-iglesiente,Sulcis-Iglesiente,Sulcis-Iglesiente

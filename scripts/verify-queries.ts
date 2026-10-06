@@ -41,7 +41,7 @@ const main = async () => {
   // 2) szczegóły zapytań dostarczonych
   const art: any = await run(Q.articleBySlugQuery, ds, {lang: 'pl', slug: 'pane-carasau-chleb-z-potrzeby'})
   check('artykuł PL: translations zawiera en', art.translations?.some((t: any) => t.language === 'en'), art.translations)
-  const place: any = await run(Q.placeBySlugQuery, ds, {lang: 'pl', slug: 'barbagia', limit: 12})
+  const place: any = await run(Q.placeBySlugQuery, ds, {lang: 'pl', slug: 'barbagia-di-nuoro', limit: 12})
   check('region agreguje artykuły z całego drzewa (3 poziomy)', place.articles?.length === 2, place.articles)
   check('region ma dziecko Nuoro', place.children?.some((c: any) => c.slug === 'nuoro'), place.children)
 

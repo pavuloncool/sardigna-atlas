@@ -1,10 +1,15 @@
-# Mapa Atlasu: generator geometrii
+# Mapa Atlasu: 29 subregionów
 
-`pnpm map:build` pobiera granice gmin ISTAT (do `.cache/`, poza repo), łączy je według
-`comuni-regions.csv` (gmina → kraina) i `subregions.csv` (kraina → region albo `inne`)
-i zapisuje `web/lib/atlasMap.generated.ts`. Wynik jest commitowany, build strony nie pobiera danych.
+Źródło podziału: mapa wzorcowa `SAR-Subregioni.jpg` (poza repo, w katalogu nadrzędnym projektu).
+Granice: gminy ISTAT 2025 (CC BY 4.0), pobierane do `.cache/` (poza repo).
 
-- Zmiana przydziału: edytuj CSV, uruchom `pnpm map:build`, sprawdź wynik na `/pl/atlas/`.
-- `region = inne` → szara „inna kraina” (tooltip, bez linku). Nowy region wymaga też wpisu w `REGION_NAMES`
-  w skrypcie, w liście `mapId` w `studio/schemaTypes/place.ts` i w teście `tests-unit/atlas-map.test.ts`.
-- Źródło: ISTAT, Confini delle unità amministrative a fini statistici (2025), licencja CC BY 4.0.
+1. `pnpm map:assign [ścieżka do jpg]` → `comuni-regions.csv`: segmentacja obrazu, georeferencja
+   do UTM 32N, każda gmina (i każda eksklawa osobno) do subregionu o największym udziale powierzchni.
+   Kolumna `note`: gminy sporne (< 70%), eksklawy. Podgląd: `.cache/assign-preview.jpg`,
+   `.cache/segments-preview.jpg`. Ręczne poprawki: edytuj CSV (nie uruchamiaj ponownie `map:assign`).
+2. `pnpm map:build` → `web/lib/atlasMap.generated.ts` (commitowany, build strony nie pobiera danych).
+3. Sanity: `cd studio && DRY_RUN=1 npx sanity exec scripts/sync-regions.ts --with-user-token`,
+   potem bez `DRY_RUN` (tworzy/zmienia dokumenty `place` z `mapId` = `id` z `subregions.csv`).
+
+Nazwy i `mapId`: `subregions.csv` (`short` = etykieta na mapie, `name` = tooltip i Sanity). Nowy
+subregion wymaga też wpisu w liście `mapId` w `studio/schemaTypes/place.ts` (test pilnuje zgodności).

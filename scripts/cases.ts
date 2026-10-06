@@ -5,7 +5,7 @@ export const cases: [name: string, query: string, params: Record<string, unknown
   ['articleBySlugQuery pl', Q.articleBySlugQuery, {lang: 'pl', slug: 'pane-carasau-chleb-z-potrzeby'}],
   ['articleBySlugQuery en', Q.articleBySlugQuery, {lang: 'en', slug: 'pane-carasau-bread-born-of-necessity'}],
   ['articleParamsQuery', Q.articleParamsQuery, {}],
-  ['placeBySlugQuery', Q.placeBySlugQuery, {lang: 'pl', slug: 'barbagia', limit: 12}],
+  ['placeBySlugQuery', Q.placeBySlugQuery, {lang: 'pl', slug: 'barbagia-di-nuoro', limit: 12}],
   ['placeParamsQuery', Q.placeParamsQuery, {}],
   ['entityHubQuery person', Q.entityHubQuery, {lang: 'pl', type: 'person', slug: 'osoba-a'}],
   ['entityHubQuery product', Q.entityHubQuery, {lang: 'en', type: 'product', slug: 'pane-carasau'}],

@@ -747,9 +747,6 @@ figure.fig figcaption {
   stroke-linejoin: round;
   transition: fill 0.15s;
 }
-.atlas-map .region.other {
-  fill: var(--rule);
-}
 .atlas-map .region.soon {
   fill: var(--rule);
   fill-opacity: 0.55;
@@ -770,7 +767,6 @@ figure.fig figcaption {
   fill: var(--terakota);
   fill-opacity: 1;
 }
-.atlas-map .is-active .region.other,
 .atlas-map .is-active .region.soon {
   fill: var(--mute);
   fill-opacity: 0.5;
@@ -786,12 +782,12 @@ figure.fig figcaption {
 }
 .atlas-map .region-names text {
   display: none;
-  font-size: 4.4px;
+  font-size: 3.2px;
   fill: var(--fg);
   text-anchor: middle;
   dominant-baseline: middle;
   pointer-events: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 .atlas-map .region-names text.is-active {
   fill: var(--bg);

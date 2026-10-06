@@ -23,7 +23,6 @@ export function MapSection({ regions, locale }: { regions: MapPlace[]; locale: L
       regions={list}
       label={dict.atlas.mapLabel}
       soon={dict.atlas.mapSoon}
-      other={dict.atlas.mapOther}
       source={dict.atlas.mapSource}
     />
   );
