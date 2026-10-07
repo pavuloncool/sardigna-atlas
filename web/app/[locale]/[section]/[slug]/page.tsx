@@ -8,11 +8,12 @@ import { JsonLd } from "@/components/JsonLd";
 import { OfferLink } from "@/components/OfferLink";
 import { PageShell } from "@/components/PageShell";
 import { PartnershipNote } from "@/components/PartnershipNote";
+import { PrintButton } from "@/components/PrintButton";
 import { effectiveType } from "@/lib/partnership";
 import { Prose } from "@/components/Prose";
 import { RelatedBlock, type RelatedItem } from "@/components/RelatedBlock";
 import { Tile } from "@/components/Tile";
-import { RELATED_LIMIT } from "@/lib/config";
+import { RELATED_LIMIT, siteUrl } from "@/lib/config";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { isLocale, locales, type Locale } from "@/lib/i18n/locales";
 import { entityPath, paginationSlug, parsePaginationSlug, segment } from "@/lib/i18n/segments";
@@ -217,7 +218,7 @@ export default async function ArticleOrPage({ params }: PageProps<"/[locale]/[se
           ]),
         ]}
       />
-      <article>
+      <article data-print-url={`${siteUrl()}/${locale}/${section}/${slug}/`}>
         <header className="art-head">
           <p className="meta">
             <Link href={catHref}>{a.category?.name}</Link>
@@ -238,6 +239,9 @@ export default async function ArticleOrPage({ params }: PageProps<"/[locale]/[se
         </div>
         <div className="art-body">
           {a.body ? <Prose value={a.body} locale={locale} /> : null}
+        </div>
+        <div className="art-tools">
+          <PrintButton label={dict.article.print} fallbackLabel={dict.article.printFallback} />
         </div>
       </article>
 

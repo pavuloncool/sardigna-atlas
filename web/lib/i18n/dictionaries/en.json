@@ -45,7 +45,9 @@
     "similar": "Similar",
     "affiliateNotice": "This piece contains affiliate links. If you use them we may earn a commission, at no extra cost to you.",
     "affiliateLabel": "affiliate link",
-    "sponsoredLabel": "sponsored"
+    "sponsoredLabel": "sponsored",
+    "print": "Print",
+    "printFallback": "To print, open this page in your browser (Safari, Chrome)."
   },
   "sections": {
     "places": "Places",

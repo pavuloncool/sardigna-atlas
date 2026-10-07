@@ -10,11 +10,13 @@ type PortableBlocks = React.ComponentProps<typeof PortableText>["value"];
 function buildComponents(locale: Locale): PortableTextComponents {
   return {
     marks: {
-      link: ({ value, children }) => {
+      link: ({ value, text, children }) => {
         const href = String(value?.href ?? "");
         const external = /^https?:\/\//.test(href);
+        // Tekst linku = sam adres (np. w „Źródłach”): wydruk nie dopisuje go drugi raz.
+        const bare = external && text.trim().replace(/\/$/, "") === href.replace(/\/$/, "");
         return (
-          <a href={href} {...(external ? { rel: "noopener", target: "_blank" } : {})}>
+          <a href={href} {...(external ? { rel: "noopener", target: "_blank" } : {})} {...(bare ? { "data-bare": "" } : {})}>
             {children}
           </a>
         );

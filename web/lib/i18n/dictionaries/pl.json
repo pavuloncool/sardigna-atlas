@@ -45,7 +45,9 @@
     "similar": "Podobne",
     "affiliateNotice": "Ten materiał zawiera linki afiliacyjne. Jeśli z nich skorzystasz, możemy otrzymać prowizję, bez dodatkowych kosztów dla Ciebie.",
     "affiliateLabel": "link afiliacyjny",
-    "sponsoredLabel": "treść sponsorowana"
+    "sponsoredLabel": "treść sponsorowana",
+    "print": "Drukuj",
+    "printFallback": "Aby wydrukować, otwórz tę stronę w przeglądarce (Safari, Chrome)."
   },
   "sections": {
     "places": "Miejsca",
