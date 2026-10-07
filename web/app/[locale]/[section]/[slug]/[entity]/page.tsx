@@ -24,7 +24,12 @@ import { allLocales, getEntityRoutes, resolveSection } from "@/lib/site";
 
 export const dynamicParams = false;
 
-/** Encje Atlasu: slug wspólny dla języków, więc ten sam zestaw tras w każdym języku. */
+/**
+ * Encje Atlasu: slug wspólny dla języków, więc ten sam zestaw tras w każdym języku.
+ * Trasa `/{język}/atlas/{grupa}/{encja}/` siedzi pod `[slug]`, bo Next nie dopuszcza dwóch
+ * różnie nazwanych segmentów dynamicznych na jednym poziomie (`next dev` odmawia startu):
+ * tutaj `slug` = grupa (np. `miejsca`), `entity` = slug encji.
+ */
 export async function generateStaticParams() {
   const routes = await getEntityRoutes();
   return locales.flatMap((locale) =>
@@ -33,8 +38,8 @@ export async function generateStaticParams() {
       .map((r) => ({
         locale,
         section: segment("atlas", locale),
-        group: segment(entitySegmentKey(r._type as EntityType), locale),
-        slug: r.slug,
+        slug: segment(entitySegmentKey(r._type as EntityType), locale),
+        entity: r.slug,
       })),
   );
 }
@@ -54,8 +59,8 @@ async function load(locale: Locale, type: EntityType, slug: string): Promise<Loa
 
 const labelOf = (l: Loaded) => (l.type === "place" ? l.place.name : l.hub.label);
 
-export async function generateMetadata({ params }: PageProps<"/[locale]/[section]/[group]/[slug]">): Promise<Metadata> {
-  const { locale, group, slug } = await params;
+export async function generateMetadata({ params }: PageProps<"/[locale]/[section]/[slug]/[entity]">): Promise<Metadata> {
+  const { locale, slug: group, entity: slug } = await params;
   if (!isLocale(locale)) return {};
   const type = resolveEntityType(locale, group);
   if (!type) return {};
@@ -72,8 +77,8 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/[section
   });
 }
 
-export default async function EntityPage({ params }: PageProps<"/[locale]/[section]/[group]/[slug]">) {
-  const { locale: l, section, group, slug } = await params;
+export default async function EntityPage({ params }: PageProps<"/[locale]/[section]/[slug]/[entity]">) {
+  const { locale: l, section, slug: group, entity: slug } = await params;
   if (!isLocale(l)) notFound();
   const locale: Locale = l;
   const resolved = await resolveSection(locale, section);
