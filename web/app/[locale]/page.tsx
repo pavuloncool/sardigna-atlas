@@ -76,7 +76,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       : null;
   const card = (a: (typeof latest)[number], ratio?: number) => ({
     key: a._id,
-    node: <ArticleCard article={a} locale={locale} ratio={ratio} />,
+    node: <ArticleCard key={a._id} article={a} locale={locale} ratio={ratio} />,
   });
 
   return (
