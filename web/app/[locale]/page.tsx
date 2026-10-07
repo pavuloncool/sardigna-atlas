@@ -74,9 +74,9 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
     : firstCat
       ? { href: categoryPath(cats, firstCat.key, locale), label: categoryName(firstCat, locale), image: firstCat.cover }
       : null;
-  const card = (a: (typeof latest)[number], ratio?: number) => ({
+  const card = (a: (typeof latest)[number], ratio?: number, showCategory = false) => ({
     key: a._id,
-    node: <ArticleCard key={a._id} article={a} locale={locale} ratio={ratio} />,
+    node: <ArticleCard key={a._id} article={a} locale={locale} ratio={ratio} showCategory={showCategory} />,
   });
 
   return (
@@ -92,7 +92,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
 
       {latest.length > 0 ? (
         <section className="voices" id="opowiesci" aria-label={home.voicesAria} data-pagefind-ignore>
-          {latest.slice(0, 2).map((a, i) => card(a, i === 0 ? 1.93 : 2.27).node)}
+          {latest.slice(0, 2).map((a, i) => card(a, i === 0 ? 1.93 : 2.27, true).node)}
         </section>
       ) : (
         <span id="opowiesci" />
@@ -107,7 +107,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       ) : null}
 
       {latest.length > 3 ? (
-        <Feed className="voices" items={latest.slice(3).map((a, i) => card(a, i % 2 ? 2.27 : 1.93))} />
+        <Feed className="voices" items={latest.slice(3).map((a, i) => card(a, i % 2 ? 2.27 : 1.93, true))} />
       ) : null}
 
       {cats.map((c) => {

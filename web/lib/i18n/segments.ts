@@ -55,6 +55,8 @@ export function articlePath(locale: Locale, categorySlug: string, slug: string):
   return `/${locale}/${categorySlug}/${slug}/`;
 }
 
+export const categoryHref = (locale: Locale, categorySlug: string) => `/${locale}/${categorySlug}/`;
+
 export const homePath = (locale: Locale) => `/${locale}/`;
 export const pagePath = (locale: Locale, key: SegmentKey) => `/${locale}/${segment(key, locale)}/`;
 
